@@ -2,24 +2,9 @@
 
 class Dogs
 {
-public:
-    int Select;
-    Texture textureDog;
-    Dogs()
-    {
-        Select = 0;
-        textureDog = {0};
-    }
-    ~Dogs()
-    {
-        if (textureDog.id != 0)
-        {
-            UnloadTexture(textureDog);
-        }
-    }
-
+private:
     void LoadAndDrawInfor(const char* filePath, int posX, int posY, int width, int height);
-
+    void DrawDog(const char* imagePath, int gridX, int gridY);
     void DrawAfghanHound();
     void DrawAkita();
     void DrawAlabai();
@@ -36,7 +21,9 @@ public:
     void DrawBichon();
     void DrawBorderCollie();
     void DrawBostonTerrier();
+    void DrawBostonBoxer();
     void DrawBullAnh();
+    void DrawBullPhap();
     void DrawBullTerrier();
     void DrawCaucasianShepherd();
     void DrawCavalierKingCharlesSpaniel();
@@ -49,8 +36,24 @@ public:
     void DrawGermanPinscher();
     void DrawGoldenRetriever();
     void DrawGreatDane();
-    void DrawHmong();
-    void DrawHusky();
-    void DrawIcelandicSheepdog();
-    void DrawIrishSetter();
+    void DrawPembrokeWelshCorgi();
+public:
+    int page;
+    Texture textureDog;
+    Dogs()
+    {
+        page = 1;
+        textureDog = {0};
+    }
+    ~Dogs()
+    {
+        if (textureDog.id != 0)
+        {
+            UnloadTexture(textureDog);
+        }
+    }
+    void DrawPape1();
+    void DrawPape2();
+    void DrawPape3();
+    void DrawPape4();
 };

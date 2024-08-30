@@ -71,41 +71,10 @@ int main() {
             // Các thông tin
             DrawTextEx(myFont, "Cho Canh", (Vector2){(float)(1024 / 2 - MeasureTextEx(myFont, "Cho Canh", 60, 2).x / 2), 50}, 60, 2, darkGreen);
             // Hình ảnh chó
-            dogs.DrawAfghanHound();
-            dogs.DrawAkita();
-            dogs.DrawAlabai();
-            dogs.DrawAlaska();
-            // dogs.DrawAmericanBully();
-            // dogs.DrawAustralianShepherd();
-            // dogs.DrawBacHa();
-            // dogs.DrawBacKinh();
-            // dogs.DrawBasenji();
-            // dogs.DrawBassetHound();
-            // dogs.DrawBeagle();
-            // dogs.DrawBecgieDuc();
-            // dogs.DrawBecgieHaLan();
-            // dogs.DrawBichon();
-            // dogs.DrawBorderCollie();
-            // dogs.DrawBostonTerrier();
-            // dogs.DrawBullAnh();
-            // dogs.DrawBullTerrier();
-            // dogs.DrawCaucasianShepherd();
-            // dogs.DrawCavalierKingCharlesSpaniel();
-            // dogs.DrawChihuahua();
-            // dogs.DrawChineseCrested();
-            // dogs.DrawChowChow();
-            // dogs.DrawCockerSpaniel();
-            // dogs.DrawDalmatian();
-            // dogs.DrawDoberman();
-            // dogs.DrawGermanPinscher();
-            // dogs.DrawGoldenRetriever();
-            // dogs.DrawGreatDane();
-            // dogs.DrawHmong();
-            // dogs.DrawHusky();
-            // dogs.DrawIcelandicSheepdog();
-            // dogs.DrawIrishSetter();
-
-            
+            // dogs.DrawPape1();
+            // dogs.DrawPape2();
+            // dogs.DrawPape3();
+            dogs.DrawPape4();
 
             // Back
             Rectangle buttonBack = {10, 10, 50, 50};
