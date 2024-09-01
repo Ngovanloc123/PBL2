@@ -7,11 +7,11 @@ private:
     int page;
     Texture textureDog;
 private:
-    void LoadAndDrawInfor(const char* filePath, int posX, int posY);
-    void DrawPape1();
-    void DrawPape2();
-    void DrawPape3();
-    void DrawPape4();
+    void LoadAndDrawInfor(Font myFont, const char *nameDog, const char* filePath, int posX, int posY);
+    void DrawPape1(Font myFont);
+    void DrawPape2(Font myFont);
+    void DrawPape3(Font myFont);
+    void DrawPape4(Font myFont);
    
 
 public:
