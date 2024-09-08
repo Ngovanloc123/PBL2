@@ -88,24 +88,27 @@ void Dogs::DrawDogs(Font myFont)
 {
     // Nút trở lại trang trước
     Rectangle backPage = {20, 400, 40, 40};
-    DrawRectangleRounded(backPage, 0.6, 10, yellow);
-    DrawTextEx(myFont, "<<", (Vector2){backPage.x + backPage.width / 2 - MeasureTextEx(myFont, "<<", 30, 2).x / 2, backPage.y + 10}, 30, 2, darkGreen);
+    if(page != 1) {
+        DrawRectangleRounded(backPage, 0.6, 10, yellow);
+        DrawTextEx(myFont, "<<", (Vector2){backPage.x + backPage.width / 2 - MeasureTextEx(myFont, "<<", 30, 2).x / 2, backPage.y + 10}, 30, 2, darkGreen);
+    }
     // Nút trang tiếp theo
     Rectangle nextPage = {1200 - 20 - MeasureTextEx(myFont, ">>", 30, 2).x, 400, 40, 40};
-    DrawRectangleRounded(nextPage, 0.6, 10, yellow);
-    DrawTextEx(myFont, ">>", (Vector2){nextPage.x + nextPage.width / 2 - MeasureTextEx(myFont, ">>", 30, 2).x / 2, nextPage.y + 10}, 30, 2, darkGreen);
+    if(page != 4) {
+        DrawRectangleRounded(nextPage, 0.6, 10, yellow);
+        DrawTextEx(myFont, ">>", (Vector2){nextPage.x + nextPage.width / 2 - MeasureTextEx(myFont, ">>", 30, 2).x / 2, nextPage.y + 10}, 30, 2, darkGreen);
+    }
     // Xữ lý nút back
-    if(CheckCollisionPointRec(GetMousePosition(), backPage)) {
-        
+    if(CheckCollisionPointRec(GetMousePosition(), backPage) && page != 1) {
         DrawRectangleRoundedLines((Rectangle){backPage.x , backPage.y, backPage.height, backPage.width}, 0.6, 10, 5, Cardinal);
-        if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && page != 1) {
+        if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             page--;
         } 
     }
     // Xữ lý nút next
-    if(CheckCollisionPointRec(GetMousePosition(), nextPage)) {
+    if(CheckCollisionPointRec(GetMousePosition(), nextPage) && page!= 4) {
         DrawRectangleRoundedLines((Rectangle){nextPage.x , nextPage.y, nextPage.height, nextPage.width}, 0.6, 10, 5, Cardinal);
-        if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && page!= 4) {
+        if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             page++;
         }
     }

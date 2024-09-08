@@ -1,21 +1,6 @@
 #include "screen.h"
 #include <color.h>
 
-// void Screen::initWindow()
-// {
-//     // Increate Window
-    
-//     // Set FPS
-//     SetTargetFPS(60);
-//     // Load Texture
-//     Image image = LoadImage("image/background.png");
-//     Texture textureMenu = LoadTextureFromImage(image);
-//     UnloadImage(image);
-//     int posX = (widthWindow - textureMenu.width) / 2;
-//     int posY = (heightWindow - textureMenu.height) / 2;
-//     DrawTexture(textureMenu, posX, posY, WHITE);
-// }
-
 void Screen::backGround()
 {
     int posX = (widthWindow - textureMenu.width) / 2;

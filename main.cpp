@@ -14,9 +14,6 @@ int main() {
     // Tải phông chữ tùy chỉnh
     Font myFont = LoadFont("font/NerkoOne-Regular.ttf");
     cout << "Open My shop..." << endl;
-    // screen.initWindow();
-
-    // Screens currentScreen = MENU;
 
     while(WindowShouldClose() == false) {
         BeginDrawing();
@@ -33,7 +30,6 @@ int main() {
             dogs.DrawDogs(myFont);
             // Nút trở về
             screen.DrawDogInfoScreen(myFont);
-
         }
 
         // Màn hình lựa chọn mèo

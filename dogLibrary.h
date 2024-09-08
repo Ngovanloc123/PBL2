@@ -13,7 +13,6 @@ private:
     void DrawPape3(Font myFont);
     void DrawPape4(Font myFont);
    
-
 public:
     Dogs()
     {
