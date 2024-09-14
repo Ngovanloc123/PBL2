@@ -13,4 +13,5 @@ extern const Color lightBlue;
 extern const Color darkBlue;
 extern const Color darkGreen;
 extern const Color darkBlue;
+extern const Color Cardinal;
 
