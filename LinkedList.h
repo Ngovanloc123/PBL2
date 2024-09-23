@@ -1,19 +1,41 @@
 #pragma once
-#include"pet.h"
+#include <raylib.h>
+// #include "screen.h"
 
-class Node;
-typedef class Node *LinkedList;
-typedef class Node *Position;
+template <typename T>
+class LinkedList;  // Forward
 
+template <typename T>
 class Node {
-    Pet data;
-    Node *next;
-public: 
-    Node();
-    // ~Node();
-    Position insert(const Pet &pet, Position p);
-    void erase(Position p);
-    void eraseByName(string name);
+private:
+    T data;
+    Node* next;
 
-    void display();
+    friend class LinkedList<T>;
+
+public:
+    Node(T value) : data(value), next(nullptr) {}
+    T getData() { return data;}
 };
+
+
+template <typename T>
+class LinkedList  {
+private:
+    Node<T>* header; 
+    int size;
+    int page; // Trang in hình ảnh hiện tại
+public: 
+    LinkedList();
+    ~LinkedList();
+    int sizeList();
+    void insert(T value);
+    void erase(const char* name);
+    int getPage();
+    int getPageMax();
+    void setPage(int page);
+    void displayImage(const Font &myfont, Texture &texture);
+    Node<T>* GetNodeFromClick(const Vector2 &index);
+    
+};
+
