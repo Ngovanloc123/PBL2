@@ -1,70 +1,102 @@
 #include <iostream>
 #include <raylib.h>
-#include "color.h"
+// #include "color.h"
 #include "screen.h"
-#include "LinkedList.h"
+// #include "LinkedList.cpp" 
 #include "dog.h"
-#include "cat.h"
+// #include "cat.h"
 
 using namespace std;
 
 int main() {
     Screen screen;
-    Dogs dogs;
-    Cats cats;
+    // Dog dog;
+    // Cats cats;
     // Tải phông chữ tùy chỉnh
     Font myFont = LoadFont("font/NerkoOne-Regular.ttf");
     cout << "Open My shop..." << endl;
 
     //----------------------------------------------------------------
-    LinkedList PetList = new Node;
-    if (PetList == NULL) {
-        cout << "Out of space!" << endl;
-        return 0;
-    }
-
-    Position p = PetList;
-    Pet pet("Bulldog", "England", 10, "Short", 3, 2000, 3);
-    p = PetList->insert(pet, p);
-
-    Pet pet2("Persian", "Iran", 15, "Long", 2, 1500, 2);
-    p = PetList->insert(pet2, p);
-    PetList->display();
-    PetList->eraseByName("Persian");
-    PetList->display();
+    LinkedList<Dog> PetList;
+    Dog dog("Akita", "image/Dogs/Akita.png", "Nam phi", 10, "Short", 3, 2000, 3, "O nha", "Hight", "YES");
+    PetList.insert(dog);
+    Dog dog2("B", "image/Dogs/Akita.png", "Nam phi", 10, "Short", 3, 2000, 3, "O nha", "Hight", "YES");
+    PetList.insert(dog2);
+    // Dog dog3("U", "image/Dogs/Akita.png", "Nam phi", 10, "Short", 3, 2000, 3, "O nha", "Hight", "YES");
+    // PetList.insert(dog3);
+    // Dog dog4("R", "image/Dogs/Akita.png", "Nam phi", 10, "Short", 3, 2000, 3, "O nha", "Hight", "YES");
+    // PetList.insert(dog4);
+    // Dog dog5("M", "image/Dogs/Akita.png", "Nam phi", 10, "Short", 3, 2000, 3, "O nha", "Hight", "YES");
+    // PetList.insert(dog5);
+    // Dog dog6("E", "image/Dogs/Akita.png", "Nam phi", 10, "Short", 3, 2000, 3, "O nha", "Hight", "YES");
+    // PetList.insert(dog6);
+    // Dog dog7("H", "image/Dogs/Basenji.png", "Nam phi", 10, "Short", 3, 2000, 3, "O nha", "Hight", "YES");
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    // PetList.insert(dog7);
+    cout << PetList.sizeList() << endl;
     //----------------------------------------------------------------
+
+    Texture texture;
+    Node<Dog>* NodeDog;
 
     while(WindowShouldClose() == false) {
         BeginDrawing();
         ClearBackground(PINK);
         // Background
         screen.backGround();
+
         // Màn hình MENU
         if(screen.currentScreen == MENU) {
             screen.DrawMenu(myFont);
         }
         // Màn hình lựa chọn chó
-        if(screen.currentScreen == informationDog) {
+        if(screen.currentScreen == imagesDog) {
             // Hình ảnh chó
-            dogs.DrawDogs(myFont);
+            PetList.displayImage(myFont, texture);
             // Nút trở về
-            screen.DrawDogInfoScreen(myFont);
+            screen.DrawText_DrawTextLabel_Image(myFont, PetList);
+            screen.HandleMouseClick(PetList, NodeDog);
         }
 
         // Màn hình lựa chọn mèo
-        if(screen.currentScreen == informationCat) {
+        if(screen.currentScreen == imagesCat) {
             // Hình ảnh mèo
-            // cats.DrawCats(myFont);
+            // ListCat.display(myFont, texture);
             // Nút trở về
-            screen.DrawCatInfoScreen(myFont);
+            screen.DrawText_DrawTextLabel_Image(myFont, PetList);
+            
         }
 
-        if (screen.currentScreen == detail) {
+        if (screen.currentScreen == detailDog) {
+            // Thông tin
+            NodeDog->getData().displayInformation(myFont, texture);
+            screen.DrawText_DrawTextLabel_Detail(myFont);
+        }
+        if (screen.currentScreen == detailCat) {
             // Thông tin
         }
         EndDrawing();
     }
     UnloadFont(myFont);
+    UnloadTexture(texture);
     CloseWindow();
     return 0;
 }

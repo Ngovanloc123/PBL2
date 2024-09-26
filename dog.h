@@ -1,43 +1,20 @@
 #pragma once
 #include <raylib.h>
-#include <string>
-#include "pet.h"
+#include "animal.h"
 
-class Dogs : public Pet {
+class Dog : public Animal {
 private:
-    string purposeOfRaising;
-    string levelOfTraining;
-    string needForExercise;
-    //----------------------------------------------------------------
-    int page;
-    Texture textureDog;
-private:
-    void LoadAndDrawInfor(Font myFont, const char *nameDog, const char* filePath, int posX, int posY);
-    void DrawPape1(Font myFont);
-    void DrawPape2(Font myFont);
-    void DrawPape3(Font myFont);
-    void DrawPape4(Font myFont);
-   
+    const char *purposeOfRaising;
+    const char *levelOfTraining;
+    const char *needForExercise;
+    void DrawImageBorder1(const Font &myFon, int gridX = 0, int gridY = 0);
 public:
-    Dogs()
-    {
-        page = 1;
-        textureDog = {0};
-    }
-     ~Dogs()
-    {
-        if (textureDog.id != 0)
-        {
-            UnloadTexture(textureDog);
-        }
-    }
-    
-    void DrawDogs(Font myFont);
-    //----------------------------------------------------------------
-    // Dogs();
-    Dogs(string name, string originOfDog, unsigned int averageAge, string furType, unsigned int numberOfDog, unsigned int sellingPrice, unsigned int size, string purposeOfRaising, string levelOfTraining, string needForExercise);
-    Dogs(const Dogs& dog);
-    // ~Dogs();
-    void displayInformation();
+    Dog(const char *name, const char *imagePet, const char *originOfDog, unsigned int averageAge, const char *furType, unsigned int numberOfDog, unsigned int sellingPrice, unsigned int size, const char *purposeOfRaising, const char *levelOfTraining, const char *needForExercise);
+    Dog(const Dog& dog);
+    ~Dog();
+    string GetType()  { return "Dog"; }
+    void GetAndDisplayImage(const Font &myFont, Texture &texture, int gridX = 0, int gridY = 0);
+
+    void displayInformation(const Font &myFont, Texture &texture);
 };
 
