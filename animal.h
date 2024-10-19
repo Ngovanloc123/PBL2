@@ -1,5 +1,6 @@
 #pragma once
 #include<iostream>
+#include <raylib.h>
 
 using namespace std;
 class Animal {
@@ -18,7 +19,6 @@ class Animal {
         Animal(const Animal& Animal);
         ~Animal();
         const char *getName() const;
-
-        // void displayInformation();
+        void displayInformation(const Font &myFont, Texture &texture) {}
 };
 

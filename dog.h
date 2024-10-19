@@ -14,7 +14,6 @@ public:
     ~Dog();
     string GetType()  { return "Dog"; }
     void GetAndDisplayImage(const Font &myFont, Texture &texture, int gridX = 0, int gridY = 0);
-
     void displayInformation(const Font &myFont, Texture &texture);
 };
 
