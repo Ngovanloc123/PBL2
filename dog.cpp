@@ -1,30 +1,8 @@
 #include "dog.h"
 #include <color.h>
-#include <iostream>
+// #include <iostream>
 
 using namespace std;
-
-void Dog::DrawImageBorder1(const Font &myFont, int gridX, int gridY)
-{
-    // Tạo khuông chứa hình ảnh
-    int sizeImage = 240;
-    // Vị trí khung
-    int posX = gridX * 248 + 8 + 100;
-    int posY = gridY * 270 + 128 + 8;
-    Rectangle nameFrame = {(float)posX, (float)(posY + 240), 240, 20};
-    DrawRectangleRounded(nameFrame, 0, 10, WHITE);
-    // Vẽ tên hình ảnh
-    DrawTextEx(myFont, name, (Vector2){nameFrame.x + nameFrame.width / 2 - MeasureTextEx(myFont, name, 30, 2).x / 2, nameFrame.y - 5}, 30, 2, darkGreen);
-    // Vẽ viền khi đưa chuột và không đưa chuột
-    if(!CheckCollisionPointRec(GetMousePosition(), (Rectangle){(float)posX, (float)(posY), (float)sizeImage, (float)(sizeImage + 20)})) {
-        // Viền khi không đưa chuột vào
-        DrawRectangleLines(posX, posY , sizeImage, sizeImage + 20, BLACK);
-    } else {
-        // Viền khi đưa chuột vào
-        DrawRectangleRoundedLines((Rectangle){(float)posX , (float)posY, (float)sizeImage, (float)(sizeImage + 20)}, 0, 10, 5, Cardinal);
-    }   
-}
-
 
 Dog::Dog(const char *name, const char *imageDog, const char *originOfDog, unsigned int averageAge, const char *furType, unsigned int numberOfDog, unsigned int sellingPrice, unsigned int size, const char *purposeOfRaising, const char *levelOfTraining, const char *needForExercise)
     : Animal(name, imageDog, originOfDog, averageAge, furType, numberOfDog, sellingPrice, size), purposeOfRaising(purposeOfRaising), levelOfTraining(levelOfTraining), needForExercise(needForExercise) {}
@@ -36,7 +14,7 @@ Dog::~Dog() {}
 
 void Dog::displayInformation(const Font &myFont, Texture &texture) {
     GetAndDisplayImage(myFont, texture);
-    DrawImageBorder1(myFont);
+    DrawImageBorder(myFont);
 
     // Khung chứa thông tin
     Rectangle informationFrame = {(float)(248 + 8 + 100), (float)(128), 240 * 3, 240 * 2};
@@ -66,7 +44,8 @@ void Dog::displayInformation(const Font &myFont, Texture &texture) {
 
 }
 
-void Dog::GetAndDisplayImage(const Font &myFont, Texture &texture , int gridX, int gridY) {
+void Dog::GetAndDisplayImage(const Font &myFont, Texture &texture, int gridX, int gridY)
+{
     // Nạp và chuyển đổi hình ảnh thành texture
     Image image = LoadImage(imageAnimal);
     if (image.width == 0 || image.height == 0)
@@ -83,6 +62,5 @@ void Dog::GetAndDisplayImage(const Font &myFont, Texture &texture , int gridX, i
     DrawTexture(texture, posX, posY, WHITE);
     
     // Tạo khuông chứa hình ảnh
-    DrawImageBorder1(myFont, gridX, gridY);
-
+    DrawImageBorder(myFont, gridX, gridY);
 }

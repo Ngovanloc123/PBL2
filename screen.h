@@ -105,11 +105,11 @@ public:
 
         Rectangle buttonDog = {(float)((widthWindow) / 2 - 100), (float)((heightWindow) / 2), 200, 50};
         DrawRectangleRounded(buttonDog, 0.6, 10, yellow);
-        DrawTextEx(myFont, "Cho canh", (Vector2){buttonDog.x + buttonDog.width / 2 - MeasureTextEx(myFont, "Cho canh", 30, 2).x / 2, buttonDog.y + 10}, 30, 2, darkGreen);
+        DrawTextEx(myFont, "Dog", (Vector2){buttonDog.x + buttonDog.width / 2 - MeasureTextEx(myFont, "Dog", 30, 2).x / 2, buttonDog.y + 10}, 30, 2, darkGreen);
 
         Rectangle buttonCat = {(float)((widthWindow) / 2 - 100), (float)((heightWindow) / 2 + 100), 200, 50};
         DrawRectangleRounded(buttonCat, 0.6, 10, yellow);
-        DrawTextEx(myFont, "Meo canh", (Vector2){buttonCat.x + buttonCat.width / 2 - MeasureTextEx(myFont, "Meo canh", 30, 2).x / 2, buttonCat.y + 10}, 30, 2, darkGreen);
+        DrawTextEx(myFont, "Cat", (Vector2){buttonCat.x + buttonCat.width / 2 - MeasureTextEx(myFont, "Cat", 30, 2).x / 2, buttonCat.y + 10}, 30, 2, darkGreen);
 
         if(CheckCollisionPointRec(GetMousePosition(), buttonDog) && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
             currentScreen = imagesDog;
@@ -121,12 +121,12 @@ public:
     }
 
     template <typename T>
-    void DrawText_DrawTextLabel_Image(const Font &myFont, LinkedList<T> &list) {
+    void DrawHeadingAnimal(const Font &myFont, LinkedList<T> &list) {
         if(currentScreen == imagesDog)
-        DrawTextEx(myFont, "Cho Canh", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Cho Canh", 60, 2).x / 2), 50}, 60, 2, darkGreen);
+        DrawTextEx(myFont, "Dog", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Dog", 60, 2).x / 2), 50}, 60, 2, darkGreen);
         if(currentScreen == imagesCat)
-            DrawTextEx(myFont, "Meo Canh", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Meo Canh", 60, 2).x / 2), 50}, 60, 2, darkGreen);
-        // // Back
+            DrawTextEx(myFont, "Cat", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Cat", 60, 2).x / 2), 50}, 60, 2, darkGreen);
+        // Button
         backButton(myFont);
         previousButton(myFont,list);
         nextButton(myFont,list);
@@ -148,12 +148,12 @@ public:
         }
     }
 
-    void DrawText_DrawTextLabel_Detail(const Font &myFont) {
+    void DrawHeading(const Font &myFont) {
         if(currentScreen == detailDog)
-        DrawTextEx(myFont, "detailDog", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "detailDog", 60, 2).x / 2), 50}, 60, 2, darkGreen);
+        DrawTextEx(myFont, "Information", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Information", 60, 2).x / 2), 50}, 60, 2, darkGreen);
         if(currentScreen == detailCat)
-            DrawTextEx(myFont, "detailCat", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "detailCat", 60, 2).x / 2), 50}, 60, 2, darkGreen);
-        // // Back
+            DrawTextEx(myFont, "Information", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Information", 60, 2).x / 2), 50}, 60, 2, darkGreen);
+        // Back
         backButton(myFont);
     }
 };

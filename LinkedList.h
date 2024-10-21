@@ -18,7 +18,6 @@ public:
     T getData() { return data;}
 };
 
-
 template <typename T>
 class LinkedList  {
 private:
