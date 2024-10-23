@@ -58,7 +58,6 @@ void LinkedList<T>::insert(T value)
         newNode->next = current;
         previous->next = newNode;
     }
-
     size++;
 }
 

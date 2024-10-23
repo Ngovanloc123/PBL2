@@ -2,7 +2,7 @@
 #include <raylib.h>
 // #include "color.h"
 #include "screen.h"
-// #include "LinkedList.cpp" 
+// #include "LinkedList.cpp"  
 #include "dog.h"
 // #include "cat.h"
 
@@ -17,41 +17,10 @@ int main() {
     cout << "Open My shop..." << endl;
 
     //----------------------------------------------------------------
-    LinkedList<Dog> PetList;
-    Dog dog("Akita", "image/Dogs/Akita.png", "Nam phi", 10, "Short", 3, 2000, 3, "O nha", "Hight", "YES");
-    PetList.insert(dog);
-    Dog dog2("B", "image/Dogs/Akita.png", "Nam phi", 10, "Short", 3, 2000, 3, "O nha", "Hight", "YES");
-    PetList.insert(dog2);
-    // Dog dog3("U", "image/Dogs/Akita.png", "Nam phi", 10, "Short", 3, 2000, 3, "O nha", "Hight", "YES");
-    // PetList.insert(dog3);
-    // Dog dog4("R", "image/Dogs/Akita.png", "Nam phi", 10, "Short", 3, 2000, 3, "O nha", "Hight", "YES");
-    // PetList.insert(dog4);
-    // Dog dog5("M", "image/Dogs/Akita.png", "Nam phi", 10, "Short", 3, 2000, 3, "O nha", "Hight", "YES");
-    // PetList.insert(dog5);
-    // Dog dog6("E", "image/Dogs/Akita.png", "Nam phi", 10, "Short", 3, 2000, 3, "O nha", "Hight", "YES");
-    // PetList.insert(dog6);
-    // Dog dog7("H", "image/Dogs/Basenji.png", "Nam phi", 10, "Short", 3, 2000, 3, "O nha", "Hight", "YES");
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    // PetList.insert(dog7);
-    cout << PetList.sizeList() << endl;
+    LinkedList<Dog> dogList;
+    Dog::initializePetList(dogList);
+    
+    cout << dogList.sizeList() << endl;
     //----------------------------------------------------------------
 
     Texture texture;
@@ -70,10 +39,10 @@ int main() {
         // Màn hình lựa chọn chó
         if(screen.currentScreen == imagesDog) {
             // Hình ảnh chó
-            PetList.displayImage(myFont, texture);
+            dogList.displayImage(myFont, texture);
             // Nút trở về
-            screen.DrawText_DrawTextLabel_Image(myFont, PetList);
-            screen.HandleMouseClick(PetList, NodeDog);
+            screen.DrawHeadingAnimal(myFont, dogList);
+            screen.HandleMouseClick(dogList, NodeDog);
         }
 
         // Màn hình lựa chọn mèo
@@ -81,14 +50,14 @@ int main() {
             // Hình ảnh mèo
             // ListCat.display(myFont, texture);
             // Nút trở về
-            screen.DrawText_DrawTextLabel_Image(myFont, PetList);
+            screen.DrawHeadingAnimal(myFont, dogList);
             
         }
 
         if (screen.currentScreen == detailDog) {
             // Thông tin
             NodeDog->getData().displayInformation(myFont, texture);
-            screen.DrawText_DrawTextLabel_Detail(myFont);
+            screen.DrawHeading(myFont);
         }
         if (screen.currentScreen == detailCat) {
             // Thông tin
