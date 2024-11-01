@@ -8,11 +8,14 @@
 
 
 typedef enum Screens {
-    MENU = 0,
+    HOME = 0,
     imagesDog,
     imagesCat,
     detailDog,
-    detailCat
+    detailCat,
+    INTRO,
+    CONTACT,
+    shoppingCart
 } Screens;
 
 class Screen {
@@ -21,22 +24,7 @@ private:
     const int heightWindow = 720;
     Texture textureMenu;
 
-    void backButton(const Font &myFont) {
-        // Back
-        Rectangle buttonBack = {10, 10, 50, 50};
-        DrawRectangleRounded(buttonBack, 0.6, 10, yellow);
-        DrawTextEx(myFont, "<", (Vector2){buttonBack.x + buttonBack.width / 2 - MeasureTextEx(myFont, "<", 30, 2).x / 2, buttonBack.y + 10}, 30, 2, darkGreen);
-
-        if(CheckCollisionPointRec(GetMousePosition(), buttonBack) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            if(currentScreen == detailDog) currentScreen = (Screens)(currentScreen - 2);
-            else
-            if(currentScreen == detailCat) currentScreen = (Screens)(currentScreen - 2);
-            else
-            if(currentScreen == imagesDog) currentScreen = (Screens)(currentScreen - 1);
-            else
-            if(currentScreen == imagesCat) currentScreen = (Screens)(currentScreen - 2);
-        }
-    }
+    void backButton(const Font &myFont);
     template <typename T>
     void nextButton(const Font &myFont, LinkedList<T> &list) {
         // Nút trang tiếp theo
@@ -70,21 +58,13 @@ private:
             } 
         }
     }
+
+    Image loadImageCart();
 public:
-    Screens currentScreen = MENU;
+    Screens currentScreen = HOME;
 
 public:
-    Screen()
-    {
-        textureMenu = {0};
-        InitWindow(widthWindow, heightWindow, "Shop Pet");
-        // Set FPS
-        SetTargetFPS(60);
-        // Load Texture
-        Image image = LoadImage("image/background.png");
-        textureMenu = LoadTextureFromImage(image);
-        UnloadImage(image);
-    }
+    Screen();
      ~Screen()
     {
         if (textureMenu.id != 0)
@@ -92,33 +72,13 @@ public:
             UnloadTexture(textureMenu);
         }
     }
-    void backGround() {
-        int posX = (widthWindow - textureMenu.width) / 2;
-        int posY = (heightWindow - textureMenu.height) / 2;
-        DrawTexture(textureMenu, posX, posY, WHITE);
-    }
+    void backGround();
 
-    void DrawMenu(Font myFont) {
-         DrawTextEx(myFont, "WELCOME", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "WELCOME", 60, 2).x / 2), 100}, 60, 2, darkGreen);
-        DrawTextEx(myFont, "TO", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "TO", 50, 2).x / 2), 170}, 50, 2, darkGreen);
-        DrawTextEx(myFont, "SHOP PET", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "SHOP PET", 80, 2).x / 2), 210}, 80, 2, darkGreen);
+    void DrawHome(const Font &myFont);
+    // void DrawIntro(const Font &myFont);
+    // void DrawContact(const Font &myFont);
 
-        Rectangle buttonDog = {(float)((widthWindow) / 2 - 100), (float)((heightWindow) / 2), 200, 50};
-        DrawRectangleRounded(buttonDog, 0.6, 10, yellow);
-        DrawTextEx(myFont, "Dog", (Vector2){buttonDog.x + buttonDog.width / 2 - MeasureTextEx(myFont, "Dog", 30, 2).x / 2, buttonDog.y + 10}, 30, 2, darkGreen);
-
-        Rectangle buttonCat = {(float)((widthWindow) / 2 - 100), (float)((heightWindow) / 2 + 100), 200, 50};
-        DrawRectangleRounded(buttonCat, 0.6, 10, yellow);
-        DrawTextEx(myFont, "Cat", (Vector2){buttonCat.x + buttonCat.width / 2 - MeasureTextEx(myFont, "Cat", 30, 2).x / 2, buttonCat.y + 10}, 30, 2, darkGreen);
-
-        if(CheckCollisionPointRec(GetMousePosition(), buttonDog) && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
-            currentScreen = imagesDog;
-        }
-
-        if(CheckCollisionPointRec(GetMousePosition(), buttonCat) && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
-            currentScreen = imagesCat;
-        }
-    }
+    void navigationMenu(const Font &myFont, Texture &textureCart, bool &clickedButtonPet);
 
     template <typename T>
     void DrawHeadingAnimal(const Font &myFont, LinkedList<T> &list) {
@@ -148,12 +108,6 @@ public:
         }
     }
 
-    void DrawHeading(const Font &myFont) {
-        if(currentScreen == detailDog)
-        DrawTextEx(myFont, "Information", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Information", 60, 2).x / 2), 50}, 60, 2, darkGreen);
-        if(currentScreen == detailCat)
-            DrawTextEx(myFont, "Information", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Information", 60, 2).x / 2), 50}, 60, 2, darkGreen);
-        // Back
-        backButton(myFont);
-    }
+    void HeadingPet(const Font &myFont, bool &clickedButtonPet);
+    void HeadingInfor(const Font &myFont);
 };
