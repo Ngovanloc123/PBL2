@@ -49,6 +49,8 @@ void LinkedList<T>::insert(T value)
         current = current->next;
     }
 
+    if(current != nullptr && strcmp(current->data.getName(), newNode->data.getName()) == 0) return;
+
     // Nếu nút mới là nhỏ nhất (chèn vào đầu danh sách)
     if (previous == nullptr) {
         newNode->next = header;
@@ -89,15 +91,13 @@ void LinkedList<T>::erase(const char* name)
 
 
 template <typename T>
-void LinkedList<T>::displayImage(const Font &myfont, Texture &texture)
+void LinkedList<T>::displayImage(const Font &myFont, Texture &texture)
 {
     Node<T>* current = header;
     int i = 0;
     while (current != nullptr) {
-        // current->data.displayInformation();  // Riêng cho lớp Pet và các lớp kế thừa của Pet
-        if((page - 1)*8 <= i && i <= page*8 - 1)
-            current->data.GetAndDisplayImage(myfont, texture, i % 4, (i / 4) % 2);     // Riêng cho lớp Pet và các lớp kế thừa của Pet
-            // screen.IsClickImage(i % 4, (i / 4) % 2);
+        if((page - 1) * 8 <= i && i <= page * 8 - 1)
+            current->data.DisplayImage(myFont, texture, i % 4, (i / 4) % 2);
         current = current->next;
         i++;
     }

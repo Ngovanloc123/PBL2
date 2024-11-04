@@ -14,6 +14,26 @@
     "*.tcc": "cpp",
     "array": "cpp",
     "string": "cpp",
-    "string_view": "cpp"
-  }
+    "string_view": "cpp",
+    "iosfwd": "cpp",
+    "iostream": "cpp",
+    "deque": "cpp",
+    "vector": "cpp",
+    "ostream": "cpp",
+    "compare": "cpp",
+    "optional": "cpp",
+    "random": "cpp",
+    "limits": "cpp",
+    "new": "cpp",
+    "numeric": "cpp",
+    "cmath": "cpp",
+    "tuple": "cpp",
+    "type_traits": "cpp",
+    "variant": "cpp",
+    "memory": "cpp",
+    "istream": "cpp",
+    "functional": "cpp",
+    "utility": "cpp"
+  },
+  "cSpell.words": ["Infor", "ITPET"]
 }
