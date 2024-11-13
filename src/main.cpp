@@ -4,7 +4,7 @@
 #include "screen.h"
 // #include "LinkedList.cpp"  
 #include "dog.h"
-// #include "cat.h"
+#include "cat.h"
 
 using namespace std;
 
@@ -20,12 +20,18 @@ int main() {
     LinkedList<Dog> dogList;
     LinkedList<Dog> cartDog;
     Dog::initializeDogList(dogList);
+
+    LinkedList<Cat> catList;
+    LinkedList<Cat> cartCat;
+    Cat::initializeCatList(catList);
+
     
-    cout << dogList.sizeList() << endl;
+    // cout << dogList.sizeList() << endl;
     //----------------------------------------------------------------
 
     Texture texture;
     Node<Dog>* NodeDog;
+    Node<Cat>* NodeCat;
 
     while(WindowShouldClose() == false) {
         BeginDrawing();
@@ -47,17 +53,18 @@ int main() {
             dogList.displayImages(myFont, texture);
             // Các nút tại image Dog
             screen.DrawHeadingAnimal(myFont, dogList);
-            // Lấy node từ mouseClick 
+            // Lấy nodeDog
             screen.getNode(dogList, NodeDog);
         }
 
         // Màn hình lựa chọn mèo
         if(screen.currentScreen == imagesCat) {
             // Hình ảnh mèo
-            // ListCat.display(myFont, texture);
-            // Nút trở về
-            screen.DrawHeadingAnimal(myFont, dogList);
-            
+            catList.displayImages(myFont, texture);
+            // Các nút tại image Cat
+            screen.DrawHeadingAnimal(myFont, catList);
+            // Lấy nodeCat
+            screen.getNode(catList, NodeCat);
         }
 
         if (screen.currentScreen == detailDog) {
@@ -70,6 +77,9 @@ int main() {
         }
         if (screen.currentScreen == detailCat) {
             // Thông tin
+            NodeCat->getData().displayInformation(myFont, texture);
+            if(NodeCat->getData().isAddToCart()) cartCat.insert(NodeCat->getData());
+
             screen.Heading(myFont);
         }
 

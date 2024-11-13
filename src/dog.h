@@ -21,7 +21,7 @@ private:
     const char *needForExercise;    
 public:
     Dog(){};
-    Dog(const char *name, const char *imagePet, const char *originOfDog, unsigned int averageAge, const char *furType, unsigned int numberOfDog, unsigned int sellingPrice, unsigned int size, const char *purposeOfRaising, const char *levelOfTraining, const char *needForExercise);
+    Dog(const char *name, const char *imageDog, const char *originOfDog, unsigned int averageAge, const char *furType, unsigned int numberOfDog, unsigned int sellingPrice, unsigned int size, const char *purposeOfRaising, const char *levelOfTraining, const char *needForExercise);
     Dog(const Dog& dog);
     virtual ~Dog();
     string GetType() const { return "Dog"; }
