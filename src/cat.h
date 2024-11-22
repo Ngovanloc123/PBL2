@@ -28,10 +28,11 @@ public:
     Cat(const Cat& cat);
     virtual ~Cat();
     string GetType() const { return "Cat"; }
+    vector<char*> getAttributes();
     // Đọc file
     static void initializeCatList(LinkedList<Cat>& catList) {
         // Mở file để đọc nội dung hiện tại
-        ifstream ifs("dataAnimal/cat.inp");
+        ifstream ifs("DB/cat.txt");
         
         // Kiểm tra file đã mở thành công hay chưa
         if (!ifs) {
@@ -42,6 +43,7 @@ public:
         // Đọc từng chuỗi ngăn cách bởi dấu phẩy
         string line;
         Cat cat;
+
         while (getline(ifs, line)) {
             vector<string> tokens;
             string token;
@@ -63,6 +65,7 @@ public:
         // Đóng file sau khi đọc xong
         ifs.close();
     }
-    void displayInformation(const Font &myFont, Texture &texture);
+    void DisplayImage(const Font &myFont, Texture &texture, int gridX = 0, int gridY = 0);
+    void displayInformation(const Font &myFont, Texture &texture, unsigned int &purQuant);
 };
 

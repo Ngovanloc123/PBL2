@@ -13,7 +13,7 @@
 
 class Dog : public Animal {
 private:
-    // Mục đích nuôi: Pet and Companion, Guard
+    // Mục đích nuôi: Pet, Companion, Guard
     const char *purposeOfRaising;   
     // Mức độ huấn luyện: Kindergarten, Grade school, Junior High
     const char *levelOfTraining;    
@@ -25,10 +25,11 @@ public:
     Dog(const Dog& dog);
     virtual ~Dog();
     string GetType() const { return "Dog"; }
+    vector<char*> getAttributes();
     // Đọc file
     static void initializeDogList(LinkedList<Dog>& dogList) {
         // Mở file để đọc nội dung hiện tại
-        ifstream ifs("dataAnimal/dog.inp");
+        ifstream ifs("DB/dog.txt");
         
         // Kiểm tra file đã mở thành công hay chưa
         if (!ifs) {
@@ -60,6 +61,7 @@ public:
         // Đóng file sau khi đọc xong
         ifs.close();
     }
-    void displayInformation(const Font &myFont, Texture &texture);
+    void DisplayImage(const Font &myFont, Texture &texture, int gridX = 0, int gridY = 0);
+    void displayInformation(const Font &myFont, Texture &texture, unsigned int &purQuant);
 };
 

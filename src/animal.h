@@ -22,22 +22,24 @@ class Animal {
         void ImageBorderInfor(const Font &myFont, int posX = 108, int posY = 136);
         // void addToCart(const Font &myFont, Rectangle &informationFrame);
         // void buyNow(const Font &myFont, Rectangle &informationFrame);
-        void purchaseOptions(const Font &myFont, Rectangle &informationFrame);
+        void purchaseOptions(const Font &myFont, unsigned int &purQuant);
     public:
         Animal();
         Animal(const char *name, const char *imageAnimal, const char *origin, unsigned int averageAge, const char *furType, unsigned int quantity, unsigned int sellingPrice, unsigned int size);
         Animal(const Animal& Animal);
         virtual ~Animal();
         const char *getName() const;
+        unsigned int getQuantity() const;
+        unsigned int getSellingPrice() const;
         virtual string GetType() const { return "Animal"; }
-        bool isAddToCart();
+        // bool isAddToCart();
         bool isBuyNow();
         // In ra hình ảnh khi bán
-        void DisplayImage(const Font &myFont, Texture &texture, int gridX = 0, int gridY = 0);
+        virtual void DisplayImage(const Font &myFont, Texture &texture, int gridX = 0, int gridY = 0) = 0;
         // In ra hình ảnh và thông tin cần thiết trong giỏ hàng
-        void DisplayItemFromCart(const Font &myFont, Texture &texture, int gridX = 0, int gridY = 0);
+        void DisplayItemFromCart(const Font &myFont, Texture &texture, int gridX = 0, int gridY = 0, unsigned int purQuant = 1);
         // In ra hình ảnh tại thông tin chi tiết
         void DisplayImageInInfor(const Font &myFont, Texture &texture, int gridX = 0, int gridY = 0);
         // In ra thông tin chi tiết
-        virtual void displayInformation(const Font &myFont, Texture &texture) = 0;
+        virtual void displayInformation(const Font &myFont, Texture &texture, unsigned int &purQuant) = 0;
 };

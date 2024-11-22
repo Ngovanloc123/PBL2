@@ -3,6 +3,7 @@
 #include <exception>
 #include <cstring>
 #include <iostream>
+#include <vector>
 
 // #include "screen.h"
 
@@ -34,15 +35,21 @@ public:
     LinkedList();
     virtual ~LinkedList();
     int sizeList();
+    Node<T>* getHead();
     void insert(T value);
+    
+    // Nếu true -> thêm số lượng / sản phẩm thành công
+    // Nếu false -> thêm số lượng thất bại (sản phẩm đã đạt giới hạn)
+    bool insertCart(T value);
     void erase(Node<T> *node);
     int getPage();
     int getPageMax();
     void setPage(int page);
-    void displayImages(const Font &myFont, Texture &texture);
-    void displayCart(const Font &myFont, Texture &texture);
-    Node<T>* GetNodeFromAnimal(const Vector2 &index);
+    void displayImages(const Font &myFont, Texture &texture, vector<char*> attributes);
+    void displayCart(const Font &myFont, Texture &texture, int quantity = 0);
+    long long total();
+    Node<T>* GetNodeFromAnimal(const Vector2 &index, vector<char*> attributes);
     Node<T>* GetNodeFromCart(const Vector2 &index);
-    void deleteNodeFromCart(const Vector2 &index);
+    void deleteNodeInCart(const Vector2 &index);
 };
 

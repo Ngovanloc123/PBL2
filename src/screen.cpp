@@ -32,8 +32,33 @@ void Screen::backButton(const Font &myFont)
     }
 }
 
+// bool Screen::checkLoginButton(const Font &myFont)
+// {
+//     Rectangle buttonLogin = {(float(widthWindow) - 110), 10, 100, 50};
+//     // DrawRectangleRounded(buttonLogin, 0.6, 10, lightGray);
+//     // DrawTextEx(myFont, "Login", (Vector2){buttonLogin.x + buttonLogin.width / 2 - MeasureTextEx(myFont, "Login", 30, 2).x / 2, buttonLogin.y + 10}, 30, 2, darkGreen);
+
+//     // nút thêm giỏ hàng
+//     Rectangle AddToCart = {(float)(248 + 8 + 100 + 100), 500, 200, 60};
+
+//     // Nút mua hàng
+//     Rectangle buyNow = {(float)(248 + 8 + 100 + 240 * 3 / 2 + 100), 500, 200, 50};
+    
+//     // Nếu nhấn vào các nút trên thì đăng nhập
+//     if (CheckCollisionPointRec(GetMousePosition(), buttonLogin) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+//         return true;
+//     }
+//     if (CheckCollisionPointRec(GetMousePosition(), AddToCart) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+//         return true;
+//     }
+//     if (CheckCollisionPointRec(GetMousePosition(), buyNow) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+//         return true;
+//     }
+//     return false;
+// }
+
 Image Screen::loadImageCart()
- {
+{
     Image image = LoadImage("image/shopping-cart.png");
     ImageResize(&image, 40, 40);
     return image;
@@ -42,6 +67,7 @@ Image Screen::loadImageCart()
 Screen::Screen()
 {
     textureMenu = {0};
+    login = false;
     InitWindow(widthWindow, heightWindow, "Shop Pet");
     // Set FPS
     SetTargetFPS(60);
@@ -51,7 +77,9 @@ Screen::Screen()
     UnloadImage(image);
 }
 
-void Screen::backGround() {
+
+void Screen::backGround()
+{
     int posX = (widthWindow - textureMenu.width) / 2;
     int posY = (heightWindow - textureMenu.height) / 2;
     DrawTexture(textureMenu, posX, posY, WHITE);
@@ -64,7 +92,7 @@ void Screen::DrawHome(const Font &myFont) {
     DrawTextEx(myFont, "ITPET", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "ITPET", 80, 2).x / 2), 210}, 80, 2, darkGreen);
 }
 
-void Screen::navigationMenu(const Font &myFont, Texture &textureCart) {
+void Screen::navigationMenu(const Font &myFont, Texture &textureCart, long long Subtotal) {
     // Nút Home
     Rectangle buttonHome = {80, 20, 80, 40};
     // DrawRectangleRounded(buttonHome, 0.6, 10, yellow);
@@ -99,13 +127,18 @@ void Screen::navigationMenu(const Font &myFont, Texture &textureCart) {
     DrawTextEx(myFont, "Contact", (Vector2){buttonContact.x + buttonContact.width / 2 - MeasureTextEx(myFont, "Contact", 30, 2).x / 2, buttonContact.y + 10}, 30, 2, darkGreen);
 
     // Shopping Cart
-    Rectangle buttonCart = {(float)((widthWindow) - 200), 20, 80, 40};
+    Rectangle buttonCart = {(float)((widthWindow) - 280), 20, 80, 40};
     Image imageCart = loadImageCart();
     textureCart = LoadTextureFromImage(imageCart);
     UnloadImage(imageCart);
     // DrawRectangleRounded(buttonCart, 0.6, 10, yellow);
     DrawTexture(textureCart, buttonCart.x, buttonCart.y, WHITE);
     // DrawTextEx(myFont, "Cart", (Vector2){buttonCart.x + buttonCart.width / 2 - MeasureTextEx(myFont, "Cart", 30, 2).x / 2, buttonCart.y + 10}, 30, 2, darkGreen);
+    // Nút tổng thanh toán
+    Rectangle buttonSubtotal = {(float(widthWindow) - 220), 20, 200, 40};
+    DrawRectangleRounded(buttonSubtotal, buttonSubtotal.x, buttonSubtotal.y, YELLOW);
+    DrawTextEx(myFont, (to_string(Subtotal) + " VND").c_str(), (Vector2){buttonSubtotal.x + buttonSubtotal.width / 2 - MeasureTextEx(myFont, (to_string(Subtotal) + " VND").c_str(), 30, 2).x / 2, buttonSubtotal.y + 10}, 30, 2, darkGreen);
+
 
     // Xử lý các nút
     if(CheckCollisionPointRec(GetMousePosition(), buttonHome) && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
@@ -124,6 +157,18 @@ void Screen::navigationMenu(const Font &myFont, Texture &textureCart) {
         beforeScreen = currentScreen;
         currentScreen = shoppingCart;
     }
+
+    // Quan trọng , xữ lý nút mua hàng
+    
+    //----------------------------------------------------------------
+    // Nút đăng nhập
+    // Rectangle buttonLogin = {(float(widthWindow) - 110), 10, 100, 50};
+    // DrawTextEx(myFont, "Login", (Vector2){buttonLogin.x + buttonLogin.width / 2 - MeasureTextEx(myFont, "Login", 30, 2).x / 2, buttonLogin.y + 10}, 30, 2, darkGreen);
+
+    // // Nút đăng ký
+    // Rectangle buttonRegister = {(float(widthWindow) - 110), 60, 100, 50};
+    // DrawTextEx(myFont, "Register", (Vector2){buttonRegister.x + buttonRegister.width / 2 - MeasureTextEx(myFont, "Register", 30, 2).x / 2, buttonRegister.y + 10}, 30, 2, darkGreen);
+
 }
 
 
@@ -140,3 +185,117 @@ void Screen::Heading(const Font &myFont)
     // Back
     backButton(myFont);
 }
+
+void Screen::ShowPopup(const Font &myFont, const char *message, int width, int height) {
+    // Tính toán vị trí hộp thông báo ở giữa màn hình
+    Rectangle popupRect = {
+        (float)((GetScreenWidth() - width) / 2),
+        (float)((GetScreenHeight() - height) / 2),
+        (float)width,
+        (float)height
+    };
+
+    // Tính toán vị trí nút xóa (OK button)
+    int buttonWidth = 100;
+    int buttonHeight = 40;
+    Rectangle buttonRect = {
+        popupRect.x + (popupRect.width - buttonWidth) / 2,
+        popupRect.y + popupRect.height - buttonHeight - 10,
+        (float)buttonWidth,
+        (float)buttonHeight
+    };
+
+    bool buttonClicked = false;
+
+    // Vòng lặp hiển thị thông báo
+    while (!buttonClicked && !WindowShouldClose()) {
+        // Kiểm tra nếu người dùng nhấn chuột vào nút
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            Vector2 mousePos = GetMousePosition();
+            if (CheckCollisionPointRec(mousePos, buttonRect)) {
+                buttonClicked = true;
+            }
+        }
+
+        BeginDrawing();
+        // ClearBackground(RAYWHITE);
+
+        // Vẽ hộp thông báo
+        DrawRectangleRounded(popupRect, 0.2f, 10, RAYWHITE);
+        DrawRectangleRoundedLines(popupRect, 0.2f, 10, 2, BLACK);
+
+        // Hiển thị thông báo với font tùy chỉnh
+        int fontSize = 30;
+        Vector2 textSize = MeasureTextEx(myFont, message, fontSize, 2);
+        DrawTextEx(myFont, message, {popupRect.x + (popupRect.width - textSize.x) / 2, popupRect.y + (popupRect.height - textSize.y) / 2 - 20}, fontSize, 2, BLACK);
+
+        // Vẽ nút xóa (OK button)
+        DrawRectangleRounded(buttonRect, 0.2f, 10, LIGHTGRAY);
+        DrawRectangleRoundedLines(buttonRect, 0.2f, 10, 2, BLACK);
+
+        // Hiển thị chữ "OK" trên nút
+        const char *buttonText = "OK";
+        Vector2 buttonTextSize = MeasureTextEx(myFont, buttonText, 20, 2);
+        DrawTextEx(myFont, buttonText, 
+                   {buttonRect.x + (buttonRect.width - buttonTextSize.x) / 2, buttonRect.y + (buttonRect.height - buttonTextSize.y) / 2}, 
+                   20, 2, BLACK);
+
+        EndDrawing();
+    }
+}
+
+// bool Screen::isLogin()
+// {
+//     return login;
+// }
+
+// void Screen::Login(const Font &myFont, Texture &texture) {
+//     if (checkLoginButton(myFont)) {
+//         const int loginWidth = 440;
+//         const int loginHeight = 712;
+//         SetWindowSize(loginWidth, loginHeight); // Thay đổi kích thước cửa sổ
+
+//         while(!WindowShouldClose()) {
+//             BeginDrawing();
+//             ClearBackground(RAYWHITE);
+
+//             // Tỷ lệ vị trí và kích thước dựa trên kích thước cửa sổ
+//             float formWidth = loginWidth * 0.8f;   // Chiều rộng form (80% chiều rộng cửa sổ)
+//             float formX = (loginWidth - formWidth) / 2.0f;  // Căn giữa theo chiều ngang
+
+//             // Tiêu đề
+//             DrawTextEx(myFont, "LOGIN", (Vector2){(float)(loginWidth / 2 - MeasureTextEx(myFont, "LOGIN", 60, 2).x / 2), 50}, 60, 2, darkGreen);
+
+//             // Ô nhập liệu
+//             DrawRectangle(formX, loginHeight * 0.2f, formWidth, loginHeight * 0.07f, LIGHTGRAY);  // Username box
+//             DrawRectangle(formX, loginHeight * 0.3f, formWidth, loginHeight * 0.07f, LIGHTGRAY);  // Password box
+//             DrawTextEx(myFont, "User name", {formX + 10, loginHeight * 0.21f}, loginHeight * 0.035f, 2, GRAY);
+//             DrawTextEx(myFont, "********", {formX + 10, loginHeight * 0.31f}, loginHeight * 0.035f, 2, GRAY);
+
+//             // Checkbox + Forgot Password
+//             float checkboxSize = loginHeight * 0.03f;
+//             DrawRectangle(formX, loginHeight * 0.4f, checkboxSize, checkboxSize, GRAY);  // Checkbox
+//             DrawTextEx(myFont, "Remember me", {formX + checkboxSize + 10, loginHeight * 0.4f}, loginHeight * 0.03f, 2, DARKGRAY);
+//             DrawTextEx(myFont, "Forgot Password?", {formX + formWidth - 140, loginHeight * 0.4f}, loginHeight * 0.03f, 2, BLUE);
+
+//             // Nút "Login"
+//             DrawRectangle(formX + formWidth * 0.25f, loginHeight * 0.5f, formWidth * 0.5f, loginHeight * 0.07f, RED);
+//             DrawTextEx(myFont, "Login", {formX + formWidth * 0.4f, loginHeight * 0.515f}, loginHeight * 0.035f, 2, WHITE);
+
+//             // Divider ("OR")
+//             DrawTextEx(myFont, "or", {loginWidth / 2.0f - 10, loginHeight * 0.6f}, loginHeight * 0.03f, 2, GRAY);
+
+//             // Nút Facebook
+//             DrawRectangle(formX, loginHeight * 0.65f, formWidth * 0.45f, loginHeight * 0.07f, DARKBLUE);
+//             DrawTextEx(myFont, "Facebook", {formX + 20, loginHeight * 0.665f}, loginHeight * 0.03f, 2, WHITE);
+
+//             // Nút Twitter
+//             DrawRectangle(formX + formWidth * 0.55f, loginHeight * 0.65f, formWidth * 0.45f, loginHeight * 0.07f, SKYBLUE);
+//             DrawTextEx(myFont, "Twitter", {formX + formWidth * 0.55f + 20, loginHeight * 0.665f}, loginHeight * 0.03f, 2, WHITE);
+
+//             EndDrawing();
+//         }
+//         // Set về kích thước ban đầu
+//         SetWindowSize(widthWindow, heightWindow);
+//     }
+// }

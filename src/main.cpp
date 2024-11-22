@@ -1,10 +1,21 @@
 #include <iostream>
+#include <vector>
 #include <raylib.h>
+#include <utility>
 // #include "color.h"
 #include "screen.h"
-// #include "LinkedList.cpp"  
+// #include "LinkedList.cpp"
 #include "dog.h"
 #include "cat.h"
+#include "cart.cpp"
+
+// #include "person.h"
+// #include "admin.h"
+// #include "user.h"
+// #include "authorize.cpp"
+// #include "FileManage.h"
+#include <cstdlib>
+#include <fstream>
 
 using namespace std;
 
@@ -18,30 +29,36 @@ int main() {
 
     //----------------------------------------------------------------
     LinkedList<Dog> dogList;
-    LinkedList<Dog> cartDog;
     Dog::initializeDogList(dogList);
 
+    // LinkedList<Dog> cartDog;
+
     LinkedList<Cat> catList;
-    LinkedList<Cat> cartCat;
     Cat::initializeCatList(catList);
 
-    
-    // cout << dogList.sizeList() << endl;
+    Cart<Dog> cartDog;
+    Cart<Cat> cartCat;
     //----------------------------------------------------------------
 
     Texture texture;
     Node<Dog>* NodeDog;
     Node<Cat>* NodeCat;
+    unsigned int purQuant = 1;
+    // Trạng thái pet
+    vector<char*> attributesDog(4, "");
+    vector<char*> attributesCat(4, "");
+    long long Subtotal = 0;
 
-    while(WindowShouldClose() == false) {
+    while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(PINK);
+        
         // Background
         screen.backGround();
 
         // Thanh điều hướng
-        screen.navigationMenu(myFont, texture);
-
+        screen.navigationMenu(myFont, texture, Subtotal);
+        
         // Màn hình Intro
         if(screen.currentScreen == HOME) {
             screen.DrawHome(myFont);
@@ -50,35 +67,41 @@ int main() {
         // Màn hình lựa chọn chó
         if(screen.currentScreen == imagesDog) {
             // Hình ảnh chó
-            dogList.displayImages(myFont, texture);
+            dogList.displayImages(myFont, texture, attributesDog);
             // Các nút tại image Dog
-            screen.DrawHeadingAnimal(myFont, dogList);
+            screen.HeadingAnimal(myFont, dogList, attributesDog);
             // Lấy nodeDog
-            screen.getNode(dogList, NodeDog);
+            screen.getNode(dogList, NodeDog, attributesDog);
         }
 
         // Màn hình lựa chọn mèo
         if(screen.currentScreen == imagesCat) {
             // Hình ảnh mèo
-            catList.displayImages(myFont, texture);
+            catList.displayImages(myFont, texture, attributesCat);
             // Các nút tại image Cat
-            screen.DrawHeadingAnimal(myFont, catList);
+            screen.HeadingAnimal(myFont, catList, attributesCat);
             // Lấy nodeCat
-            screen.getNode(catList, NodeCat);
+            screen.getNode(catList, NodeCat, attributesCat);
         }
 
         if (screen.currentScreen == detailDog) {
             // Thông tin
-            NodeDog->getData().displayInformation(myFont, texture);
-            if(NodeDog->getData().isAddToCart()) cartDog.insert(NodeDog->getData());
-            // cout << cartDog.sizeList() << endl;
+            NodeDog->getData().displayInformation(myFont, texture, purQuant);
+            if (NodeDog && cartDog.isAddToCart()) {
+                cartDog.addToCart(myFont, make_pair(NodeDog->getData(), purQuant), screen);
+                purQuant = 1;
+            }
+
 
             screen.Heading(myFont);
         }
         if (screen.currentScreen == detailCat) {
             // Thông tin
-            NodeCat->getData().displayInformation(myFont, texture);
-            if(NodeCat->getData().isAddToCart()) cartCat.insert(NodeCat->getData());
+            NodeCat->getData().displayInformation(myFont, texture, purQuant);
+            if (NodeCat && cartCat.isAddToCart()) {
+                cartCat.addToCart(myFont, make_pair(NodeCat->getData(), purQuant), screen);
+                purQuant = 1;
+            }
 
             screen.Heading(myFont);
         }
@@ -98,16 +121,22 @@ int main() {
         // Thông tin Shopping cart
         if(screen.currentScreen == shoppingCart) {
             // Show thông tin Shopping cart
-            cartDog.displayCart(myFont, texture);
+            cartDog.viewCart(myFont, texture);
+            cartCat.viewCart(myFont, texture, cartDog.getCartItems().sizeList());
+            // In tiêu đề
             screen.Heading(myFont);
             // Các nút tại image Dog
-            screen.DrawHeadingAnimal(myFont, cartDog);
+            // screen.HeadingAnimal(myFont, cartDog.getCartItems()); // tạo cái khác riêng cho cart
             // Lấy node từ mouseClick 
-            screen.getNode(cartDog, NodeDog);
-            screen.deleteNode(cartDog);
+            cartDog.getItem(NodeDog, screen);// lõi ở đây
+            cartDog.remove();
         }
+
+        // Tính tổng tiền thanh toán
+        Subtotal = cartDog.calculateTotal() + cartCat.calculateTotal();
         EndDrawing();
     }
+    // delete cartDog;
     UnloadFont(myFont);
     UnloadTexture(texture);
     CloseWindow();

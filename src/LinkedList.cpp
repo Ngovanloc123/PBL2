@@ -31,12 +31,18 @@ int LinkedList<T>::sizeList()
 }
 
 template <typename T>
+Node<T> *LinkedList<T>::getHead()
+{
+    return header;
+}
+
+template <typename T>
 void LinkedList<T>::insert(T value)
 {
     Node<T>* newNode = new Node<T>(value);
     if (header == NULL) {  // Nếu danh sách rỗng
         header = newNode;
-        size++;
+    size++;
         return;
     }
 
@@ -61,6 +67,50 @@ void LinkedList<T>::insert(T value)
         previous->next = newNode;
     }
     size++;
+}
+
+template <typename T>
+bool LinkedList<T>::insertCart(T value)
+{
+    Node<T>* newNode = new Node<T>(value);
+    if (header == NULL) {  // Nếu danh sách rỗng
+        header = newNode;
+        size++;
+        return true;
+    }
+
+    Node<T>* current = header;
+    Node<T>* previous = NULL;
+
+    while (current != NULL && current->data.first.getName() < newNode->data.first.getName()) {
+        previous = current;
+        current = current->next;
+    }
+
+    if(current != NULL && strcmp(current->data.first.getName(), newNode->data.first.getName()) == 0) {
+        if(current->data.second + newNode->data.second > current->data.first.getQuantity()) {
+            delete newNode;
+            return false;
+        }
+        else {
+            current->data.second += newNode->data.second;
+            delete newNode;
+            return true;
+        }
+        
+    }
+
+    // Nếu nút mới là nhỏ nhất (chèn vào đầu danh sách)
+    if (previous == NULL) {
+        newNode->next = header;
+        header = newNode;
+    } else {
+        // Chèn giữa hai nút
+        newNode->next = current;
+        previous->next = newNode;
+    }
+    size++;
+    return true;
 }
 
 template <typename T>
@@ -100,53 +150,110 @@ void LinkedList<T>::erase(Node<T>* node)
 
 
 template <typename T>
-void LinkedList<T>::displayImages(const Font &myFont, Texture &texture)
+void LinkedList<T>::displayImages(const Font &myFont, Texture &texture, vector<char*> attributes)
 {
     Node<T>* current = header;
     int i = 0;
-    while (current != NULL) {
-        if((page - 1) * 8 <= i && i <= page * 8 - 1) 
-            current->data.DisplayImage(myFont, texture, i % 4, (i / 4) % 2);
-        current = current->next;
-        i++;
-    }
-}
+    int startIdx = (page - 1) * 6; // Chỉ số bắt đầu của trang
+    int endIdx = page * 6;         // Chỉ số kết thúc của trang (không bao gồm)
 
-template <typename T>
-void LinkedList<T>::displayCart(const Font &myFont, Texture &texture)
-{
-    Node<T>* current = header;
-    int i = 0;
     while (current != NULL) {
-        if((page - 1) * 8 <= i && i <= page * 8 - 1) {
-            current->data.DisplayItemFromCart(myFont, texture, (i / 4) % 2, (i % 4));
+        // Lấy các thuộc tính của đối tượng hiện tại
+        vector<char*> animalAttributes = current->data.getAttributes();
+
+        // Kiểm tra các thuộc tính không rỗng và khớp với từng thuộc tính trong vector attributes
+        bool matches1 = (strcmp(attributes[0], "") == 0 || (strcmp(animalAttributes[0], attributes[0]) == 0));
+        bool matches2 = (strcmp(attributes[1], "") == 0 || (strcmp(animalAttributes[1], attributes[1]) == 0));
+        bool matches3 = (strcmp(attributes[2], "") == 0 || (strcmp(animalAttributes[2], attributes[2]) == 0));
+        bool matches4 = (strcmp(attributes[3], "") == 0 || (strcmp(animalAttributes[3], attributes[3]) == 0));
+
+        // Chỉ cần thỏa mãn các thuộc tính không rỗng
+        if (matches1 && matches2 && matches3 && matches4) {
+            if (startIdx <= i && i < endIdx) {
+                // Tính toán vị trí cột (0, 1, 2) và dòng (0, 1)
+                int column = i % 3;
+                int row = (i / 3) % 2;
+                current->data.DisplayImage(myFont, texture, column, row);
+            }
+            i++;
         }
         current = current->next;
-        i++;
+    }
+}
+
+
+template <typename T>
+void LinkedList<T>::displayCart(const Font &myFont, Texture &texture, int quantity)
+{
+    Node<T>* current = header;
+    int startIdx = (page - 1) * 8;
+    int endIdx = page * 8 - 1;
+    // int i = 0;
+
+    while (current) {
+        if (quantity >= startIdx && quantity <= endIdx) {
+            int row = (quantity / 4) % 2; // Xác định hàng
+            int col = quantity % 4;       // Xác định cột
+            current->getData().first.DisplayItemFromCart(myFont, texture, row, col, current->getData().second);
+        }
+        current = current->next;
+        quantity++;
     }
 }
 
 template <typename T>
-Node<T> *LinkedList<T>::GetNodeFromAnimal(const Vector2 &index)
+long long LinkedList<T>::total()
+{
+    long long Subtotal = 0;
+    Node<T>* current = header;
+
+    while (current) {
+        Subtotal += current->getData().second * current->getData().first.getSellingPrice();
+        current = current->next;
+    }
+    return Subtotal;
+}
+
+template <typename T>
+Node<T>* LinkedList<T>::GetNodeFromAnimal(const Vector2 &index, vector<char*> attributes)
 {
     Node<T>* current = header;
     int sizeImage = 240;
 
+    int startIdx = (page - 1) * 6; // Chỉ số bắt đầu của trang
+    int endIdx = page * 6;         // Chỉ số kết thúc của trang (không bao gồm)
+
     int i = 0;
-    while(current != NULL ) {
-        int gridX = i % 4;
-        int gridY = (i / 4) % 2;
-        int posX = gridX * 248 + 8 + 100;
-        int posY = gridY * 270 + 128 + 8;
-        Rectangle nodeArea = {(float)posX, (float)(posY), (float)sizeImage, (float)(sizeImage + 20)};
-        if(CheckCollisionPointRec(index, nodeArea) && (page - 1)*8 <= i && i <= page * 8 - 1) {
-            return current;
+    while (current != NULL) {
+        // Lấy các thuộc tính của đối tượng hiện tại
+        vector<char*> animalAttributes = current->data.getAttributes();
+
+        // Kiểm tra các thuộc tính không rỗng và khớp với từng thuộc tính trong vector attributes
+        bool matches1 = (strcmp(attributes[0], "") == 0 || (strcmp(animalAttributes[0], attributes[0]) == 0));
+        bool matches2 = (strcmp(attributes[1], "") == 0 || (strcmp(animalAttributes[1], attributes[1]) == 0));
+        bool matches3 = (strcmp(attributes[2], "") == 0 || (strcmp(animalAttributes[2], attributes[2]) == 0));
+        bool matches4 = (strcmp(attributes[3], "") == 0 || (strcmp(animalAttributes[3], attributes[3]) == 0));
+
+        // Chỉ cần thỏa mãn các thuộc tính không rỗng
+        if (matches1 && matches2 && matches3 && matches4) {
+            if (startIdx <= i && i < endIdx) {
+                int gridX = i % 3; // 3 hình trên một dòng
+                int gridY = (i / 3) % 2; // 2 dòng trên mỗi trang
+                int posX = gridX * 248 + 8 + 100; // Khoảng cách giữa các cột
+                int posY = gridY * 270 + 128 + 8; // Khoảng cách giữa các dòng
+                Rectangle nodeArea = {(float)posX, (float)posY, (float)sizeImage, (float)(sizeImage + 20)};
+                
+                if (CheckCollisionPointRec(index, nodeArea)) {
+                    return current;
+                }
+            }
+            i++;
         }
         current = current->next;
-        i++;
     }
     return NULL;
 }
+
 
 template <typename T>
 Node<T> *LinkedList<T>::GetNodeFromCart(const Vector2 &index)
@@ -172,7 +279,7 @@ Node<T> *LinkedList<T>::GetNodeFromCart(const Vector2 &index)
 }
 
 template <typename T>
-void LinkedList<T>::deleteNodeFromCart(const Vector2 &index)
+void LinkedList<T>::deleteNodeInCart(const Vector2 &index)
 {
     Node<T>* current = header;
     int sizeImage = 40;
