@@ -64,13 +64,12 @@ private:
 
     // Kiểm tra cac nút liên quan đến đăng nhập
     // bool checkLoginButton(const Font &myFont);
-
+    void DrawInputBox(const Font &font, string &inputText, int boxX, int boxY, int boxWidth, int boxHeight, int maxChars);
     Image loadImageCart();
 public:
     Screens beforeScreen = HOME;
     Screens currentScreen = HOME;
 
-public:
     Screen();
      ~Screen()
     {
@@ -397,6 +396,10 @@ public:
                 attributes[3] = strdup("Unique");
             }
         }
+        // Thanh tìm kiếm
+        string search = string(attributes[4]);
+        DrawInputBox(myFont, search, 110, 70, 300, 50, 20);
+        attributes[4] = strdup(search.c_str());
         // Button
         backButton(myFont);
         previousButton(myFont,list);

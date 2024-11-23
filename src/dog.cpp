@@ -13,8 +13,15 @@ Dog::~Dog() {}
 
 vector<char *> Dog::getAttributes()
 {
-    return {(char *)purposeOfRaising, (char *)levelOfTraining, (char *)needForExercise};
+    vector<char*> details;
+    details.push_back((char*)purposeOfRaising); // Convert to char* and add to vector
+    details.push_back((char*)levelOfTraining); // Same here
+    details.push_back((char*)needForExercise); // Same here
+    details.push_back(""); // Add null terminator as a char* (not '\0', but a pointer)
+    details.push_back((char*)name); // Convert name to char* and add to vector
+    return details;
 }
+
 
 
 void Dog::DisplayImage(const Font &myFont, Texture &texture, int gridX, int gridY)
@@ -84,15 +91,36 @@ void Dog::displayInformation(const Font &myFont, Texture &texture, unsigned int 
     else sprintf(fullText, "Status: Out of stock");
     DrawTextEx(myFont, fullText, (Vector2){(float)(informationFrame.x +  informationFrame.width / 2), 180}, 40, 2, darkGreen);
 
+    // Chuyển số thành chuỗi
     sprintf(fullText, "%d", sellingPrice);
-    Rectangle frame = {(informationFrame.x + informationFrame.width / 2 + 40), 240, 150, 80};
+
+    // Thêm khoảng cách vào chuỗi giá tiền
+    int len = strlen(fullText);
+    int insertCount = 0;
+    for (int i = len - 1; i > 0; --i) {
+        if ((len - i) % 3 == 0) {
+            for (int j = len + insertCount; j > i; --j) {
+                fullText[j] = fullText[j - 1];
+            }
+            fullText[i] = ' ';
+            insertCount++;
+        }
+    }
+    fullText[len + insertCount] = '\0'; // Kết thúc chuỗi
+
+    // Thêm " VND" vào cuối chuỗi
+    strcat(fullText, " VND");
+
+    // Vẽ khung thông tin giá tiền
+    Rectangle frame = {(informationFrame.x + informationFrame.width / 2 + 40), 240, 220, 80};
     DrawRectangleRounded(frame, 0.6, 10, yellow);
-    // Tính toán độ rộng của chuỗi fullText
+
+    // Tính toán và canh giữa chuỗi trong khung
     Vector2 textSize = MeasureTextEx(myFont, fullText, 40, 2);
-    // Canh giữa chuỗi fullText trong hình chữ nhật
     float textX = frame.x + (frame.width - textSize.x) / 2;
     float textY = frame.y + (frame.height - textSize.y) / 2;
-    // Vẽ chuỗi text ra màn hình
+
+    // Vẽ chuỗi giá tiền
     DrawTextEx(myFont, fullText, (Vector2){textX, textY}, 40, 2, darkGreen);
 
     // Số lượng mua

@@ -1,4 +1,5 @@
 #include "LinkedList.h"
+#include <algorithm>
 
 // #include "screen.h"
 
@@ -166,9 +167,15 @@ void LinkedList<T>::displayImages(const Font &myFont, Texture &texture, vector<c
         bool matches2 = (strcmp(attributes[1], "") == 0 || (strcmp(animalAttributes[1], attributes[1]) == 0));
         bool matches3 = (strcmp(attributes[2], "") == 0 || (strcmp(animalAttributes[2], attributes[2]) == 0));
         bool matches4 = (strcmp(attributes[3], "") == 0 || (strcmp(animalAttributes[3], attributes[3]) == 0));
+        // Kiểm tra tìm kiếm
+        string lowerStr1 = string(animalAttributes[4]);
+        string lowerStr2 = string(attributes[4]);
+        transform(lowerStr1.begin(), lowerStr1.end(), lowerStr1.begin(), ::tolower);
+        transform(lowerStr2.begin(), lowerStr2.end(), lowerStr2.begin(), ::tolower);
+        bool matches5 = (strcmp(attributes[4], "") == 0 || lowerStr1.find(lowerStr2) != string::npos);
 
         // Chỉ cần thỏa mãn các thuộc tính không rỗng
-        if (matches1 && matches2 && matches3 && matches4) {
+        if (matches1 && matches2 && matches3 && matches4 && matches5) {
             if (startIdx <= i && i < endIdx) {
                 // Tính toán vị trí cột (0, 1, 2) và dòng (0, 1)
                 int column = i % 3;
@@ -233,9 +240,15 @@ Node<T>* LinkedList<T>::GetNodeFromAnimal(const Vector2 &index, vector<char*> at
         bool matches2 = (strcmp(attributes[1], "") == 0 || (strcmp(animalAttributes[1], attributes[1]) == 0));
         bool matches3 = (strcmp(attributes[2], "") == 0 || (strcmp(animalAttributes[2], attributes[2]) == 0));
         bool matches4 = (strcmp(attributes[3], "") == 0 || (strcmp(animalAttributes[3], attributes[3]) == 0));
+        // Kiểm tra tìm kiếm
+        string lowerStr1 = string(animalAttributes[4]);
+        string lowerStr2 = string(attributes[4]);
+        transform(lowerStr1.begin(), lowerStr1.end(), lowerStr1.begin(), ::tolower);
+        transform(lowerStr2.begin(), lowerStr2.end(), lowerStr2.begin(), ::tolower);
+        bool matches5 = (strcmp(attributes[4], "") == 0 || lowerStr1.find(lowerStr2) != string::npos);
 
         // Chỉ cần thỏa mãn các thuộc tính không rỗng
-        if (matches1 && matches2 && matches3 && matches4) {
+        if (matches1 && matches2 && matches3 && matches4 && matches5) {
             if (startIdx <= i && i < endIdx) {
                 int gridX = i % 3; // 3 hình trên một dòng
                 int gridY = (i / 3) % 2; // 2 dòng trên mỗi trang

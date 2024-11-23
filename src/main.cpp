@@ -45,8 +45,8 @@ int main() {
     Node<Cat>* NodeCat;
     unsigned int purQuant = 1;
     // Trạng thái pet
-    vector<char*> attributesDog(4, "");
-    vector<char*> attributesCat(4, "");
+    vector<char*> attributesDog(5, "");
+    vector<char*> attributesCat(5, "");
     long long Subtotal = 0;
 
     while(!WindowShouldClose()) {

@@ -57,6 +57,53 @@ void Screen::backButton(const Font &myFont)
 //     return false;
 // }
 
+void Screen::DrawInputBox(const Font &font, string &inputText, int boxX, int boxY, int boxWidth, int boxHeight, int maxChars)
+{
+    static bool isFocused = false; // Xác định ô nhập liệu có được chọn hay không
+
+    // Kiểm tra sự kiện chuột để xác định trạng thái focus
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        Vector2 mousePosition = GetMousePosition();
+        if (CheckCollisionPointRec(mousePosition, { (float)boxX, (float)boxY, (float)boxWidth, (float)boxHeight })) {
+            isFocused = true;
+        } else {
+            isFocused = false;
+        }
+    }
+
+    // Xử lý đầu vào từ bàn phím nếu ô nhập liệu đang focus
+    if (isFocused) {
+        int key = GetCharPressed(); // Lấy ký tự người dùng nhập vào
+
+        // Xử lý ký tự nhập, không lấy phím space = 32
+        while (key > 0) {
+            if ((key == 32 || ((key >= 48) && (key <= 57)) || ((key >= 65) && (key <= 90)) || ((key >= 97) && (key <= 122))) && (static_cast<int>(inputText.length()) < maxChars)) {
+                inputText += (char)key; // Thêm ký tự vào chuỗi
+            }
+            key = GetCharPressed(); // Tiếp tục xử lý các ký tự còn lại
+        }
+
+        // Xóa ký tự cuối khi nhấn Backspace hoặc nhấn phím space
+
+        if (IsKeyDown(KEY_BACKSPACE) && !inputText.empty()) {
+            inputText.pop_back();
+        }
+    }
+
+    // Vẽ ô nhập liệu
+    DrawRectangle(boxX, boxY, boxWidth, boxHeight, isFocused ? LIGHTGRAY : GRAY); // Thay đổi màu khi focus
+    DrawRectangleLines(boxX, boxY, boxWidth, boxHeight, BLACK);
+
+    // Hiển thị văn bản người dùng đã nhập
+    DrawTextEx(font, inputText.c_str(), { (float)boxX + 10, (float)boxY + 10 }, boxHeight * 0.5f, 2, BLACK);
+
+    // Gợi ý khi ô nhập liệu trống và không focus
+    if (inputText.empty() && !isFocused) {
+        DrawTextEx(font, "Search", { (float)boxX + 10, (float)boxY + 10 }, boxHeight * 0.5f, 2, DARKGRAY);
+    }
+}
+
+
 Image Screen::loadImageCart()
 {
     Image image = LoadImage("image/shopping-cart.png");
@@ -135,9 +182,31 @@ void Screen::navigationMenu(const Font &myFont, Texture &textureCart, long long 
     DrawTexture(textureCart, buttonCart.x, buttonCart.y, WHITE);
     // DrawTextEx(myFont, "Cart", (Vector2){buttonCart.x + buttonCart.width / 2 - MeasureTextEx(myFont, "Cart", 30, 2).x / 2, buttonCart.y + 10}, 30, 2, darkGreen);
     // Nút tổng thanh toán
-    Rectangle buttonSubtotal = {(float(widthWindow) - 220), 20, 200, 40};
-    DrawRectangleRounded(buttonSubtotal, buttonSubtotal.x, buttonSubtotal.y, YELLOW);
-    DrawTextEx(myFont, (to_string(Subtotal) + " VND").c_str(), (Vector2){buttonSubtotal.x + buttonSubtotal.width / 2 - MeasureTextEx(myFont, (to_string(Subtotal) + " VND").c_str(), 30, 2).x / 2, buttonSubtotal.y + 10}, 30, 2, darkGreen);
+    char fullText[50]; // Kích thước lớn để chứa giá trị lớn, khoảng cách, và " VND"
+
+    // Chuyển số thành chuỗi
+    sprintf(fullText, "%lld", Subtotal);
+
+    // Thêm khoảng cách vào chuỗi giá tiền
+    int len = strlen(fullText);
+    int insertCount = 0;
+    for (int i = len - 1; i > 0; --i) {
+        if ((len - i) % 3 == 0) {
+            for (int j = len + insertCount; j > i; --j) {
+                fullText[j] = fullText[j - 1];
+            }
+            fullText[i] = ' ';
+            insertCount++;
+        }
+    }
+    fullText[len + insertCount] = '\0'; // Kết thúc chuỗi
+
+    // Thêm " VND" vào cuối chuỗi
+    strcat(fullText, " VND");
+
+    Rectangle buttonSubtotal = {(float(widthWindow) - 220), 20, 200, 50};
+    DrawRectangleRounded(buttonSubtotal, 0.3, 10, YELLOW);
+    DrawTextEx(myFont, fullText, (Vector2){buttonSubtotal.x + buttonSubtotal.width / 2 - MeasureTextEx(myFont, fullText, 30, 2).x / 2, buttonSubtotal.y + 20}, 30, 2, darkGreen);
 
 
     // Xử lý các nút
@@ -174,8 +243,6 @@ void Screen::navigationMenu(const Font &myFont, Texture &textureCart, long long 
 
 void Screen::Heading(const Font &myFont)
 {
-    if(currentScreen == detailDog || currentScreen == detailDog)
-        DrawTextEx(myFont, "Information", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Information", 60, 2).x / 2), 50}, 60, 2, darkGreen);
     if(currentScreen == INTRO)
         DrawTextEx(myFont, "Introduction", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Introduction", 60, 2).x / 2), 50}, 60, 2, darkGreen);
     if(currentScreen == CONTACT)
