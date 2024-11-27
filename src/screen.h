@@ -462,5 +462,5 @@ public:
     // bool isLogin();
     // Màn hình đăng nhập
     // void Login(const Font &myFont, Texture &texture);
-    void inputInforNewItem(const Font &myFont, Texture &texture, vector<string> &InforNewItem);
+    void inputInforNewItem(const Font &myFont, Texture &texture, vector<string> &InforNewItem, int Type);
 };

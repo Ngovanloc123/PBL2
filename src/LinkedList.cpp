@@ -16,13 +16,13 @@ inline LinkedList<T>::LinkedList() : header(NULL)
 template <typename T>
 LinkedList<T>::~LinkedList()
 {
-    Node<T>* current = header;
-    Node<T>* nextNode;
-    while (current != NULL) {
-        nextNode = current->next;
-        delete current;
-        current = nextNode;
-    }
+    // Node<T>* current = header;
+    // Node<T>* nextNode;
+    // while (current != NULL) {
+    //     nextNode = current->next;
+    //     delete current;
+    //     current = nextNode;
+    // }
 }
 
 template <typename T>
@@ -30,6 +30,76 @@ int LinkedList<T>::sizeList()
 {
     return size;
 }
+
+// template <typename T>
+// void LinkedList<T>::reset()
+// {
+//     // Node<T>* current = header;
+//     // Node<T>* nextNode;
+//     // while (current != NULL) {
+//     //     nextNode = current->next;
+//     //     // delete current;
+//     //     current = nextNode;
+//     // }
+//     header = NULL;
+//     size = 0;
+//     page = 1;
+// }
+template <typename T>
+void LinkedList<T>::reset() {
+    // Node<T>* current = header;
+    // Node<T>* nextNode;
+    // while (current != NULL) {
+    //     nextNode = current->next;
+    //     delete current;
+    //     current = nextNode;
+    // }
+    header = NULL; // Đặt header về NULL để tránh con trỏ rác
+    size = 0;
+    page = 1;
+}
+
+template <typename T>
+void LinkedList<T>::backUpInformation(vector<Item> &items)
+{
+    // Duyệt qua LinkList và lưu thông tin vào item
+    Node<T>* current = header;
+    while (current!= NULL) {
+        string name = current->getData().first.getName();
+        unsigned int quantity = current->getData().second;
+        unsigned int price = current->getData().first.getPrice();
+        Item item(name, quantity, price);
+        items.push_back(item);
+        current = current->next;
+    }
+}
+
+template <typename T>
+void LinkedList<T>::updateQuantity(LinkedList<pair<T, unsigned int>> purchaseList) {
+    Node<T>* currentInventory = header; // Con trỏ đến danh sách bán hàng (inventory)
+    Node<pair<T, unsigned int>>* currentPurchase = purchaseList.getHead(); // Con trỏ đến danh sách mua hàng
+
+    while (currentPurchase != NULL) {
+        // So sánh tên theo thứ tự alphabet (không cần kiểm tra tồn tại do đảm bảo luôn khớp)
+        if (strcmp(currentInventory->getData().getName(), currentPurchase->getData().first.getName()) == 0) {
+            // Cập nhật số lượng
+            currentInventory->getData().setQuantity(
+                currentInventory->getData().getQuantity() - currentPurchase->getData().second
+            );
+
+            cout << "Updated " << currentInventory->getData().getName()
+                      << ": Remaining quantity = " << currentInventory->getData().getQuantity() << "\n";
+
+            // Di chuyển cả hai con trỏ
+            currentInventory = currentInventory->next;
+            currentPurchase = currentPurchase->getNext();
+        } else {
+            // Di chuyển con trỏ inventory để khớp tên
+            currentInventory = currentInventory->next;
+        }
+    }
+}
+
 
 template <typename T>
 Node<T> *LinkedList<T>::getHead()
@@ -62,7 +132,7 @@ void LinkedList<T>::insert(T value)
         current = current->next;
     }
 
-    // if(current != NULL && strcmp(current->data.getName(), newNode->data.getName()) == 0) return;
+    if(current != NULL && strcmp(current->data.getName(), newNode->data.getName()) == 0) return;
 
     // Nếu nút mới là nhỏ nhất (chèn vào đầu danh sách)
     if (previous == NULL) {

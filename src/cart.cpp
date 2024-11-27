@@ -7,6 +7,12 @@ LinkedList<pair<T, unsigned int>> &Cart<T>::getCartItems()
 }
 
 template <typename T>
+void Cart<T>::resetCart()
+{
+    cartItems.reset();
+}
+
+template <typename T>
 bool Cart<T>::isAddToCart()
 {
     Rectangle AddToCart =  {(float)((float)(248 + 8 + 100 + 100)), 500, 200, 60};

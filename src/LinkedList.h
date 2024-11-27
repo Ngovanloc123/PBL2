@@ -4,6 +4,7 @@
 #include <cstring>
 #include <iostream>
 #include <vector>
+#include "order.h"
 
 // #include "screen.h"
 
@@ -22,7 +23,8 @@ private:
 
 public:
     Node(T value) : data(value), next(nullptr) {}
-    T getData() { return data;}
+    Node<T>* getNext() { return next; }
+    T& getData() { return data;}
 };
 
 template <typename T>
@@ -35,6 +37,9 @@ public:
     LinkedList();
     virtual ~LinkedList();
     int sizeList();
+    void reset();
+    void backUpInformation(vector<Item> &items);
+    void updateQuantity(LinkedList<pair<T, unsigned int>> purchaseList);
     Node<T>* getHead();
     void insert(T value);
     // Pair

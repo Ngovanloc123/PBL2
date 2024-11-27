@@ -28,6 +28,26 @@ Cat::Cat(const Cat& cat) : Animal(cat), coatColor(cat.coatColor), popularity(cat
 
 Cat::~Cat() {}
 
+const char *Cat::getCoatColor() const
+{
+    return coatColor;
+}
+
+const char *Cat::getPopularity() const
+{
+    return popularity;
+}
+
+const char *Cat::getSheddingLevel() const
+{
+    return sheddingLevel;
+}
+
+const char *Cat::getAppearance() const
+{
+    return appearance;
+}
+
 vector<char *> Cat::getAttributes()
 {
     return {(char*)coatColor, (char*)popularity, (char*)sheddingLevel, (char*)appearance, (char*)name};

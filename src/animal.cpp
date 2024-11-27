@@ -96,9 +96,46 @@ const char *Animal::getName() const
     return name;
 }
 
+const char *Animal::getImageAnimal() const
+{
+    return imageAnimal;
+}
+
+const char *Animal::getOrigin() const
+{
+    return origin;
+}
+
+unsigned int Animal::getAverageAge() const
+{
+    return averageAge;
+}
+
+const char *Animal::getFurType() const
+{
+    return furType;
+}
+
 unsigned int Animal::getQuantity() const
 {
     return quantity;
+}
+
+unsigned int Animal::getPrice() const
+{
+    return sellingPrice;
+}
+
+unsigned int Animal::getSize() const
+{
+    return size;
+}
+
+void Animal::setQuantity(unsigned int quantity)
+{
+    this->quantity = quantity;
+    cout << "Quantity: " << quantity << endl;
+    cout << "Name: " << name << endl;
 }
 
 unsigned int Animal::getSellingPrice() const

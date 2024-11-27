@@ -28,6 +28,21 @@ Dog::Dog(const Dog& dog) : Animal(dog), purposeOfRaising(dog.purposeOfRaising), 
 
 Dog::~Dog() {}
 
+const char *Dog::getPurposeOfRaising() const
+{
+    return purposeOfRaising;
+}
+
+const char *Dog::getLevelOfTraining() const
+{
+    return levelOfTraining;
+}
+
+const char *Dog::getNeedForExercise() const
+{
+    return needForExercise;
+}
+
 vector<char *> Dog::getAttributes()
 {
     vector<char*> details;

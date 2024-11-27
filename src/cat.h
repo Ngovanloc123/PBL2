@@ -29,6 +29,11 @@ public:
     Cat(const Cat& cat);
     virtual ~Cat();
     string GetType() const { return "Cat"; }
+    const char *getCoatColor() const;
+    const char *getPopularity() const;
+    const char *getSheddingLevel() const;
+    const char *getAppearance() const;
+
     vector<char*> getAttributes();
     vector<string> getAllAttributes();
     // Đọc file

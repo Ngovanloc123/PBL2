@@ -29,6 +29,10 @@ public:
     virtual ~Dog();
     // Dog newDog();
     string GetType() const { return "Dog"; }
+    const char *getPurposeOfRaising() const;
+    const char *getLevelOfTraining() const;
+    const char *getNeedForExercise() const;
+
     vector<char*> getAttributes();
     vector<string> getAllAttributes();
     // Đọc file

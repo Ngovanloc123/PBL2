@@ -30,7 +30,14 @@ class Animal {
         Animal(const Animal& Animal);
         virtual ~Animal();
         const char *getName() const;
+        const char *getImageAnimal() const;
+        const char *getOrigin() const;
+        unsigned int getAverageAge() const;
+        const char *getFurType() const;
         unsigned int getQuantity() const;
+        unsigned int getPrice() const;
+        unsigned int getSize() const;
+        void setQuantity(unsigned int quantity);
         unsigned int getSellingPrice() const;
         vector<string> getAllAttributes();
         virtual string GetType() const { return "Animal"; }

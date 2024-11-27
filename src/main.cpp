@@ -8,7 +8,10 @@
 #include "dog.h"
 #include "cat.h"
 #include "cart.cpp"
-
+// #include "order.cpp"
+#include "customer.h"
+#include "FileManage.h"
+#include <ctime>
 #include <cstdlib>
 #include <fstream>
 
@@ -30,8 +33,13 @@ int main() {
 
     Cart<Dog> cartDog;
     Cart<Cat> cartCat;
-    //----------------------------------------------------------------
 
+    // Thông in người mua hàng
+    Customer::initializeNextIdFromFile("DB/customer.txt");
+    vector<Customer*> Customers = FileManager::loadFromFile("DB/customer.txt");
+    //----------------------------------------------------------------
+    //Thông tin đơn hàng
+    Order::initializeOrderIdFromFile("DB/order.txt");
     Texture texture;
     Node<Dog>* NodeDog;
     Node<Cat>* NodeCat;
@@ -40,6 +48,7 @@ int main() {
     vector<char*> attributesDog(5, "");
     vector<char*> attributesCat(5, "");
     long long Subtotal = 0;
+    unsigned int customer_id = 0;
 
     while(!WindowShouldClose()) {
         BeginDrawing();
@@ -67,7 +76,7 @@ int main() {
             Rectangle addPetButton = {450, 70, 60, 50};
             if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), addPetButton)) {
                 vector<string> InforNewDog;
-                screen.inputInforNewItem(myFont, texture, InforNewDog);
+                screen.inputInforNewItem(myFont, texture, InforNewDog, 1);
                 Dog newDog(InforNewDog);
                 dogList.insert(newDog); 
             }
@@ -88,7 +97,7 @@ int main() {
             Rectangle addPetButton = {450, 70, 60, 50};
             if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), addPetButton)) {
                 vector<string> InforNewCat;
-                screen.inputInforNewItem(myFont, texture, InforNewCat);
+                screen.inputInforNewItem(myFont, texture, InforNewCat, 2);
                 Cat newCat(InforNewCat);
                 catList.insert(newCat);
             }
@@ -117,7 +126,7 @@ int main() {
             Rectangle editButton = {(356 + 350), 500, 150, 60};
             if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), editButton)) {
                 vector<string> InforDog = NodeDog->getData().getAllAttributes();
-                screen.inputInforNewItem(myFont, texture, InforDog);
+                screen.inputInforNewItem(myFont, texture, InforDog, 1);
                 screen.currentScreen = imagesDog;
                 dogList.erase(NodeDog);
                 // Đưa thông tin chó mới cập nhật
@@ -149,7 +158,7 @@ int main() {
             Rectangle editButton = {(float)(356 + 350), 500, 150, 60};
             if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), editButton)) {
                 vector<string> InforCat = NodeCat->getData().getAllAttributes();
-                screen.inputInforNewItem(myFont, texture, InforCat);
+                screen.inputInforNewItem(myFont, texture, InforCat, 2);
                 screen.currentScreen = imagesCat;
                 catList.erase(NodeCat);
                 // Đưa thông tin mèo mới cập nhật
@@ -191,9 +200,54 @@ int main() {
 
         // Tính tổng tiền thanh toán
         Subtotal = cartDog.calculateTotal() + cartCat.calculateTotal();
+        
         // Mua hàng
         Rectangle buttonSubtotal = {(float(GetScreenWidth() - 220)), 20, 200, 50};
-        // if()
+        if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), buttonSubtotal)) {
+            if(Subtotal > 0) {
+                bool check = false;
+                vector<string> InforNewCustomer;
+                screen.inputInforNewItem(myFont, texture, InforNewCustomer, 3);
+                for(auto& customer : Customers) {
+                    if(customer->checkCustomer(InforNewCustomer[1])) {
+                        customer->updateInformation(InforNewCustomer);
+                        customer->setPurchaseQuantity();
+                        customer_id = customer->getId();
+                        check = true;
+                        break;
+                    }
+                }
+                if(!check) {
+                    Customer *newCustomer = new Customer(InforNewCustomer);
+                    Customers.push_back(newCustomer);
+                    customer_id = newCustomer->getId();
+                }
+                FileManager::saveToFile("DB/customer.txt", Customers);
+                //--------------------------------------------
+                // Đưa thông tin vào order
+                time_t now = time(nullptr);
+                tm* ltm = localtime(&now);
+                string day = to_string(ltm->tm_mday);
+                string month = to_string(1 + ltm->tm_mon);
+                string year = to_string(1900 + ltm->tm_year);
+
+                vector<Item> Items;
+                cartDog.getCartItems().backUpInformation(Items);
+                cartCat.getCartItems().backUpInformation(Items);
+
+                Order newOrder(customer_id, Subtotal, day, month, year, Items);
+                newOrder.saveToFile("DB/order.txt");
+                //--------------------------------------------
+                // Cập nhật số lượng
+                dogList.updateQuantity(cartDog.getCartItems());
+                catList.updateQuantity(cartCat.getCartItems());
+                // reset giỏ hàng và trừ đi số lượng đã mua hàng
+                cartDog.resetCart();
+                cartCat.resetCart();
+            } else {
+                screen.ShowPopup(myFont, "Cart is empty!", 600, 100);
+            }
+        }
 
         EndDrawing();
     }
@@ -201,5 +255,9 @@ int main() {
     UnloadFont(myFont);
     UnloadTexture(texture);
     CloseWindow();
+
+    // Update lại thông tin Pet
+    FileManager::saveToFileDog("DB/dog.txt", dogList);
+    FileManager::saveToFileCat("DB/cat.txt", catList);
     return 0;
 }

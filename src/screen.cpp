@@ -240,7 +240,6 @@ void Screen::navigationMenu(const Font &myFont, Texture &textureCart, long long 
 
 }
 
-
 void Screen::Heading(const Font &myFont)
 {
     if(currentScreen == INTRO)
@@ -313,9 +312,9 @@ bool Screen::ShowPopup(const Font &myFont, const char *message, int width, int h
     }
 }
 
-void Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<string> &InforNewItem)
+void Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<string> &InforNewItem, int Type)
 {
-    bool itemType = (currentScreen == imagesDog); // Xác định loại thông tin (1: Chó, 0: Mèo)
+    // bool itemType = (currentScreen == imagesDog); // Xác định loại thông tin (1: Chó, 0: Mèo)
 
     // Danh sách các nhãn thông tin
     vector<string> dogFields = { 
@@ -328,10 +327,17 @@ void Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
         "Selling Price", "Size", "Coat Color", "Popularity", "Shedding Level", "Appearance" 
     };
 
-    // Chọn danh sách nhãn phù hợp
-    const vector<string> &fields = (itemType == 1) ? dogFields : catFields;
+    vector<string> customer = {
+        "Name", "Phone Number", "Address"
+    };
 
-    // InforNewItem.resize(fields.size(), "");   // Vector lưu thông tin với kích thước bằng số trường thông tin
+    // Chọn danh sách nhãn phù hợp
+    vector<string> fields;
+    if(Type == 1) fields = dogFields;
+    if(Type == 2) fields = catFields;
+    if(Type == 3) fields = customer;
+
+    if(!InforNewItem.size()) InforNewItem.resize(fields.size(), "");   // Vector lưu thông tin với kích thước bằng số trường thông tin
     int boxWidth = 400, boxHeight = 60;       // Kích thước ô nhập liệu
     int boxX = 300, boxY = 150;               // Vị trí ô nhập liệu
     string currentInput = InforNewItem[0];    // Chuỗi lưu tạm giá trị đang nhập
@@ -369,17 +375,15 @@ void Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
             
             // Nhấn nút "Next"
             if (CheckCollisionPointRec(mousePosition, { (float)nextButtonX, (float)nextButtonY, (float)buttonWidth, (float)buttonHeight })) {
-                if (currentFieldIndex < static_cast<int>(fields.size()) - 2) {
+                InforNewItem[currentFieldIndex] = currentInput;
+                if (currentFieldIndex < static_cast<int>(fields.size()) - 1) {
                     currentInput = InforNewItem[++currentFieldIndex];
-                    cout << currentFieldIndex;
-                    cout << currentFieldIndex;
-                    cout << currentFieldIndex;
-                    cout << currentFieldIndex;
                 }
             }
 
             // Nhấn nút "Back"
             else if (CheckCollisionPointRec(mousePosition, { (float)backButtonX, (float)backButtonY, (float)buttonWidth, (float)buttonHeight })) {
+                InforNewItem[currentFieldIndex] = currentInput;
                 if (currentFieldIndex > 0) {
                     InforNewItem[currentFieldIndex] = currentInput;
                     currentInput = InforNewItem[--currentFieldIndex];
@@ -388,20 +392,39 @@ void Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
 
             // Nhấn nút "OK"
             else if (CheckCollisionPointRec(mousePosition, { (float)okButtonX, (float)okButtonY, (float)buttonWidth, (float)buttonHeight })) {
+                InforNewItem[currentFieldIndex] = currentInput;
                 // Xác nhận thông tin và gán giá trị mặc định nếu cần
-                for (size_t i = 0; i < fields.size(); ++i) {
-                    if (i == 1 && InforNewItem[i].empty()) {
-                        InforNewItem[i] = "image/Dogs/Unknown.png";
-                    } else if (InforNewItem[i].empty() || !all_of(InforNewItem[i].begin(), InforNewItem[i].end(), [](char c) { return isdigit(c); })) {
-                        if (i == 3 || i == 5 || i == 6 || i == 7) {
-                            InforNewItem[i] = "0";
-                        } else if (InforNewItem[i].empty()) {
-                            InforNewItem[i] = "Unknown";
+                if(Type == 1 || Type == 2) {
+                    for (size_t i = 0; i < fields.size(); ++i) {
+                        if (i == 1 && InforNewItem[i].empty()) {
+                            InforNewItem[i] = "image/Dogs/Unknown.png";
+                        } else if (InforNewItem[i].empty() || !all_of(InforNewItem[i].begin(), InforNewItem[i].end(), [](char c) { return isdigit(c); })) {
+                            if (i == 3 || i == 5 || i == 6 || i == 7) {
+                                InforNewItem[i] = "0";
+                            } else if (InforNewItem[i].empty()) {
+                                InforNewItem[i] = "Unknown";
+                            }
                         }
                     }
+                    if(ShowPopup(myFont, "Do you want to save information?", 600, 100))
+                        return; // Thoát khỏi vòng lặp
                 }
-                if(ShowPopup(myFont, "Do you want to save information?", 600, 100))
-                    return; // Thoát khỏi vòng lặp
+                else {
+                    int check = 0;
+                    for (size_t i = 0; i < fields.size(); ++i) {
+                        if(InforNewItem[i].empty()) {
+                            ShowPopup(myFont, "Information cannot be left blank!", 600, 100);
+                            break;
+                        }
+                        check++;
+                    }
+                    if(check == static_cast<int>(fields.size())) {
+                        if(ShowPopup(myFont, "Do you want to save information?", 600, 100))
+                            return; // Thoát khỏi vòng lặp
+                    }
+                }
+                
+                
             }
         }
         EndDrawing();

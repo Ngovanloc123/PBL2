@@ -19,6 +19,7 @@ public:
     Cart() {}  
     ~Cart() {}
     LinkedList<pair<T, unsigned int>>& getCartItems();
+    void resetCart();
     bool isAddToCart();
     void addToCart (const Font &myFont, pair<T, unsigned int> item, Screen &screen);
     void remove(int quantity = 0);
