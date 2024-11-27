@@ -32,13 +32,7 @@ void Animal::purchaseOptions(const Font &myFont, unsigned int &purQuant)
         DrawRectangleRounded(frame, 0.6, 10, GREEN);
         DrawTextEx(myFont, fullText, (Vector2){frame.x + frame.width / 2 - MeasureTextEx(myFont, fullText, 40, 2).x / 2, frame.y + frame.height / 2 - MeasureTextEx(myFont, fullText, 40, 2).y / 2}, 40, 2, WHITE);
 
-        // buyNow(myFont, informationFrame);
-        sprintf(fullText, "Buy now");
-        frame = {(float)(informationFrame.x + informationFrame.width / 2 + 100), 500, 200, 50};
-        DrawRectangleRounded(frame, 0.6, 10, RED);
-        DrawTextEx(myFont, fullText, (Vector2){frame.x + frame.width / 2 - MeasureTextEx(myFont, fullText, 40, 2).x / 2, frame.y + frame.height / 2 - MeasureTextEx(myFont, fullText, 40, 2).y / 2}, 40, 2, WHITE);
 
-        // Bottom số lượng mua theo biến purQuan
         // Tăng giảm số lượng mua
         Rectangle Decrease = {(informationFrame.x + informationFrame.width / 2 + 40), 360, 50, 40};
         DrawRectangleRounded(Decrease, 0, 10, yellow);
@@ -69,6 +63,16 @@ void Animal::purchaseOptions(const Font &myFont, unsigned int &purQuant)
         sprintf(fullText, "ITPet will update you as soon as possible");
         DrawTextEx(myFont, fullText, (Vector2){informationFrame.x + 20, 540}, 30, 2, BLACK);
     }
+    // Delete
+        sprintf(fullText, "Delete");
+        frame = {(float)(informationFrame.x + 550), 500, 150, 60};
+        DrawRectangleRounded(frame, 0.6, 10, RED);
+        DrawTextEx(myFont, fullText, (Vector2){frame.x + frame.width / 2 - MeasureTextEx(myFont, fullText, 40, 2).x / 2, frame.y + frame.height / 2 - MeasureTextEx(myFont, fullText, 40, 2).y / 2}, 40, 2, WHITE);
+    // Update
+        sprintf(fullText, "Update");
+        frame = {(float)(informationFrame.x + 350), 500, 150, 60};
+        DrawRectangleRounded(frame, 0.6, 10, BLUE);
+        DrawTextEx(myFont, fullText, (Vector2){frame.x + frame.width / 2 - MeasureTextEx(myFont, fullText, 40, 2).x / 2, frame.y + frame.height / 2 - MeasureTextEx(myFont, fullText, 40, 2).y / 2}, 40, 2, WHITE);
 }
 
 Animal::Animal() {}
@@ -76,7 +80,7 @@ Animal::Animal() {}
 Animal::Animal(const char *name, const char *imageAnimal, const char *origin, unsigned int averageAge, const char *furType, unsigned int quantity, unsigned int sellingPrice, unsigned int size) 
     : name(name), imageAnimal(imageAnimal), origin(origin), averageAge(averageAge), furType(furType), quantity(quantity), sellingPrice(sellingPrice), size(size) {}
 Animal::Animal(const Animal& Animal) {
-    name = Animal.name;///////////
+    name = Animal.name;
     imageAnimal = Animal.imageAnimal;
     origin = Animal.origin;
     averageAge = Animal.averageAge;
@@ -100,6 +104,20 @@ unsigned int Animal::getQuantity() const
 unsigned int Animal::getSellingPrice() const
 {
     return sellingPrice;
+}
+
+vector<string> Animal::getAllAttributes()
+{
+    vector<string> attributes;
+    attributes.push_back(name);
+    attributes.push_back(imageAnimal);
+    attributes.push_back(origin);
+    attributes.push_back(to_string(averageAge));
+    attributes.push_back(furType);
+    attributes.push_back(to_string(quantity));
+    attributes.push_back(to_string(sellingPrice));
+    attributes.push_back(to_string(size));
+    return attributes;
 }
 
 // bool Animal::isAddToCart()

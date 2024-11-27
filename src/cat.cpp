@@ -4,8 +4,24 @@
 
 using namespace std;
 
-Cat::Cat(const char *name, const char *imageCat, const char *originOfCat, unsigned int averageAge, const char *furType, unsigned int numberOfCat, unsigned int sellingPrice, 
-        unsigned int size, const char *coatColor, const char *popularity, const char *sheddingLevel, const char *appearance)
+Cat::Cat(vector<string> inforNewCat)
+{
+    name = strdup(inforNewCat[0].c_str());
+    imageAnimal = strdup(inforNewCat[1].c_str());
+    origin = strdup(inforNewCat[2].c_str());
+    averageAge = stoi(inforNewCat[3]);
+    furType = strdup(inforNewCat[4].c_str());
+    quantity = stoi(inforNewCat[5]);
+    sellingPrice = stoi(inforNewCat[6]);
+    size = stoi(inforNewCat[7]);
+    coatColor = strdup(inforNewCat[8].c_str());
+    popularity = strdup(inforNewCat[9].c_str());
+    sheddingLevel = strdup(inforNewCat[10].c_str());
+    appearance = strdup(inforNewCat[11].c_str());
+}
+
+Cat::Cat(const char *name, const char *imageCat, const char *originOfCat, unsigned int averageAge, const char *furType, unsigned int numberOfCat, unsigned int sellingPrice,
+         unsigned int size, const char *coatColor, const char *popularity, const char *sheddingLevel, const char *appearance)
     : Animal(name, imageCat, originOfCat, averageAge, furType, numberOfCat, sellingPrice, size), coatColor(coatColor), popularity(popularity), sheddingLevel(sheddingLevel), appearance(appearance) {}
 
 Cat::Cat(const Cat& cat) : Animal(cat), coatColor(cat.coatColor), popularity(cat.popularity), sheddingLevel(cat.sheddingLevel), appearance(cat.appearance) {}
@@ -17,14 +33,24 @@ vector<char *> Cat::getAttributes()
     return {(char*)coatColor, (char*)popularity, (char*)sheddingLevel, (char*)appearance, (char*)name};
 }
 
+vector<string> Cat::getAllAttributes()
+{
+    vector<string> result = Animal::getAllAttributes();
+    result.push_back(coatColor);
+    result.push_back(popularity);
+    result.push_back(sheddingLevel);
+    result.push_back(appearance);
+    return result;
+}
+
 void Cat::DisplayImage(const Font &myFont, Texture &texture, int gridX, int gridY)
 {
     // Nạp và chuyển đổi hình ảnh thành texture
     Image image = LoadImage(imageAnimal);
     if (image.width == 0 || image.height == 0)
     {
-        cout << "Failed to load image!" << endl;
-        return;
+        imageAnimal = "image/Cats/default.png";
+        image = LoadImage(imageAnimal);
     }
     texture = LoadTextureFromImage(image);
     UnloadImage(image);
@@ -82,6 +108,9 @@ void Cat::displayInformation(const Font &myFont, Texture &texture, unsigned int 
     
     sprintf(fullText, "Appearance: %s", appearance);
     DrawTextEx(myFont, fullText, (Vector2){248 + 150, 390}, 30, 2, darkGreen);
+    
+    sprintf(fullText, "Max: %d", quantity);
+    DrawTextEx(myFont, fullText, (Vector2){248 + 150 + 248 + 150, 420}, 30, 2, darkGreen);
 
     if(quantity > 0) sprintf(fullText, "Status: In stock");
     else sprintf(fullText, "Status: Out of stock");

@@ -37,10 +37,9 @@ public:
     int sizeList();
     Node<T>* getHead();
     void insert(T value);
-    
-    // Nếu true -> thêm số lượng / sản phẩm thành công
-    // Nếu false -> thêm số lượng thất bại (sản phẩm đã đạt giới hạn)
+    // Pair
     bool insertCart(T value);
+
     void erase(Node<T> *node);
     int getPage();
     int getPageMax();
@@ -49,7 +48,8 @@ public:
     void displayCart(const Font &myFont, Texture &texture, int quantity = 0);
     long long total();
     Node<T>* GetNodeFromAnimal(const Vector2 &index, vector<char*> attributes);
-    Node<T>* GetNodeFromCart(const Vector2 &index);
-    void deleteNodeInCart(const Vector2 &index);
+    Node<T>* GetNodeFromCart(const Vector2 &index, int quantity = 0);
+    void deleteNodeInCart(const Vector2 &index, int quantity = 0);
+    // void listManagement(const Font &myFont, Texture &texture);
 };
 

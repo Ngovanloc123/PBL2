@@ -23,12 +23,14 @@ private:
     const char *appearance;
 public:
     Cat(){};
+    Cat(vector<string> inforNewCat);
     Cat(const char *name, const char *imageCat, const char *originOfCat, unsigned int averageAge, const char *furType, unsigned int numberOfCat, unsigned int sellingPrice, 
         unsigned int size, const char *coatColor, const char *popularity, const char *sheddingLevel, const char *appearance);
     Cat(const Cat& cat);
     virtual ~Cat();
     string GetType() const { return "Cat"; }
     vector<char*> getAttributes();
+    vector<string> getAllAttributes();
     // Đọc file
     static void initializeCatList(LinkedList<Cat>& catList) {
         // Mở file để đọc nội dung hiện tại

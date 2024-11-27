@@ -253,7 +253,7 @@ void Screen::Heading(const Font &myFont)
     backButton(myFont);
 }
 
-void Screen::ShowPopup(const Font &myFont, const char *message, int width, int height) {
+bool Screen::ShowPopup(const Font &myFont, const char *message, int width, int height) {
     // Tính toán vị trí hộp thông báo ở giữa màn hình
     Rectangle popupRect = {
         (float)((GetScreenWidth() - width) / 2),
@@ -272,16 +272,18 @@ void Screen::ShowPopup(const Font &myFont, const char *message, int width, int h
         (float)buttonHeight
     };
 
-    bool buttonClicked = false;
+    // bool buttonClicked = false;
 
     // Vòng lặp hiển thị thông báo
-    while (!buttonClicked && !WindowShouldClose()) {
+    while (true) {
         // Kiểm tra nếu người dùng nhấn chuột vào nút
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             Vector2 mousePos = GetMousePosition();
             if (CheckCollisionPointRec(mousePos, buttonRect)) {
-                buttonClicked = true;
+                // buttonClicked = true;
+                return true;
             }
+            else return false;
         }
 
         BeginDrawing();
@@ -310,6 +312,105 @@ void Screen::ShowPopup(const Font &myFont, const char *message, int width, int h
         EndDrawing();
     }
 }
+
+void Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<string> &InforNewItem)
+{
+    bool itemType = (currentScreen == imagesDog); // Xác định loại thông tin (1: Chó, 0: Mèo)
+
+    // Danh sách các nhãn thông tin
+    vector<string> dogFields = { 
+        "Name", "Image Link", "Origin", "Average Age", "Fur Type", "Quantity", 
+        "Selling Price", "Size", "Purpose of Raising", "Level of Training", "Need for Exercise" 
+    };
+
+    vector<string> catFields = { 
+        "Name", "Image Link", "Origin", "Average Age", "Fur Type", "Quantity", 
+        "Selling Price", "Size", "Coat Color", "Popularity", "Shedding Level", "Appearance" 
+    };
+
+    // Chọn danh sách nhãn phù hợp
+    const vector<string> &fields = (itemType == 1) ? dogFields : catFields;
+
+    // InforNewItem.resize(fields.size(), "");   // Vector lưu thông tin với kích thước bằng số trường thông tin
+    int boxWidth = 400, boxHeight = 60;       // Kích thước ô nhập liệu
+    int boxX = 300, boxY = 150;               // Vị trí ô nhập liệu
+    string currentInput = InforNewItem[0];    // Chuỗi lưu tạm giá trị đang nhập
+    int currentFieldIndex = 0;                // Chỉ số của thông tin hiện tại
+
+    while (true) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+
+        // Hiển thị thông tin trường hiện tại
+        DrawTextEx(myFont, fields[currentFieldIndex].c_str(), { (float)boxX - 250, (float)boxY + 15 }, boxHeight * 0.5f, 2, BLACK);
+
+        // Vẽ và xử lý ô nhập liệu
+        DrawInputBox(myFont, currentInput, boxX, boxY, boxWidth, boxHeight, 100);
+
+        // Hiển thị nút "Next" để lưu thông tin hiện tại và chuyển sang thông tin tiếp theo
+        int nextButtonX = boxX + 50, nextButtonY = boxY + boxHeight + 20;
+        int buttonWidth = 150, buttonHeight = 50;
+        DrawRectangle(nextButtonX, nextButtonY, buttonWidth, buttonHeight, DARKGREEN);
+        DrawTextEx(myFont, "Next", { (float)nextButtonX + 30, (float)nextButtonY + 10 }, boxHeight * 0.5f, 2, WHITE);
+
+        // Hiển thị nút "Back" để quay lại thông tin trước đó
+        int backButtonX = boxX - 200, backButtonY = nextButtonY;
+        DrawRectangle(backButtonX, backButtonY, buttonWidth, buttonHeight, DARKBLUE);
+        DrawTextEx(myFont, "Back", { (float)backButtonX + 30, (float)backButtonY + 10 }, boxHeight * 0.5f, 2, WHITE);
+
+        // Hiển thị nút "OK" để xác nhận thông tin
+        int okButtonX = boxX + 300, okButtonY = nextButtonY;
+        DrawRectangle(okButtonX, okButtonY, buttonWidth, buttonHeight, DARKGRAY);
+        DrawTextEx(myFont, "OK", { (float)okButtonX + 40, (float)okButtonY + 10 }, boxHeight * 0.5f, 2, WHITE);
+
+        // Xử lý sự kiện nhấn chuột
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+            Vector2 mousePosition = GetMousePosition();
+            
+            // Nhấn nút "Next"
+            if (CheckCollisionPointRec(mousePosition, { (float)nextButtonX, (float)nextButtonY, (float)buttonWidth, (float)buttonHeight })) {
+                if (currentFieldIndex < static_cast<int>(fields.size()) - 2) {
+                    currentInput = InforNewItem[++currentFieldIndex];
+                    cout << currentFieldIndex;
+                    cout << currentFieldIndex;
+                    cout << currentFieldIndex;
+                    cout << currentFieldIndex;
+                }
+            }
+
+            // Nhấn nút "Back"
+            else if (CheckCollisionPointRec(mousePosition, { (float)backButtonX, (float)backButtonY, (float)buttonWidth, (float)buttonHeight })) {
+                if (currentFieldIndex > 0) {
+                    InforNewItem[currentFieldIndex] = currentInput;
+                    currentInput = InforNewItem[--currentFieldIndex];
+                }
+            }
+
+            // Nhấn nút "OK"
+            else if (CheckCollisionPointRec(mousePosition, { (float)okButtonX, (float)okButtonY, (float)buttonWidth, (float)buttonHeight })) {
+                // Xác nhận thông tin và gán giá trị mặc định nếu cần
+                for (size_t i = 0; i < fields.size(); ++i) {
+                    if (i == 1 && InforNewItem[i].empty()) {
+                        InforNewItem[i] = "image/Dogs/Unknown.png";
+                    } else if (InforNewItem[i].empty() || !all_of(InforNewItem[i].begin(), InforNewItem[i].end(), [](char c) { return isdigit(c); })) {
+                        if (i == 3 || i == 5 || i == 6 || i == 7) {
+                            InforNewItem[i] = "0";
+                        } else if (InforNewItem[i].empty()) {
+                            InforNewItem[i] = "Unknown";
+                        }
+                    }
+                }
+                if(ShowPopup(myFont, "Do you want to save information?", 600, 100))
+                    return; // Thoát khỏi vòng lặp
+            }
+        }
+        EndDrawing();
+    }
+}
+
+
+
+
 
 // bool Screen::isLogin()
 // {

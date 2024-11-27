@@ -9,11 +9,6 @@
 #include "cat.h"
 #include "cart.cpp"
 
-// #include "person.h"
-// #include "admin.h"
-// #include "user.h"
-// #include "authorize.cpp"
-// #include "FileManage.h"
 #include <cstdlib>
 #include <fstream>
 
@@ -21,8 +16,6 @@ using namespace std;
 
 int main() {
     Screen screen;
-    // Dog dog;
-    // Cats cats;
     // Tải phông chữ tùy chỉnh
     Font myFont = LoadFont("font/NerkoOne-Regular.ttf");
     cout << "Open My shop..." << endl;
@@ -31,7 +24,6 @@ int main() {
     LinkedList<Dog> dogList;
     Dog::initializeDogList(dogList);
 
-    // LinkedList<Dog> cartDog;
 
     LinkedList<Cat> catList;
     Cat::initializeCatList(catList);
@@ -70,8 +62,19 @@ int main() {
             dogList.displayImages(myFont, texture, attributesDog);
             // Các nút tại image Dog
             screen.HeadingAnimal(myFont, dogList, attributesDog);
+        //----------------------------------------------------------------
+            // Thêm chó
+            Rectangle addPetButton = {450, 70, 60, 50};
+            if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), addPetButton)) {
+                vector<string> InforNewDog;
+                screen.inputInforNewItem(myFont, texture, InforNewDog);
+                Dog newDog(InforNewDog);
+                dogList.insert(newDog); 
+            }
+            
+        //----------------------------------------------------------------
             // Lấy nodeDog
-            screen.getNode(dogList, NodeDog, attributesDog);
+            screen.getNode(dogList, NodeDog, attributesDog, purQuant);
         }
 
         // Màn hình lựa chọn mèo
@@ -80,8 +83,19 @@ int main() {
             catList.displayImages(myFont, texture, attributesCat);
             // Các nút tại image Cat
             screen.HeadingAnimal(myFont, catList, attributesCat);
+        //----------------------------------------------------------------
+            // Thêm mèo
+            Rectangle addPetButton = {450, 70, 60, 50};
+            if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), addPetButton)) {
+                vector<string> InforNewCat;
+                screen.inputInforNewItem(myFont, texture, InforNewCat);
+                Cat newCat(InforNewCat);
+                catList.insert(newCat);
+            }
+        //----------------------------------------------------------------
+
             // Lấy nodeCat
-            screen.getNode(catList, NodeCat, attributesCat);
+            screen.getNode(catList, NodeCat, attributesCat, purQuant);
         }
 
         if (screen.currentScreen == detailDog) {
@@ -90,6 +104,27 @@ int main() {
             if (NodeDog && cartDog.isAddToCart()) {
                 cartDog.addToCart(myFont, make_pair(NodeDog->getData(), purQuant), screen);
                 purQuant = 1;
+            }
+            // Xóa nút
+            Rectangle deleteButton = {(356 + 550), 500, 150, 60};
+            if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), deleteButton)) {
+                if(screen.ShowPopup(myFont, "Are you sure delete?", 600, 100)) {
+                    screen.currentScreen = imagesDog;
+                    dogList.erase(NodeDog);
+                }
+            }
+            // Thay đổi thông tin chó
+            Rectangle editButton = {(356 + 350), 500, 150, 60};
+            if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), editButton)) {
+                vector<string> InforDog = NodeDog->getData().getAllAttributes();
+                screen.inputInforNewItem(myFont, texture, InforDog);
+                screen.currentScreen = imagesDog;
+                dogList.erase(NodeDog);
+                // Đưa thông tin chó mới cập nhật
+                Dog newDog(InforDog);
+                dogList.insert(newDog);
+                NodeDog = new Node<Dog>(newDog);
+                screen.currentScreen = detailDog;
             }
 
 
@@ -101,6 +136,27 @@ int main() {
             if (NodeCat && cartCat.isAddToCart()) {
                 cartCat.addToCart(myFont, make_pair(NodeCat->getData(), purQuant), screen);
                 purQuant = 1;
+            }
+            // Xóa nút
+            Rectangle deleteButton = {(float)(356 + 550), 500, 150, 60};
+            if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), deleteButton)) {
+                if(screen.ShowPopup(myFont, "Are you sure delete?", 600, 100)) {
+                    screen.currentScreen = imagesCat;
+                    catList.erase(NodeCat);
+                }
+            }
+            // Thay đổi thông tin mèo
+            Rectangle editButton = {(float)(356 + 350), 500, 150, 60};
+            if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), editButton)) {
+                vector<string> InforCat = NodeCat->getData().getAllAttributes();
+                screen.inputInforNewItem(myFont, texture, InforCat);
+                screen.currentScreen = imagesCat;
+                catList.erase(NodeCat);
+                // Đưa thông tin mèo mới cập nhật
+                Cat newCat(InforCat);
+                catList.insert(newCat);
+                NodeCat = new Node<Cat>(newCat);
+                screen.currentScreen = detailCat;
             }
 
             screen.Heading(myFont);
@@ -122,18 +178,23 @@ int main() {
         if(screen.currentScreen == shoppingCart) {
             // Show thông tin Shopping cart
             cartDog.viewCart(myFont, texture);
-            cartCat.viewCart(myFont, texture, cartDog.getCartItems().sizeList());
+            cartCat.viewCart(myFont, texture, cartDog.getCartItems().sizeList()); // In tiếp
             // In tiêu đề
             screen.Heading(myFont);
-            // Các nút tại image Dog
-            // screen.HeadingAnimal(myFont, cartDog.getCartItems()); // tạo cái khác riêng cho cart
-            // Lấy node từ mouseClick 
-            cartDog.getItem(NodeDog, screen);// lõi ở đây
+            // Lấy node từ mouseClick
+            cartDog.getItem(NodeDog, screen);
+            cartCat.getItem(NodeCat, screen, cartDog.getCartItems().sizeList());
+            // Xóa item
             cartDog.remove();
+            cartCat.remove(cartDog.getCartItems().sizeList());
         }
 
         // Tính tổng tiền thanh toán
         Subtotal = cartDog.calculateTotal() + cartCat.calculateTotal();
+        // Mua hàng
+        Rectangle buttonSubtotal = {(float(GetScreenWidth() - 220)), 20, 200, 50};
+        // if()
+
         EndDrawing();
     }
     // delete cartDog;

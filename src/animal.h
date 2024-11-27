@@ -1,6 +1,7 @@
 #pragma once
 #include<iostream>
 #include <raylib.h>
+#include <vector>
 
 #include "color.h"
 
@@ -31,6 +32,7 @@ class Animal {
         const char *getName() const;
         unsigned int getQuantity() const;
         unsigned int getSellingPrice() const;
+        vector<string> getAllAttributes();
         virtual string GetType() const { return "Animal"; }
         // bool isAddToCart();
         bool isBuyNow();

@@ -4,6 +4,23 @@
 
 using namespace std;
 
+
+Dog::Dog(vector<string> inforNewDog)
+{
+    name = strdup(inforNewDog[0].c_str());
+    imageAnimal = strdup(inforNewDog[1].c_str());
+    origin = strdup(inforNewDog[2].c_str());
+    averageAge = stoi(inforNewDog[3]);
+    furType = strdup(inforNewDog[4].c_str());
+    quantity = stoi(inforNewDog[5]);
+    sellingPrice = stoi(inforNewDog[6]);
+    size = stoi(inforNewDog[7]);
+    purposeOfRaising = strdup(inforNewDog[8].c_str());
+    levelOfTraining = strdup(inforNewDog[9].c_str());
+    needForExercise = strdup(inforNewDog[10].c_str());
+}
+
+
 Dog::Dog(const char *name, const char *imageDog, const char *originOfDog, unsigned int averageAge, const char *furType, unsigned int numberOfDog, unsigned int sellingPrice, unsigned int size, const char *purposeOfRaising, const char *levelOfTraining, const char *needForExercise)
     : Animal(name, imageDog, originOfDog, averageAge, furType, numberOfDog, sellingPrice, size), purposeOfRaising(purposeOfRaising), levelOfTraining(levelOfTraining), needForExercise(needForExercise) {}
 
@@ -17,12 +34,19 @@ vector<char *> Dog::getAttributes()
     details.push_back((char*)purposeOfRaising); // Convert to char* and add to vector
     details.push_back((char*)levelOfTraining); // Same here
     details.push_back((char*)needForExercise); // Same here
-    details.push_back(""); // Add null terminator as a char* (not '\0', but a pointer)
+    details.push_back(nullptr); // Add nullptr as a char* instead of a null terminator
     details.push_back((char*)name); // Convert name to char* and add to vector
     return details;
 }
 
-
+vector<string> Dog::getAllAttributes()
+{
+    vector<string> attributes = Animal::getAllAttributes();
+    attributes.push_back(purposeOfRaising);
+    attributes.push_back(levelOfTraining);
+    attributes.push_back(needForExercise);
+    return attributes;
+}
 
 void Dog::DisplayImage(const Font &myFont, Texture &texture, int gridX, int gridY)
 {
@@ -30,8 +54,8 @@ void Dog::DisplayImage(const Font &myFont, Texture &texture, int gridX, int grid
     Image image = LoadImage(imageAnimal);
     if (image.width == 0 || image.height == 0)
     {
-        cout << "Failed to load image!" << endl;
-        return;
+        imageAnimal = "image/Dogs/default.png";
+        image = LoadImage(imageAnimal);
     }
     texture = LoadTextureFromImage(image);
     UnloadImage(image);
@@ -86,6 +110,9 @@ void Dog::displayInformation(const Font &myFont, Texture &texture, unsigned int 
 
     sprintf(fullText, "Need for Exercise: %s", needForExercise);
     DrawTextEx(myFont, fullText, (Vector2){248 + 150, 360}, 30, 2, darkGreen);
+
+    sprintf(fullText, "Max: %d", quantity);
+    DrawTextEx(myFont, fullText, (Vector2){248 + 150 + 248 + 150, 420}, 30, 2, darkGreen);
 
     if(quantity > 0) sprintf(fullText, "Status: In stock");
     else sprintf(fullText, "Status: Out of stock");

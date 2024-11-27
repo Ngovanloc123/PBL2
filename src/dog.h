@@ -6,6 +6,8 @@
 #include <cstring>
 
 #include <raylib.h>
+#include "screen.h"
+
 #include "animal.h"
 #include "LinkedList.h"
 
@@ -20,12 +22,15 @@ private:
     // Nhu cầu hoạt động:  High, Medium, Low
     const char *needForExercise;    
 public:
-    Dog(){};
+    Dog() {};
+    Dog(vector<string> inforNewDog);
     Dog(const char *name, const char *imageDog, const char *originOfDog, unsigned int averageAge, const char *furType, unsigned int numberOfDog, unsigned int sellingPrice, unsigned int size, const char *purposeOfRaising, const char *levelOfTraining, const char *needForExercise);
     Dog(const Dog& dog);
     virtual ~Dog();
+    // Dog newDog();
     string GetType() const { return "Dog"; }
     vector<char*> getAttributes();
+    vector<string> getAllAttributes();
     // Đọc file
     static void initializeDogList(LinkedList<Dog>& dogList) {
         // Mở file để đọc nội dung hiện tại
@@ -40,6 +45,7 @@ public:
         // Đọc từng chuỗi ngăn cách bởi dấu phẩy
         string line;
         Dog dog;
+
         while (getline(ifs, line)) {
             vector<string> tokens;
             string token;

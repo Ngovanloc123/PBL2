@@ -37,13 +37,19 @@ Node<T> *LinkedList<T>::getHead()
     return header;
 }
 
+// template <typename T>
+// Node<T> *LinkedList<T>::createNode(const Font &myFont, Texture &texture)
+// {
+    
+// }
+
 template <typename T>
 void LinkedList<T>::insert(T value)
 {
     Node<T>* newNode = new Node<T>(value);
     if (header == NULL) {  // Nếu danh sách rỗng
         header = newNode;
-    size++;
+        size++;
         return;
     }
 
@@ -56,7 +62,7 @@ void LinkedList<T>::insert(T value)
         current = current->next;
     }
 
-    if(current != NULL && strcmp(current->data.getName(), newNode->data.getName()) == 0) return;
+    // if(current != NULL && strcmp(current->data.getName(), newNode->data.getName()) == 0) return;
 
     // Nếu nút mới là nhỏ nhất (chèn vào đầu danh sách)
     if (previous == NULL) {
@@ -115,7 +121,7 @@ bool LinkedList<T>::insertCart(T value)
 }
 
 template <typename T>
-void LinkedList<T>::erase(Node<T>* node) 
+void LinkedList<T>::erase(Node<T>* node)
 {
     if (node == NULL) {  // Kiểm tra nếu node là NULL
         cerr << "Error: Node to be deleted is null." << endl;
@@ -269,12 +275,12 @@ Node<T>* LinkedList<T>::GetNodeFromAnimal(const Vector2 &index, vector<char*> at
 
 
 template <typename T>
-Node<T> *LinkedList<T>::GetNodeFromCart(const Vector2 &index)
+Node<T> *LinkedList<T>::GetNodeFromCart(const Vector2 &index, int quantity)
 {
     Node<T>* current = header;
     int sizeImage = 140;
 
-    int i = 0;
+    int i = quantity;
     while(current != NULL ) {
         int gridX = (i / 4) % 2;
         int gridY = (i % 4);
@@ -292,11 +298,11 @@ Node<T> *LinkedList<T>::GetNodeFromCart(const Vector2 &index)
 }
 
 template <typename T>
-void LinkedList<T>::deleteNodeInCart(const Vector2 &index)
+void LinkedList<T>::deleteNodeInCart(const Vector2 &index, int quantity)
 {
     Node<T>* current = header;
     int sizeImage = 40;
-    int i = 0;
+    int i = quantity;
     while(current != NULL ) {
         int gridX = (i / 4) % 2;
         int gridY = (i % 4);
@@ -313,6 +319,8 @@ void LinkedList<T>::deleteNodeInCart(const Vector2 &index)
     }
 }
 
+
+
 template <typename T>
 int LinkedList<T>::getPage()
 {
@@ -322,7 +330,7 @@ int LinkedList<T>::getPage()
 template <typename T>
 int LinkedList<T>::getPageMax()
 {
-    return size / 8 + (size % 8 > 0);
+    return size / 6 + (size % 6 > 0) + 1;
 }
 
 template <typename T>

@@ -61,10 +61,10 @@ private:
             } 
         }
     }
-
+    void DrawInputBox(const Font &font, string &inputText, int boxX, int boxY, int boxWidth, int boxHeight, int maxChars);
     // Kiểm tra cac nút liên quan đến đăng nhập
     // bool checkLoginButton(const Font &myFont);
-    void DrawInputBox(const Font &font, string &inputText, int boxX, int boxY, int boxWidth, int boxHeight, int maxChars);
+    
     Image loadImageCart();
 public:
     Screens beforeScreen = HOME;
@@ -87,14 +87,21 @@ public:
 
     void navigationMenu(const Font &myFont, Texture &textureCart, long long Subtotal);
 
+
     template <typename T>
     void HeadingAnimal(const Font &myFont, LinkedList<T> &list, vector<char*> &attributes) {
+        // Nút thêm Pet
+        Rectangle addPetButton = {450, 70, 60, 50};
+        DrawRectangleRounded(addPetButton, 0.6, 10, GREEN);
+        DrawTextEx(myFont, "+", (Vector2){addPetButton.x + addPetButton.width / 2 - MeasureTextEx(myFont, "+", 30, 2).x / 2, addPetButton.y + 10}, 30, 2, WHITE);
+
+        // Xử lý nút addPet
         // Vẽ nền trắng bao quanh nội dung
         Rectangle background = {860, 80, 300, 620}; // Xác định vùng nền
         DrawRectangleRounded(background, 0.1f, 10, WHITE); // Vẽ nền với góc bo
 
         if(currentScreen == imagesDog) {
-            DrawTextEx(myFont, "Dog", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Dog", 60, 2).x / 2), 50}, 60, 2, darkGreen);
+            // DrawTextEx(myFont, "Dog", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Dog", 60, 2).x / 2), 50}, 60, 2, darkGreen);
 
             // Căn chỉnh nội dung văn bản
             float textStartX = background.x + background.width / 2; // Căn giữa theo trục X
@@ -232,7 +239,7 @@ public:
             }
         }
         if(currentScreen == imagesCat) {
-            DrawTextEx(myFont, "Cat", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Cat", 60, 2).x / 2), 50}, 60, 2, darkGreen);
+            // DrawTextEx(myFont, "Cat", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Cat", 60, 2).x / 2), 50}, 60, 2, darkGreen);
 
             // Căn chỉnh nội dung văn bản cho mèo
             float textStartX = background.x + background.width / 2; // Căn giữa theo trục X
@@ -407,7 +414,7 @@ public:
     }
     
     template <typename T>
-    void getNode(LinkedList<T> &list, Node<T>* &NodeAnimal, vector<char*> attributes) {
+    void getNode(LinkedList<T> &list, Node<T>* &NodeAnimal, vector<char*> attributes, unsigned int &purQuant) {
         // Kiểm tra nếu chuột được nhấn
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             Vector2 index = GetMousePosition();
@@ -426,6 +433,7 @@ public:
 
             // Nếu NodeAnimal hợp lệ, kiểm tra loại đối tượng
             if (NodeAnimal != NULL) {
+                purQuant = 1;
                 string type = NodeAnimal->getData().GetType();
 
                 // Chuyển màn hình dựa trên loại động vật
@@ -449,9 +457,10 @@ public:
     }
     void Heading(const Font &myFont);
     // Hàm hiển thị thông báo trong 2 giây
-    void ShowPopup(const Font &myFont, const char* message, int width, int height);
+    bool ShowPopup(const Font &myFont, const char* message, int width, int height);
     // Kiểm tra đã đăng nhập chưa
     // bool isLogin();
     // Màn hình đăng nhập
     // void Login(const Font &myFont, Texture &texture);
+    void inputInforNewItem(const Font &myFont, Texture &texture, vector<string> &InforNewItem);
 };

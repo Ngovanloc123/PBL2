@@ -20,16 +20,16 @@ template <typename T>
 void Cart<T>::addToCart(const Font &myFont, pair<T, unsigned int> item, Screen &screen)
 {   
     if(!cartItems.insertCart(item)) {
-        screen.ShowPopup(myFont, "The selected quantity exceeds your purchase limit!", 600, 100); // Gọi popup trong 2 giây
+        screen.ShowPopup(myFont, "The selected quantity exceeds your purchase limit!", 600, 100);
     }
 }
 
 template <typename T>
-void Cart<T>::remove()
+void Cart<T>::remove(int quantity)
 {
     if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 index = GetMousePosition();
-        cartItems.deleteNodeInCart(index);
+        cartItems.deleteNodeInCart(index, quantity);
     }
 }
 
@@ -39,13 +39,13 @@ void Cart<T>::viewCart(const Font &myFont, Texture &texture, int quantity) {
 }
 
 template <typename T>
-void Cart<T>::getItem(Node<T> *&item, Screen &screen)
+void Cart<T>::getItem(Node<T> *&item, Screen &screen, int quantity)
 {
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 index = GetMousePosition();
 
-        Node<pair<T, unsigned int>> *item_q = cartItems.GetNodeFromCart(index);
+        Node<pair<T, unsigned int>> *item_q = cartItems.GetNodeFromCart(index, quantity);
 
         // Nếu NodeAnimal hợp lệ, kiểm tra loại đối tượng
         if (item_q != NULL) {

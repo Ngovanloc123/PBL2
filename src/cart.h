@@ -21,9 +21,9 @@ public:
     LinkedList<pair<T, unsigned int>>& getCartItems();
     bool isAddToCart();
     void addToCart (const Font &myFont, pair<T, unsigned int> item, Screen &screen);
-    void remove();
+    void remove(int quantity = 0);
     void viewCart(const Font &myFont, Texture &texture, int quantity = 0);
-    void getItem(Node<T>* &item, Screen &screen);
+    void getItem(Node<T>* &item, Screen &screen, int quantity = 0);
     long long calculateTotal();
     // void updateQuantity(int productId, int quantity);
     // double getTotalPrice() const; // tinh tong tien cua cart item
