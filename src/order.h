@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+// #include "customer.h"
+// #include "FileManage.h"
 
 using namespace std;
 
@@ -45,5 +47,6 @@ public:
     string getOrderYear();
     void generalInvoice(Order& orders);
     static void initializeOrderIdFromFile(const string& filename);
-    void saveToFile(const string& filename);
+    void saveToFileOrder(const string& filename);
+    void saveToFileSales(const string& filename);
 };

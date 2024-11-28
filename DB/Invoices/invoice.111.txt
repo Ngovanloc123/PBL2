@@ -1,0 +1,9 @@
+Invoice for: 111
+----------
+User id: 17
+Date: 28-11-2024
+Time: 0:28:9
+Total amount: 14000000
+Name: Bac Kinh - Quantity: 2 - Price: 14000000
+Goodbye and See You Again!
+Address: 54 Nguyen Luong Bang - Hoa Khanh Bac - Lien Chieu - Da Nang

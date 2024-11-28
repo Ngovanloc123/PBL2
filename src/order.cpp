@@ -1,4 +1,5 @@
 #include "order.h"
+#include <ctime>
 
 unsigned int Order::currentOrderId = 1;
 Item::Item(string name, unsigned int quantity, unsigned int price)
@@ -84,23 +85,39 @@ vector<Item> Order::getItems(){
     return this->Items;
 }
 void Order::generalInvoice(Order& order){
-    string filename = "DB/invoice." + to_string(order.getOrderId()) + ".txt";
+    string filename = "DB/Invoices/invoice." + to_string(order.getOrderId()) + ".txt";
+    time_t t = time(nullptr);
+    tm* now = localtime(&t);
+    string second = to_string(now->tm_sec);
+    string minute = to_string(now->tm_min);
+    string hour = to_string(now->tm_hour);
     ofstream file(filename);
     if(!file){
         cout << "Error: " << filename << endl;
         return;
     }
+    file << "SHOP IT PET" << endl;
     file << "Invoice for: " << order.getOrderId() << endl;
     file << "----------" << endl;
-    file << "User id: " << order.getOrderId() << endl;
+    file << "User id: " << order.getCustomerId() << endl;
+    // vector<Customer*> customers = FileManager::loadFromFile("DB/customer.txt");
+    // for(auto& customer : customers){
+    //     if(customer->getId() == order.getCustomerId()){
+    //         file << "Name: " << customer->getName() << "-" << customer->getPhoneNumber() << "-" << customer->getAddress() << endl;
+    //         break;
+    //     }
+    // }
     file << "Date: " <<order.getOrderDay() << "-" << order.getOrderMonth() << "-" << order.getOrderYear() << endl;
+    file << "Time: " << hour << ":" << minute << ":" << second << endl;
     file << "Total amount: " << order.calculateTotalAmount() << endl;
     vector<Item> items = order.getItems();
     for(auto& item : items){
-        file <<"Name:" << item.getName() << "Quantity:" << item.getQuantity() << "- " << item.getTotalPrice() << endl;
+        file <<"Name: " << item.getName() << " - " << "Quantity: " << item.getQuantity() << " - " << "Price: " << item.getTotalPrice() << endl;
     }
     file << "Goodbye and See You Again!" << endl;
     file << "Address: 54 Nguyen Luong Bang - Hoa Khanh Bac - Lien Chieu - Da Nang" << endl;
+    file << "--------------------------------------------------------------------" << endl;
+    file.close();
 }
 
 void Order::initializeOrderIdFromFile(const string& filename){
@@ -123,7 +140,7 @@ void Order::initializeOrderIdFromFile(const string& filename){
     file.close();
 }
 
-void Order::saveToFile(const string &filename)
+void Order::saveToFileOrder(const string &filename)
 {
     ofstream file(filename, ios::app);
     if (!file) {
@@ -132,4 +149,16 @@ void Order::saveToFile(const string &filename)
     }
     file << this->getOrderDetails();
     file.close();
+}
+
+void Order::saveToFileSales(const string &filename){
+    ofstream file(filename, ios::app);
+    if (!file) {
+        cerr << "Cannot open file " << filename << endl;
+        return;
+    }
+    for(auto& item : Items){
+        file << this->getOrderYear() << "," << this->getOrderMonth() << "," << item.getTotalPrice()/1000000 << ","
+        << item.getQuantity() << "," << item.getName() << endl;
+    }
 }

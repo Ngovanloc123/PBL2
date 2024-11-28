@@ -2,9 +2,10 @@
 #include <raylib.h>
 #include <string>
 #include "LinkedList.cpp"
-// #include "cart.cpp"
+#include "customer.h"
 #include "dog.h"
 #include "color.h"
+#include "statistical.h"
 
 
 
@@ -15,8 +16,8 @@ typedef enum Screens {
     detailDog,
     detailCat,
     INTRO,
-    CONTACT,
-    shoppingCart
+    CART,
+    HISTORY
 } Screens;
 
 class Screen {
@@ -423,7 +424,7 @@ public:
             if (currentScreen == imagesDog || currentScreen == imagesCat) {
                 NodeAnimal = list.GetNodeFromAnimal(index, attributes);
             } 
-            // else if (currentScreen == shoppingCart) {
+            // else if (currentScreen == CART) {
             //     Node<pair<T, int>>* selectedCartNode = list.GetNodeFromCart(index);
             //     NodeAnimal = new Node<T>{selectedCartNode->getData().first}; // Tạo node T từ pair
             // } 
@@ -458,9 +459,6 @@ public:
     void Heading(const Font &myFont);
     // Hàm hiển thị thông báo trong 2 giây
     bool ShowPopup(const Font &myFont, const char* message, int width, int height);
-    // Kiểm tra đã đăng nhập chưa
-    // bool isLogin();
-    // Màn hình đăng nhập
-    // void Login(const Font &myFont, Texture &texture);
-    void inputInforNewItem(const Font &myFont, Texture &texture, vector<string> &InforNewItem, int Type);
+    bool inputInforNewItem(const Font &myFont, Texture &texture, vector<string> &InforNewItem, int Type);
+    void displayHistory(const Font &myFont, Texture &texture, vector<Customer*> Customers);
 };

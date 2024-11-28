@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <raylib.h>
 #include <vector>
 #include <iostream>
 #include <sstream>
@@ -33,5 +34,7 @@ public:
     void updateName(string name);
     void updateAddress(string address);
     void updateInformation(vector<string> inforNewCustomer);
+    void displayCustomer(const Font &myFont, Texture &texture, int gridX, int gridY);
+    static void displayCustomers(const Font &myFont, Texture &texture, vector<Customer *> Customers);
 
 };

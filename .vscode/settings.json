@@ -13,7 +13,9 @@
     "deque": "cpp",
     "string": "cpp",
     "unordered_map": "cpp",
-    "vector": "cpp"
+    "vector": "cpp",
+    "fstream": "cpp",
+    "cstdlib": "cpp"
   },
   "cSpell.words": ["thỏa"]
 }

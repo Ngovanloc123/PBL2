@@ -76,9 +76,10 @@ int main() {
             Rectangle addPetButton = {450, 70, 60, 50};
             if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), addPetButton)) {
                 vector<string> InforNewDog;
-                screen.inputInforNewItem(myFont, texture, InforNewDog, 1);
-                Dog newDog(InforNewDog);
-                dogList.insert(newDog); 
+                if(screen.inputInforNewItem(myFont, texture, InforNewDog, 1)) {
+                    Dog newDog(InforNewDog);
+                    dogList.insert(newDog);
+                }
             }
             
         //----------------------------------------------------------------
@@ -97,9 +98,11 @@ int main() {
             Rectangle addPetButton = {450, 70, 60, 50};
             if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), addPetButton)) {
                 vector<string> InforNewCat;
-                screen.inputInforNewItem(myFont, texture, InforNewCat, 2);
-                Cat newCat(InforNewCat);
-                catList.insert(newCat);
+                if(screen.inputInforNewItem(myFont, texture, InforNewCat, 2))
+                {
+                    Cat newCat(InforNewCat);
+                    catList.insert(newCat);
+                }
             }
         //----------------------------------------------------------------
 
@@ -126,14 +129,15 @@ int main() {
             Rectangle editButton = {(356 + 350), 500, 150, 60};
             if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), editButton)) {
                 vector<string> InforDog = NodeDog->getData().getAllAttributes();
-                screen.inputInforNewItem(myFont, texture, InforDog, 1);
-                screen.currentScreen = imagesDog;
-                dogList.erase(NodeDog);
-                // Đưa thông tin chó mới cập nhật
-                Dog newDog(InforDog);
-                dogList.insert(newDog);
-                NodeDog = new Node<Dog>(newDog);
-                screen.currentScreen = detailDog;
+                if(screen.inputInforNewItem(myFont, texture, InforDog, 1)) {
+                    screen.currentScreen = imagesDog;
+                    dogList.erase(NodeDog);
+                    // Đưa thông tin chó mới cập nhật
+                    Dog newDog(InforDog);
+                    dogList.insert(newDog);
+                    NodeDog = new Node<Dog>(newDog);
+                    screen.currentScreen = detailDog;
+                }
             }
 
 
@@ -158,16 +162,16 @@ int main() {
             Rectangle editButton = {(float)(356 + 350), 500, 150, 60};
             if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), editButton)) {
                 vector<string> InforCat = NodeCat->getData().getAllAttributes();
-                screen.inputInforNewItem(myFont, texture, InforCat, 2);
-                screen.currentScreen = imagesCat;
-                catList.erase(NodeCat);
-                // Đưa thông tin mèo mới cập nhật
-                Cat newCat(InforCat);
-                catList.insert(newCat);
-                NodeCat = new Node<Cat>(newCat);
-                screen.currentScreen = detailCat;
+                if(screen.inputInforNewItem(myFont, texture, InforCat, 2)) {
+                    screen.currentScreen = imagesCat;
+                    catList.erase(NodeCat);
+                    // Đưa thông tin mèo mới cập nhật
+                    Cat newCat(InforCat);
+                    catList.insert(newCat);
+                    NodeCat = new Node<Cat>(newCat);
+                    screen.currentScreen = detailCat;
+                }
             }
-
             screen.Heading(myFont);
         }
 
@@ -177,15 +181,9 @@ int main() {
             screen.Heading(myFont);
         }
 
-        // Thông tin liên lạc
-        if(screen.currentScreen == CONTACT) {
-            // Show thông tin liên lạc
-            screen.Heading(myFont);
-        }
-
-        // Thông tin Shopping cart
-        if(screen.currentScreen == shoppingCart) {
-            // Show thông tin Shopping cart
+        // Thông tin CART
+        if(screen.currentScreen == CART) {
+            // Show thông tin CART
             cartDog.viewCart(myFont, texture);
             cartCat.viewCart(myFont, texture, cartDog.getCartItems().sizeList()); // In tiếp
             // In tiêu đề
@@ -198,6 +196,14 @@ int main() {
             cartCat.remove(cartDog.getCartItems().sizeList());
         }
 
+        // Thống kê lịch sử mua hàng
+        if(screen.currentScreen == HISTORY) {
+            // Nội dung
+            screen.displayHistory(myFont, texture, Customers);
+            // In tiêu đề
+            screen.Heading(myFont);
+        }
+
         // Tính tổng tiền thanh toán
         Subtotal = cartDog.calculateTotal() + cartCat.calculateTotal();
         
@@ -207,43 +213,46 @@ int main() {
             if(Subtotal > 0) {
                 bool check = false;
                 vector<string> InforNewCustomer;
-                screen.inputInforNewItem(myFont, texture, InforNewCustomer, 3);
-                for(auto& customer : Customers) {
-                    if(customer->checkCustomer(InforNewCustomer[1])) {
-                        customer->updateInformation(InforNewCustomer);
-                        customer->setPurchaseQuantity();
-                        customer_id = customer->getId();
-                        check = true;
-                        break;
+                if(screen.inputInforNewItem(myFont, texture, InforNewCustomer, 3)) {
+                    for(auto& customer : Customers) {
+                        if(customer->checkCustomer(InforNewCustomer[1])) {
+                            customer->updateInformation(InforNewCustomer);
+                            customer->setPurchaseQuantity();
+                            customer_id = customer->getId();
+                            check = true;
+                            break;
+                        }
                     }
-                }
-                if(!check) {
-                    Customer *newCustomer = new Customer(InforNewCustomer);
-                    Customers.push_back(newCustomer);
-                    customer_id = newCustomer->getId();
-                }
-                FileManager::saveToFile("DB/customer.txt", Customers);
-                //--------------------------------------------
-                // Đưa thông tin vào order
-                time_t now = time(nullptr);
-                tm* ltm = localtime(&now);
-                string day = to_string(ltm->tm_mday);
-                string month = to_string(1 + ltm->tm_mon);
-                string year = to_string(1900 + ltm->tm_year);
+                    if(!check) {
+                        Customer *newCustomer = new Customer(InforNewCustomer);
+                        Customers.push_back(newCustomer);
+                        customer_id = newCustomer->getId();
+                    }
+                    FileManager::saveToFile("DB/customer.txt", Customers);
+                    //--------------------------------------------
+                    // Đưa thông tin vào order
+                    time_t now = time(nullptr);
+                    tm* ltm = localtime(&now);
+                    string day = to_string(ltm->tm_mday);
+                    string month = to_string(1 + ltm->tm_mon);
+                    string year = to_string(1900 + ltm->tm_year);
 
-                vector<Item> Items;
-                cartDog.getCartItems().backUpInformation(Items);
-                cartCat.getCartItems().backUpInformation(Items);
+                    vector<Item> Items;
+                    cartDog.getCartItems().backUpInformation(Items);
+                    cartCat.getCartItems().backUpInformation(Items);
 
-                Order newOrder(customer_id, Subtotal, day, month, year, Items);
-                newOrder.saveToFile("DB/order.txt");
-                //--------------------------------------------
-                // Cập nhật số lượng
-                dogList.updateQuantity(cartDog.getCartItems());
-                catList.updateQuantity(cartCat.getCartItems());
-                // reset giỏ hàng và trừ đi số lượng đã mua hàng
-                cartDog.resetCart();
-                cartCat.resetCart();
+                    Order newOrder(customer_id, Subtotal, day, month, year, Items);
+                    newOrder.saveToFileOrder("DB/order.txt");
+                    newOrder.saveToFileSales("DB/sales.txt");
+                    newOrder.generalInvoice(newOrder);
+                    //--------------------------------------------
+                    // Cập nhật số lượng
+                    dogList.updateQuantity(cartDog.getCartItems());
+                    catList.updateQuantity(cartCat.getCartItems());
+                    // reset giỏ hàng và trừ đi số lượng đã mua hàng
+                    cartDog.resetCart();
+                    cartCat.resetCart();
+                }
             } else {
                 screen.ShowPopup(myFont, "Cart is empty!", 600, 100);
             }

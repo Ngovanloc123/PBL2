@@ -8,9 +8,9 @@ void Screen::backButton(const Font &myFont)
     DrawTextEx(myFont, "<", (Vector2){buttonBack.x + buttonBack.width / 2 - MeasureTextEx(myFont, "<", 30, 2).x / 2, buttonBack.y + 10}, 30, 2, darkGreen);
 
     if(CheckCollisionPointRec(GetMousePosition(), buttonBack) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        if(beforeScreen == shoppingCart && currentScreen == detailDog) {
+        if(beforeScreen == CART && currentScreen == detailDog) {
             beforeScreen = currentScreen;
-            currentScreen = shoppingCart;
+            currentScreen = CART;
         }
         else
         if(currentScreen == detailDog) {
@@ -24,7 +24,7 @@ void Screen::backButton(const Font &myFont)
         }
         else
         // Lỗi ở đây, không thể chuyển về shopping cart và chuyển thẳng vè home???
-        if(currentScreen == imagesDog || currentScreen == imagesCat || currentScreen == INTRO || currentScreen == CONTACT || currentScreen == shoppingCart) {
+        if(currentScreen == imagesDog || currentScreen == imagesCat || currentScreen == INTRO || currentScreen == HISTORY || currentScreen == CART) {
             beforeScreen = currentScreen;
             currentScreen = HOME;
         }
@@ -169,9 +169,9 @@ void Screen::navigationMenu(const Font &myFont, Texture &textureCart, long long 
     DrawTextEx(myFont, "Introduction", (Vector2){buttonIntro.x + buttonIntro.width / 2 - MeasureTextEx(myFont, "Introduction", 30, 2).x / 2, buttonIntro.y + 10}, 30, 2, darkGreen);
 
     // Nút liên hệ
-    Rectangle buttonContact = {540, 20, 120, 40};
-    // DrawRectangleRounded(buttonContact, 0.6, 10, yellow);
-    DrawTextEx(myFont, "Contact", (Vector2){buttonContact.x + buttonContact.width / 2 - MeasureTextEx(myFont, "Contact", 30, 2).x / 2, buttonContact.y + 10}, 30, 2, darkGreen);
+    Rectangle buttonHistory = {540, 20, 120, 40};
+    // DrawRectangleRounded(buttonHistory, 0.6, 10, yellow);
+    DrawTextEx(myFont, "History", (Vector2){buttonHistory.x + buttonHistory.width / 2 - MeasureTextEx(myFont, "History", 30, 2).x / 2, buttonHistory.y + 10}, 30, 2, darkGreen);
 
     // Shopping Cart
     Rectangle buttonCart = {(float)((widthWindow) - 280), 20, 80, 40};
@@ -218,13 +218,13 @@ void Screen::navigationMenu(const Font &myFont, Texture &textureCart, long long 
         beforeScreen = currentScreen;
         currentScreen = INTRO;
     }
-    if(CheckCollisionPointRec(GetMousePosition(), buttonContact) && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
+    if(CheckCollisionPointRec(GetMousePosition(), buttonHistory) && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
         beforeScreen = currentScreen;
-        currentScreen = CONTACT;
+        currentScreen = HISTORY;
     }
     if(CheckCollisionPointRec(GetMousePosition(), buttonCart) && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
         beforeScreen = currentScreen;
-        currentScreen = shoppingCart;
+        currentScreen = CART;
     }
 
     // Quan trọng , xữ lý nút mua hàng
@@ -244,10 +244,11 @@ void Screen::Heading(const Font &myFont)
 {
     if(currentScreen == INTRO)
         DrawTextEx(myFont, "Introduction", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Introduction", 60, 2).x / 2), 50}, 60, 2, darkGreen);
-    if(currentScreen == CONTACT)
-        DrawTextEx(myFont, "Contact", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Contact", 60, 2).x / 2), 50}, 60, 2, darkGreen);
-    if(currentScreen == shoppingCart)
-        DrawTextEx(myFont, "Shopping Cart", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "shoppingCart", 60, 2).x / 2), 50}, 60, 2, darkGreen);
+    if(currentScreen == CART)
+        DrawTextEx(myFont, "Shopping Cart", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "CART", 60, 2).x / 2), 50}, 60, 2, darkGreen);
+    if(currentScreen == HISTORY) {
+        DrawTextEx(myFont, "History", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "History", 60, 2).x / 2), 50}, 60, 2, darkGreen);
+    }
     // Back
     backButton(myFont);
 }
@@ -312,11 +313,8 @@ bool Screen::ShowPopup(const Font &myFont, const char *message, int width, int h
     }
 }
 
-void Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<string> &InforNewItem, int Type)
+bool Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<string> &InforNewItem, int Type)
 {
-    // bool itemType = (currentScreen == imagesDog); // Xác định loại thông tin (1: Chó, 0: Mèo)
-
-    // Danh sách các nhãn thông tin
     vector<string> dogFields = { 
         "Name", "Image Link", "Origin", "Average Age", "Fur Type", "Quantity", 
         "Selling Price", "Size", "Purpose of Raising", "Level of Training", "Need for Exercise" 
@@ -331,48 +329,76 @@ void Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
         "Name", "Phone Number", "Address"
     };
 
-    // Chọn danh sách nhãn phù hợp
     vector<string> fields;
     if(Type == 1) fields = dogFields;
     if(Type == 2) fields = catFields;
     if(Type == 3) fields = customer;
 
-    if(!InforNewItem.size()) InforNewItem.resize(fields.size(), "");   // Vector lưu thông tin với kích thước bằng số trường thông tin
-    int boxWidth = 400, boxHeight = 60;       // Kích thước ô nhập liệu
-    int boxX = 300, boxY = 150;               // Vị trí ô nhập liệu
-    string currentInput = InforNewItem[0];    // Chuỗi lưu tạm giá trị đang nhập
-    int currentFieldIndex = 0;                // Chỉ số của thông tin hiện tại
+    if(!InforNewItem.size()) InforNewItem.resize(fields.size(), ""); 
+    int boxWidth = 400, boxHeight = 60;
+    string currentInput = InforNewItem[0];
+    int currentFieldIndex = 0;
+
+    const int newWindowWidth = 600;
+    const int newWindowHeight = 900;
+
+    // Tải hình ảnh
+    Image image = LoadImage("image/background1.png");
+    if (image.width == 0 || image.height == 0)
+    {
+        cout << "Failed to load image!" << endl;
+        // return false;
+    }
+
+    ImageResize(&image, newWindowWidth, newWindowHeight);
+    texture = LoadTextureFromImage(image);
+    UnloadImage(image);
+
+    // Thay đổi kích thước màn hình
+    SetWindowSize(newWindowWidth, newWindowHeight);
 
     while (true) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
+        
+        
+        // Hiển thị ảnh texture
+        int posX = (newWindowWidth - texture.width) / 2;
+        int posY = (newWindowHeight - texture.height) / 2;
+        DrawTexture(texture, posX, posY, WHITE);
+
         // Hiển thị thông tin trường hiện tại
-        DrawTextEx(myFont, fields[currentFieldIndex].c_str(), { (float)boxX - 250, (float)boxY + 15 }, boxHeight * 0.5f, 2, BLACK);
+        DrawTextEx(myFont, fields[currentFieldIndex].c_str(), {50, 100}, boxHeight * 0.5f, 2, BLACK);
 
         // Vẽ và xử lý ô nhập liệu
-        DrawInputBox(myFont, currentInput, boxX, boxY, boxWidth, boxHeight, 100);
+        DrawInputBox(myFont, currentInput, 50, 150, boxWidth + 50, boxHeight, 100);
 
-        // Hiển thị nút "Next" để lưu thông tin hiện tại và chuyển sang thông tin tiếp theo
-        int nextButtonX = boxX + 50, nextButtonY = boxY + boxHeight + 20;
+        // Hiển thị nút "Next" (bo góc)
+        int nextButtonX = 350, nextButtonY = 150 + boxHeight + 20;
         int buttonWidth = 150, buttonHeight = 50;
-        DrawRectangle(nextButtonX, nextButtonY, buttonWidth, buttonHeight, DARKGREEN);
+        DrawRectangleRounded({ (float)nextButtonX - 50, (float)nextButtonY, (float)buttonWidth, (float)buttonHeight }, 0.2f, 10, DARKGREEN);
         DrawTextEx(myFont, "Next", { (float)nextButtonX + 30, (float)nextButtonY + 10 }, boxHeight * 0.5f, 2, WHITE);
 
-        // Hiển thị nút "Back" để quay lại thông tin trước đó
-        int backButtonX = boxX - 200, backButtonY = nextButtonY;
-        DrawRectangle(backButtonX, backButtonY, buttonWidth, buttonHeight, DARKBLUE);
+        // Hiển thị nút "Back" (bo góc)
+        int backButtonX = 100, backButtonY = nextButtonY;
+        DrawRectangleRounded({ (float)backButtonX, (float)backButtonY, (float)buttonWidth, (float)buttonHeight }, 0.2f, 10, DARKBLUE);
         DrawTextEx(myFont, "Back", { (float)backButtonX + 30, (float)backButtonY + 10 }, boxHeight * 0.5f, 2, WHITE);
 
-        // Hiển thị nút "OK" để xác nhận thông tin
-        int okButtonX = boxX + 300, okButtonY = nextButtonY;
-        DrawRectangle(okButtonX, okButtonY, buttonWidth, buttonHeight, DARKGRAY);
+        // Hiển thị nút "OK" (bo góc)
+        int okButtonX = 200, okButtonY = nextButtonY + 100;
+        DrawRectangleRounded({ (float)okButtonX, (float)okButtonY, (float)buttonWidth, (float)buttonHeight }, 0.2f, 10, DARKGRAY);
         DrawTextEx(myFont, "OK", { (float)okButtonX + 40, (float)okButtonY + 10 }, boxHeight * 0.5f, 2, WHITE);
+        
+        // Hiển thị nút back "<" (bo góc)
+        int backToMenuButtonX = 10, backToMenuButtonY = 10;
+        DrawRectangleRounded({ (float)backToMenuButtonX, (float)backToMenuButtonY, 30, 30 }, 0.2f, 10, DARKBLUE);
+        DrawTextEx(myFont, "<", { (float)backToMenuButtonX + 5, (float)backToMenuButtonY + 5 }, boxHeight * 0.5f, 20, WHITE);
 
         // Xử lý sự kiện nhấn chuột
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
             Vector2 mousePosition = GetMousePosition();
-            
+
             // Nhấn nút "Next"
             if (CheckCollisionPointRec(mousePosition, { (float)nextButtonX, (float)nextButtonY, (float)buttonWidth, (float)buttonHeight })) {
                 InforNewItem[currentFieldIndex] = currentInput;
@@ -380,21 +406,19 @@ void Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
                     currentInput = InforNewItem[++currentFieldIndex];
                 }
             }
-
             // Nhấn nút "Back"
             else if (CheckCollisionPointRec(mousePosition, { (float)backButtonX, (float)backButtonY, (float)buttonWidth, (float)buttonHeight })) {
                 InforNewItem[currentFieldIndex] = currentInput;
                 if (currentFieldIndex > 0) {
-                    InforNewItem[currentFieldIndex] = currentInput;
                     currentInput = InforNewItem[--currentFieldIndex];
                 }
             }
-
             // Nhấn nút "OK"
             else if (CheckCollisionPointRec(mousePosition, { (float)okButtonX, (float)okButtonY, (float)buttonWidth, (float)buttonHeight })) {
                 InforNewItem[currentFieldIndex] = currentInput;
-                // Xác nhận thông tin và gán giá trị mặc định nếu cần
-                if(Type == 1 || Type == 2) {
+
+                // Kiểm tra và xử lý thông tin nhập
+                if (Type == 1 || Type == 2) {
                     for (size_t i = 0; i < fields.size(); ++i) {
                         if (i == 1 && InforNewItem[i].empty()) {
                             InforNewItem[i] = "image/Dogs/Unknown.png";
@@ -406,34 +430,67 @@ void Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
                             }
                         }
                     }
-                    if(ShowPopup(myFont, "Do you want to save information?", 600, 100))
-                        return; // Thoát khỏi vòng lặp
-                }
-                else {
+                    if (ShowPopup(myFont, "Do you want to save information?", 500, 100)) {
+                        SetWindowSize(widthWindow, heightWindow);
+                        return true;
+                    }
+                } else {
                     int check = 0;
                     for (size_t i = 0; i < fields.size(); ++i) {
-                        if(InforNewItem[i].empty()) {
-                            ShowPopup(myFont, "Information cannot be left blank!", 600, 100);
+                        if (InforNewItem[i].empty()) {
+                            ShowPopup(myFont, "Information cannot be left blank!", 500, 100);
                             break;
                         }
                         check++;
                     }
-                    if(check == static_cast<int>(fields.size())) {
-                        if(ShowPopup(myFont, "Do you want to save information?", 600, 100))
-                            return; // Thoát khỏi vòng lặp
+                    if (check == static_cast<int>(fields.size())) {
+                        if (ShowPopup(myFont, "Do you want to save information?", 500, 100)) {
+                            SetWindowSize(widthWindow, heightWindow);
+                            return true;
+                        }
                     }
                 }
-                
-                
+            }
+            // Nhấn nút back "<"
+            else if (CheckCollisionPointRec(mousePosition, { (float)backToMenuButtonX, (float)backToMenuButtonY, 30, 30 })) {
+                SetWindowSize(widthWindow, heightWindow);
+                return false;
             }
         }
         EndDrawing();
     }
+    SetWindowSize(widthWindow, heightWindow);
+    return true;
 }
 
+void Screen::displayHistory(const Font &myFont, Texture &texture, vector<Customer *> Customers)
+{
+    // Nút thống kê doanh thu 
+    Rectangle buttonRevenue = {(float)(widthWindow / 4 - 50), 100, 220, 40};
+    DrawRectangleRounded(buttonRevenue, 0.6, 10, yellow);
+    DrawTextEx(myFont, "Revenue Statistics", (Vector2){buttonRevenue.x + buttonRevenue.width / 2 - MeasureTextEx(myFont, "Revenue Statistics", 30, 2).x / 2, buttonRevenue.y + 10}, 30, 2, darkGreen);
 
+    // Nút thông kê số lượng 
+    Rectangle buttonQuantity = {(float)(3 * widthWindow / 4 - 50), 100, 220, 40};
+    DrawRectangleRounded(buttonQuantity, 0.6, 10, yellow);
+    DrawTextEx(myFont, "Quantity Statistics", (Vector2){buttonQuantity.x + buttonQuantity.width / 2 - MeasureTextEx(myFont, "Quantity Statistics", 30, 2).x / 2, buttonQuantity.y + 10}, 30, 2, darkGreen);
 
+    // In thông tin khách hàng
 
+    Customer::displayCustomers(myFont, texture, Customers);
+
+    // Kiểm tra nhấn vào nút buttonRevenue
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), buttonRevenue)) {
+        // Vẽ đồ thị
+        Statistical::barChart();
+
+    }
+    // Kiểm tra nhấn vào nút buttonQuantity
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), buttonQuantity)) {
+        // Vẽ đồ thị tròn
+        Statistical::pieChart();
+    }
+}
 
 // bool Screen::isLogin()
 // {

@@ -1,0 +1,14 @@
+SHOP IT PET
+Invoice for: 117
+----------
+User id: 20
+Date: 28-11-2024
+Time: 10:47:37
+Total amount: 65000000
+Name: Afghan Hound - Quantity: 1 - Price: 20000000
+Name: Akita - Quantity: 1 - Price: 15000000
+Name: Bac Ha - Quantity: 1 - Price: 8000000
+Name: Norwegian Forest - Quantity: 1 - Price: 22000000
+Goodbye and See You Again!
+Address: 54 Nguyen Luong Bang - Hoa Khanh Bac - Lien Chieu - Da Nang
+--------------------------------------------------------------------
