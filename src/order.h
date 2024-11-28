@@ -45,5 +45,6 @@ public:
     string getOrderYear();
     void generalInvoice(Order& orders);
     static void initializeOrderIdFromFile(const string& filename);
-    void saveToFile(const string& filename);
+    void saveToFileOrder(const string& filename);
+    void saveToFileSales(const string& filename);
 };

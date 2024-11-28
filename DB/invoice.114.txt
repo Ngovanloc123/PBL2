@@ -1,0 +1,13 @@
+SHOP IT PET
+Invoice for: 114
+----------
+User id: 17
+Date: 28-11-2024
+Time: 0:34:58
+Total amount: 46000000
+Name: Bac Ha - Quantity: 1 - Price: 8000000
+Name: Becgie Duc - Quantity: 2 - Price: 26000000
+Name: Bull Terrier - Quantity: 1 - Price: 12000000
+Goodbye and See You Again!
+Address: 54 Nguyen Luong Bang - Hoa Khanh Bac - Lien Chieu - Da Nang
+--------------------------------------------------------------------

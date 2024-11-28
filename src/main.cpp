@@ -236,7 +236,9 @@ int main() {
                 cartCat.getCartItems().backUpInformation(Items);
 
                 Order newOrder(customer_id, Subtotal, day, month, year, Items);
-                newOrder.saveToFile("DB/order.txt");
+                newOrder.saveToFileOrder("DB/order.txt");
+                newOrder.saveToFileSales("DB/sales.txt");
+                newOrder.generalInvoice(newOrder);
                 //--------------------------------------------
                 // Cập nhật số lượng
                 dogList.updateQuantity(cartDog.getCartItems());

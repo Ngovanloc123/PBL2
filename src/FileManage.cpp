@@ -56,7 +56,7 @@ void FileManager::saveToFileDog(const string &filename, LinkedList<Dog> dogList)
         return;
     }
     for (Node<Dog>* current = dogList.getHead(); current != nullptr; current = current->getNext()) {
-        file << current->getData().getName() << "," << current->getData().getName() << "," << current->getData().getImageAnimal() << "," << current->getData().getOrigin() << "," << current->getData().getAverageAge() << ","
+        file << current->getData().getName() << "," << current->getData().getImageAnimal() << "," << current->getData().getOrigin() << "," << current->getData().getAverageAge() << ","
         << current->getData().getFurType() << "," << current->getData().getQuantity() << "," << current->getData().getPrice() << "," << current->getData().getSize() << ","
         << current->getData().getPurposeOfRaising() << "," << current->getData().getLevelOfTraining() << "," << current->getData().getNeedForExercise() << endl;
     }
@@ -71,7 +71,7 @@ void FileManager::saveToFileCat(const string &filename, LinkedList<Cat> catList)
         return;
     }
     for (Node<Cat>* current = catList.getHead(); current!= nullptr; current = current->getNext()) {
-        file << current->getData().getName() << "," << current->getData().getName() << "," << current->getData().getImageAnimal() << "," << current->getData().getOrigin() << "," << current->getData().getAverageAge() << ","
+        file << current->getData().getName() << "," << current->getData().getImageAnimal() << "," << current->getData().getOrigin() << "," << current->getData().getAverageAge() << ","
         << current->getData().getFurType() << "," << current->getData().getQuantity() << "," << current->getData().getPrice() << "," << current->getData().getSize() << ","
         << current->getData().getCoatColor() << "," << current->getData().getPopularity() << "," << current->getData().getSheddingLevel() << "," << current->getData().getAppearance() << endl;
     }

@@ -1,0 +1,14 @@
+SHOP IT PET
+Invoice for: 115
+----------
+User id: 17
+Date: 28-11-2024
+Time: 0:42:44
+Total amount: 75000000
+Name: American Bully - Quantity: 2 - Price: 28000000
+Name: Abyssinian - Quantity: 1 - Price: 15000000
+Name: Khao Manee - Quantity: 1 - Price: 12000000
+Name: Russian Blue - Quantity: 1 - Price: 20000000
+Goodbye and See You Again!
+Address: 54 Nguyen Luong Bang - Hoa Khanh Bac - Lien Chieu - Da Nang
+--------------------------------------------------------------------

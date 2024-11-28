@@ -1,21 +1,22 @@
-Afghan Hound,image/Dogs/Afghan-Hound.png,Afghanistan,12,Long,2,20000000,1,Companion,Grade school,Medium
-Akita,image/Dogs/Akita.png,Japan,10,Short,2,15000000,3,Guard,Junior High,High
-Alabai,image/Dogs/Alabai.png,Central Asia,12,Short,2,18000000,3,Guard,Junior High,Medium
+Afghan Hound,image/Dogs/Afghan-Hound.png,Afghanistan,12,Long,5,20000000,1,Companion,Grade school,Medium
+Akita,image/Dogs/Akita.png,Japan,10,Short,3,15000000,3,Guard,Junior High,High
+Alabai,image/Dogs/Alabai.png,Central Asia,12,Short,3,18000000,3,Guard,Junior High,Medium
 Alaska,image/Dogs/Alaska.png,USA,12,Medium,3,16000000,2,Companion,Grade school,High
 American Bully,image/Dogs/American-Bully.png,USA,10,Short,2,14000000,2,Pet,Kindergarten,Medium
-Bac Ha,image/Dogs/Bac-Ha.png,Vietnam,11,Medium,2,8000000,2,Guard,Junior High,Medium
+Australian Shepherd,image/Dogs/Australian-Shepherd.png,USA,13,Medium,2,16000000,2,Pet,Grade school,High
+Bac Ha,image/Dogs/Bac-Ha.png,Vietnam,11,Medium,3,8000000,2,Guard,Junior High,Medium
 Bac Kinh,image/Dogs/Bac-Kinh.png,China,15,Long,4,7000000,3,Pet,Grade school,Low
-Basenji,image/Dogs/Basenji.png,Congo,12,Short,10,15000000,3,Companion,Junior High,High
+Basenji,image/Dogs/Basenji.png,Congo,12,Short,3,15000000,3,Companion,Junior High,High
 Basset Hound,image/Dogs/Basset-Hound.png,France,12,Short,3,14000000,3,Companion,Kindergarten,Low
 Beagle,image/Dogs/Beagle.png,UK,12,Short,2,10000000,2,Pet,Grade school,Medium
-Becgie Duc,image/Dogs/Becgie-Duc.png,Germany,10,Medium,1,13000000,2,Guard,Junior High,High
+Becgie Duc,image/Dogs/Becgie-Duc.png,Germany,10,Medium,3,13000000,2,Guard,Junior High,High
 Bichon,image/Dogs/Bichon.png,France,15,Long,2,12000000,1,Pet,Kindergarten,Medium
 Border Collie,image/Dogs/Border-Collie.png,UK,13,Medium,3,18000000,1,Guard,Junior High,High
 Boston Terrier,image/Dogs/Boston-Terrier.png,USA,14,Short,2,13000000,1,Pet,Grade school,Medium
 Boxer,image/Dogs/Boxer.png,Germany,10,Short,3,14000000,3,Guard,Junior High,High
 Bull Anh,image/Dogs/Bull-Anh.png,UK,8,Short,4,15000000,3,Companion,Kindergarten,Low
 Bull Phap,image/Dogs/Bull-Phap.png,France,12,Short,3,14000000,3,Pet,Grade school,Medium
-Bull Terrier,image/Dogs/Bull-Terrier.png,UK,11,Short,2,12000000,3,Pet,Junior High,Medium
+Bull Terrier,image/Dogs/Bull-Terrier.png,UK,11,Short,3,12000000,3,Pet,Junior High,Medium
 Caucasian Shepherd,image/Dogs/Caucasian-Shepherd.png,Russia,10,Long,4,20000000,3,Guard,Junior High,Medium
 Cavalier,image/Dogs/Cavalier-King-Charles-Spaniel.png,UK,12,Medium,2,16000000,1,Companion,Kindergarten,Medium
 Chihuahua,image/Dogs/Chihuahua.png,Mexico,14,Short,2,10000000,2,Pet,Grade school,Medium
@@ -28,4 +29,3 @@ German Pinscher,image/Dogs/German-Pinscher.png,Germany,12,Short,3,13000000,3,Com
 Golden Retriever,image/Dogs/Golden-Retriever.png,UK,12,Long,2,16000000,1,Pet,Junior High,High
 Great Dane,image/Dogs/Great-Dane.png,Germany,8,Short,4,18000000,3,Companion,Grade school,Medium
 Pembroke Welsh Corgi,image/Dogs/Pembroke-Welsh-Corgi.png,UK,13,Short,2,14000000,2,Pet,Grade school,Medium
-Australian Shepherd,image/Dogs/Australian-Shepherd.png,USA,13,Medium,2,16000000,2,Pet,Grade school,High

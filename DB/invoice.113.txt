@@ -1,0 +1,11 @@
+SHOP IT PET
+Invoice for: 113
+----------
+User id: 18
+Date: 28-11-2024
+Time: 0:33:30
+Total amount: 18000000
+Name: Alabai - Quantity: 1 - Price: 18000000
+Goodbye and See You Again!
+Address: 54 Nguyen Luong Bang - Hoa Khanh Bac - Lien Chieu - Da Nang
+--------------------------------------------------------------------
