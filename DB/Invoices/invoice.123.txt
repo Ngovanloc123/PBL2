@@ -1,11 +1,12 @@
 SHOP IT PET
-Invoice for: 117
+Invoice for: 123
 ----------
-User id: 29
+User id: 35
 Date: 5-12-2024
-Time: 17:35:36
-Total amount: 32000000
-Name: Alaska - Quantity: 2 - Price: 32000000
+Time: 17:59:0
+Total amount: 90000000
+Name: Persian - Quantity: 2 - Price: 40000000
+Name: Sphynx - Quantity: 2 - Price: 50000000
 Goodbye and See You Again!
 Address: 54 Nguyen Luong Bang - Hoa Khanh Bac - Lien Chieu - Da Nang
 --------------------------------------------------------------------

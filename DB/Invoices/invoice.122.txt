@@ -1,11 +1,12 @@
 SHOP IT PET
-Invoice for: 117
+Invoice for: 122
 ----------
-User id: 29
+User id: 20
 Date: 5-12-2024
-Time: 17:35:36
-Total amount: 32000000
-Name: Alaska - Quantity: 2 - Price: 32000000
+Time: 17:56:1
+Total amount: 64000000
+Name: Bull Terrier - Quantity: 2 - Price: 24000000
+Name: Caucasian Shepherd - Quantity: 2 - Price: 40000000
 Goodbye and See You Again!
 Address: 54 Nguyen Luong Bang - Hoa Khanh Bac - Lien Chieu - Da Nang
 --------------------------------------------------------------------

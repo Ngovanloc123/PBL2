@@ -1,9 +1,11 @@
+SHOP IT PET
 Invoice for: 112
 ----------
-User id: 17
-Date: 28-11-2024
-Time: 0:29:36
-Total amount: 14000000
-Name: Bac Kinh - Quantity: 2 - Price: 14000000
+User id: 18
+Date: 5-12-2024
+Time: 15:37:10
+Total amount: 40000000
+Name: Afghan Hound - Quantity: 2 - Price: 40000000
 Goodbye and See You Again!
 Address: 54 Nguyen Luong Bang - Hoa Khanh Bac - Lien Chieu - Da Nang
+--------------------------------------------------------------------

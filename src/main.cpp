@@ -2,18 +2,19 @@
 #include <vector>
 #include <raylib.h>
 #include <utility>
-// #include "color.h"
-#include "screen.h"
-// #include "LinkedList.cpp"
-#include "dog.h"
-#include "cat.h"
-#include "cart.cpp"
-// #include "order.cpp"
-#include "customer.h"
-#include "FileManage.h"
 #include <ctime>
 #include <cstdlib>
 #include <fstream>
+
+
+#include "screen.h"
+#include "dog.h"
+#include "cat.h"
+#include "cart.cpp"
+#include "customer.h"
+#include "FileManage.h"
+#include "animalDetal.h"
+
 
 using namespace std;
 
@@ -36,7 +37,11 @@ int main() {
 
     // Thông in người mua hàng
     Customer::initializeNextIdFromFile("DB/customer.txt");
-    vector<Customer*> Customers = FileManager::loadFromFile("DB/customer.txt");
+    vector<Customer*> Customers = FileManager::loadCustomerFromFile("DB/customer.txt");
+
+    // Thông tin chi tiết đơn hàng
+    AnimalDetail::initializeNextIdFromFile("DB/animalDetail.txt");
+    vector<AnimalDetail*> animalDetails = FileManager::loadAnimalDetailFromFile("DB/animalDetail.txt");
     //----------------------------------------------------------------
     //Thông tin đơn hàng
     Order::initializeOrderIdFromFile("DB/order.txt");
@@ -76,9 +81,10 @@ int main() {
             Rectangle addPetButton = {450, 70, 60, 50};
             if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), addPetButton)) {
                 vector<string> InforNewDog;
-                if(screen.inputInforNewItem(myFont, texture, InforNewDog, 1)) {
+                if(screen.inputInforNewItem(myFont, texture, InforNewDog)) {
                     Dog newDog(InforNewDog);
                     dogList.insert(newDog);
+                    screen.loadAnimalDetails(myFont, texture, animalDetails, InforNewDog);
                 }
             }
             
@@ -98,10 +104,11 @@ int main() {
             Rectangle addPetButton = {450, 70, 60, 50};
             if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), addPetButton)) {
                 vector<string> InforNewCat;
-                if(screen.inputInforNewItem(myFont, texture, InforNewCat, 2))
+                if(screen.inputInforNewItem(myFont, texture, InforNewCat))
                 {
                     Cat newCat(InforNewCat);
                     catList.insert(newCat);
+                    screen.loadAnimalDetails(myFont, texture, animalDetails, InforNewCat);
                 }
             }
         //----------------------------------------------------------------
@@ -129,7 +136,7 @@ int main() {
             Rectangle editButton = {(356 + 350), 500, 150, 60};
             if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), editButton)) {
                 vector<string> InforDog = NodeDog->getData().getAllAttributes();
-                if(screen.inputInforNewItem(myFont, texture, InforDog, 1)) {
+                if(screen.inputInforNewItem(myFont, texture, InforDog, "update")) {
                     screen.currentScreen = imagesDog;
                     dogList.erase(NodeDog);
                     // Đưa thông tin chó mới cập nhật
@@ -139,7 +146,12 @@ int main() {
                     screen.currentScreen = detailDog;
                 }
             }
-
+            // Thêm số lượng
+            Rectangle addQuantityButton = {356 + 50, 420, 300, 60};
+            if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), addQuantityButton)) {
+                vector<string> InforDog = NodeDog->getData().getAllAttributes();
+                screen.loadAnimalDetails(myFont, texture, animalDetails, InforDog, "Add Quantity");
+            }
 
             screen.Heading(myFont);
         }
@@ -162,7 +174,7 @@ int main() {
             Rectangle editButton = {(float)(356 + 350), 500, 150, 60};
             if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), editButton)) {
                 vector<string> InforCat = NodeCat->getData().getAllAttributes();
-                if(screen.inputInforNewItem(myFont, texture, InforCat, 2)) {
+                if(screen.inputInforNewItem(myFont, texture, InforCat, "update")) {
                     screen.currentScreen = imagesCat;
                     catList.erase(NodeCat);
                     // Đưa thông tin mèo mới cập nhật
@@ -171,6 +183,13 @@ int main() {
                     NodeCat = new Node<Cat>(newCat);
                     screen.currentScreen = detailCat;
                 }
+            }
+
+            // Thêm số lượng
+            Rectangle addQuantityButton = {356 + 50, 420, 300, 60};
+            if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), addQuantityButton)) {
+                vector<string> InforCat = NodeCat->getData().getAllAttributes();
+                screen.loadAnimalDetails(myFont, texture, animalDetails, InforCat, "Add Quantity");
             }
             screen.Heading(myFont);
         }
@@ -213,7 +232,8 @@ int main() {
             if(Subtotal > 0) {
                 bool check = false;
                 vector<string> InforNewCustomer;
-                if(screen.inputInforNewItem(myFont, texture, InforNewCustomer, 3)) {
+                vector<unsigned int> animalDetails_id;
+                if(screen.inputInforCustomer(myFont, texture, InforNewCustomer)) {
                     for(auto& customer : Customers) {
                         if(customer->checkCustomer(InforNewCustomer[1])) {
                             customer->updateInformation(InforNewCustomer);
@@ -241,6 +261,12 @@ int main() {
                     cartDog.getCartItems().backUpInformation(Items);
                     cartCat.getCartItems().backUpInformation(Items);
 
+                    // Id Pet
+                    vector<unsigned int> petId;
+                    screen.inputIdPet(myFont, texture, Items, petId, animalDetails);
+
+
+
                     Order newOrder(customer_id, Subtotal, day, month, year, Items);
                     newOrder.saveToFileOrder("DB/order.txt");
                     newOrder.saveToFileSales("DB/sales.txt");
@@ -252,6 +278,7 @@ int main() {
                     // reset giỏ hàng và trừ đi số lượng đã mua hàng
                     cartDog.resetCart();
                     cartCat.resetCart();
+                    FileManager::saveToFileAnimalDetail("DB/animalDetail.txt", animalDetails);
                 }
             } else {
                 screen.ShowPopup(myFont, "Cart is empty!", 600, 100);
@@ -268,5 +295,6 @@ int main() {
     // Update lại thông tin Pet
     FileManager::saveToFileDog("DB/dog.txt", dogList);
     FileManager::saveToFileCat("DB/cat.txt", catList);
+    
     return 0;
 }

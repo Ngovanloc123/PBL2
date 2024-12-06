@@ -59,20 +59,11 @@ void Animal::purchaseOptions(const Font &myFont, unsigned int &purQuant)
             }
         }
     }
-    else {
-        sprintf(fullText, "ITPet will update you as soon as possible");
-        DrawTextEx(myFont, fullText, (Vector2){informationFrame.x + 20, 540}, 30, 2, BLACK);
-    }
-    // Delete
-        sprintf(fullText, "Delete");
-        frame = {(float)(informationFrame.x + 550), 500, 150, 60};
-        DrawRectangleRounded(frame, 0.6, 10, RED);
-        DrawTextEx(myFont, fullText, (Vector2){frame.x + frame.width / 2 - MeasureTextEx(myFont, fullText, 40, 2).x / 2, frame.y + frame.height / 2 - MeasureTextEx(myFont, fullText, 40, 2).y / 2}, 40, 2, WHITE);
-    // Update
-        sprintf(fullText, "Update");
-        frame = {(float)(informationFrame.x + 350), 500, 150, 60};
-        DrawRectangleRounded(frame, 0.6, 10, BLUE);
-        DrawTextEx(myFont, fullText, (Vector2){frame.x + frame.width / 2 - MeasureTextEx(myFont, fullText, 40, 2).x / 2, frame.y + frame.height / 2 - MeasureTextEx(myFont, fullText, 40, 2).y / 2}, 40, 2, WHITE);
+    // else 
+    // {
+    //     sprintf(fullText, "ITPet will update you as soon as possible");
+    //     DrawTextEx(myFont, fullText, (Vector2){informationFrame.x + 20, 540}, 30, 2, BLACK);
+    // }
 }
 
 Animal::Animal() {}
@@ -157,16 +148,6 @@ vector<string> Animal::getAllAttributes()
     return attributes;
 }
 
-// bool Animal::isAddToCart()
-// {
-//     Rectangle frame =  {(float)((float)(248 + 8 + 100 + 100)), 500, 200, 60};
-//     if(CheckCollisionPointRec(GetMousePosition(), frame) && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
-//         // Xử lý ở đây về số lượng mua
-//         return true;
-//     }
-//     return false;
-// }
-
 bool Animal::isBuyNow()
 {
     Rectangle frame = {(float)((float)(248 + 8 + 100 + 240 * 3 / 2 + 100)), 500, 200, 60};
@@ -175,33 +156,6 @@ bool Animal::isBuyNow()
     }
     return false;
 }
-
-// void Animal::DisplayImage(const Font &myFont, Texture &texture, int gridX, int gridY)
-// {
-//     // Nạp và chuyển đổi hình ảnh thành texture
-//     Image image = LoadImage(imageAnimal);
-//     if (image.width == 0 || image.height == 0)
-//     {
-//         cout << "Failed to load image!" << endl;
-//         return;
-//     }
-//     texture = LoadTextureFromImage(image);
-//     UnloadImage(image);
-//     // Vị trí ảnh
-//     int posX = gridX * 248 + 8 + 100;
-//     int posY = gridY * 270 + 128 + 8;
-//     // Vẽ hình ảnh
-//     DrawTexture(texture, posX, posY, WHITE);
-
-//     // Tên hình ảnh
-//     Rectangle nameFrame = {(float)posX, (float)(posY + 240), 240, 20};
-//     DrawRectangleRounded(nameFrame, 0, 10, WHITE);
-//     // Vẽ tên hình ảnh
-//     DrawTextEx(myFont, name, (Vector2){nameFrame.x + nameFrame.width / 2 - MeasureTextEx(myFont, name, 30, 2).x / 2, nameFrame.y - 5}, 30, 2, darkGreen);
-    
-//     // Tạo khuông chứa hình ảnh
-//     ImageBorder(myFont, posX, posY);
-// }
 
 void Animal::DisplayItemFromCart(const Font &myFont, Texture &texture, int gridX, int gridY, unsigned int purQuant)
 {
@@ -220,9 +174,6 @@ void Animal::DisplayItemFromCart(const Font &myFont, Texture &texture, int gridX
     float posY = gridY * (imageA.width + 5) + 128;
     // Vẽ hình ảnh
     DrawTexture(texture, posX, posY, WHITE);
-    
-    // Tạo khuông chứa hình ảnh
-    // ImageBorderInfor(myFont, posX, posY);
 
     // Tạo khuông chứa thông tin
     Rectangle informationFrame = {(float)(posX + imageA.width), (float)(posY), 360, (float)imageA.height};

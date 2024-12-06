@@ -1,11 +1,13 @@
 SHOP IT PET
-Invoice for: 111
+Invoice for: 109
 ----------
 User id: 17
 Date: 5-12-2024
-Time: 15:36:13
-Total amount: 40000000
-Name: Afghan Hound - Quantity: 2 - Price: 40000000
+Time: 15:25:7
+Total amount: 107000000
+Name: Afghan Hound - Quantity: 1 - Price: 20000000
+Name: Alabai - Quantity: 2 - Price: 36000000
+Name: British Longhair - Quantity: 3 - Price: 51000000
 Goodbye and See You Again!
 Address: 54 Nguyen Luong Bang - Hoa Khanh Bac - Lien Chieu - Da Nang
 --------------------------------------------------------------------

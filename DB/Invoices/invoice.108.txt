@@ -1,11 +1,12 @@
 SHOP IT PET
-Invoice for: 117
+Invoice for: 108
 ----------
-User id: 29
+User id: 17
 Date: 5-12-2024
-Time: 17:35:36
-Total amount: 32000000
-Name: Alaska - Quantity: 2 - Price: 32000000
+Time: 15:13:58
+Total amount: 51000000
+Name: Akita - Quantity: 1 - Price: 15000000
+Name: Bengal - Quantity: 2 - Price: 36000000
 Goodbye and See You Again!
 Address: 54 Nguyen Luong Bang - Hoa Khanh Bac - Lien Chieu - Da Nang
 --------------------------------------------------------------------

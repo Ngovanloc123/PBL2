@@ -168,6 +168,24 @@ void Cat::displayInformation(const Font &myFont, Texture &texture, unsigned int 
     // Vẽ chuỗi giá tiền
     DrawTextEx(myFont, fullText, (Vector2){textX, textY}, 40, 2, darkGreen);
 
+    // Update Quantity
+    sprintf(fullText, "Update Quantity");
+    frame = {(float)(informationFrame.x + 50), 420, 300, 60};
+    DrawRectangleRounded(frame, 0.6, 10, BLUE);
+    DrawTextEx(myFont, fullText, (Vector2){frame.x + frame.width / 2 - MeasureTextEx(myFont, fullText, 40, 2).x / 2, frame.y + frame.height / 2 - MeasureTextEx(myFont, fullText, 40, 2).y / 2}, 40, 2, WHITE);
+
+    // Delete
+    sprintf(fullText, "Delete");
+    frame = {(float)(informationFrame.x + 550), 500, 150, 60};
+    DrawRectangleRounded(frame, 0.6, 10, RED);
+    DrawTextEx(myFont, fullText, (Vector2){frame.x + frame.width / 2 - MeasureTextEx(myFont, fullText, 40, 2).x / 2, frame.y + frame.height / 2 - MeasureTextEx(myFont, fullText, 40, 2).y / 2}, 40, 2, WHITE);
+    
+    // Update
+    sprintf(fullText, "Update");
+    frame = {(float)(informationFrame.x + 350), 500, 150, 60};
+    DrawRectangleRounded(frame, 0.6, 10, BLUE);
+    DrawTextEx(myFont, fullText, (Vector2){frame.x + frame.width / 2 - MeasureTextEx(myFont, fullText, 40, 2).x / 2, frame.y + frame.height / 2 - MeasureTextEx(myFont, fullText, 40, 2).y / 2}, 40, 2, WHITE);
+
     // Thêm vào giỏ hàng và mua hàng
     purchaseOptions(myFont, purQuant);
 }

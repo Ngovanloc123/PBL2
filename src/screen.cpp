@@ -313,9 +313,9 @@ bool Screen::ShowPopup(const Font &myFont, const char *message, int width, int h
     }
 }
 
-bool Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<string> &InforNewItem, int Type)
+bool Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<string> &InforNewItem, string type)
 {
-    vector<string> dogFields = { 
+    vector<string> dogFields = {
         "Name", "Image Link", "Origin", "Average Age", "Fur Type", "Quantity", 
         "Selling Price", "Size", "Purpose of Raising", "Level of Training", "Need for Exercise" 
     };
@@ -325,14 +325,9 @@ bool Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
         "Selling Price", "Size", "Coat Color", "Popularity", "Shedding Level", "Appearance" 
     };
 
-    vector<string> customer = {
-        "Name", "Phone Number", "Address"
-    };
-
     vector<string> fields;
-    if(Type == 1) fields = dogFields;
-    if(Type == 2) fields = catFields;
-    if(Type == 3) fields = customer;
+    if(currentScreen == detailDog) fields = dogFields;
+    else fields = catFields;
 
     if(!InforNewItem.size()) InforNewItem.resize(fields.size(), ""); 
     int boxWidth = 400, boxHeight = 60;
@@ -402,6 +397,7 @@ bool Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
             // Nhấn nút "Next"
             if (CheckCollisionPointRec(mousePosition, { (float)nextButtonX, (float)nextButtonY, (float)buttonWidth, (float)buttonHeight })) {
                 InforNewItem[currentFieldIndex] = currentInput;
+                if(type == "update" && currentFieldIndex == 4) currentFieldIndex += 2;
                 if (currentFieldIndex < static_cast<int>(fields.size()) - 1) {
                     currentInput = InforNewItem[++currentFieldIndex];
                 }
@@ -409,6 +405,7 @@ bool Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
             // Nhấn nút "Back"
             else if (CheckCollisionPointRec(mousePosition, { (float)backButtonX, (float)backButtonY, (float)buttonWidth, (float)buttonHeight })) {
                 InforNewItem[currentFieldIndex] = currentInput;
+                if(type == "update" && currentFieldIndex == 6) currentFieldIndex -= 2;
                 if (currentFieldIndex > 0) {
                     currentInput = InforNewItem[--currentFieldIndex];
                 }
@@ -418,36 +415,277 @@ bool Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
                 InforNewItem[currentFieldIndex] = currentInput;
 
                 // Kiểm tra và xử lý thông tin nhập
-                if (Type == 1 || Type == 2) {
-                    for (size_t i = 0; i < fields.size(); ++i) {
-                        if (i == 1 && InforNewItem[i].empty()) {
-                            InforNewItem[i] = "image/Dogs/Unknown.png";
-                        } else if (InforNewItem[i].empty() || !all_of(InforNewItem[i].begin(), InforNewItem[i].end(), [](char c) { return isdigit(c); })) {
-                            if (i == 3 || i == 5 || i == 6 || i == 7) {
-                                InforNewItem[i] = "0";
-                            } else if (InforNewItem[i].empty()) {
-                                InforNewItem[i] = "Unknown";
-                            }
+                for (size_t i = 0; i < fields.size(); ++i) {
+                    if (i == 1 && InforNewItem[i].empty()) {
+                        InforNewItem[i] = "image/Dogs/Unknown.png";
+                    } else if (InforNewItem[i].empty() || !all_of(InforNewItem[i].begin(), InforNewItem[i].end(), [](char c) { return isdigit(c); })) {
+                        if (i == 3 || i == 5 || i == 6 || i == 7) {
+                            InforNewItem[i] = "0";
+                        } else if (InforNewItem[i].empty()) {
+                            InforNewItem[i] = "Unknown";
                         }
                     }
+                }
+        
+                if (ShowPopup(myFont, "Do you want to save information?", 500, 100)) {
+                    SetWindowSize(widthWindow, heightWindow);
+                    return true;
+                }
+            }
+            // Nhấn nút back "<"
+            else if (CheckCollisionPointRec(mousePosition, { (float)backToMenuButtonX, (float)backToMenuButtonY, 30, 30 })) {
+                SetWindowSize(widthWindow, heightWindow);
+                return false;
+            }
+        }
+        EndDrawing();
+    }
+    SetWindowSize(widthWindow, heightWindow);
+    return true;
+}
+
+
+void Screen::loadAnimalDetails(const Font &myFont, Texture &texture, vector<AnimalDetail *> &AnimalDetails, vector<string> InforNewItems, string type)
+{
+    vector<string> fields = {"Weight", "Sex"};
+    int boxWidth = 400, boxHeight = 60;
+
+    const int newWindowWidth = 600;
+    const int newWindowHeight = 900;
+
+    // Tải hình ảnh
+    Image image = LoadImage("image/background1.png");
+    if (image.width == 0 || image.height == 0)
+    {
+        cout << "Failed to load image!" << endl;
+    }
+
+    ImageResize(&image, newWindowWidth, newWindowHeight);
+    texture = LoadTextureFromImage(image);
+    UnloadImage(image);
+
+    // Thay đổi kích thước màn hình
+    SetWindowSize(newWindowWidth, newWindowHeight);
+
+    int quantity = 0; // Số lượng ban đầu là 0
+    vector<vector<string>> collectedData;
+    bool enteringQuantity = (type == "Add Quantity"); // Biến trạng thái để xác định đang nhập số lượng
+
+    int currentAnimalIndex = 0;
+    int currentFieldIndex = 0;
+    string currentInput = "";
+
+    while (true)
+    {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+
+        // Hiển thị ảnh texture
+        int posX = (newWindowWidth - texture.width) / 2;
+        int posY = (newWindowHeight - texture.height) / 2;
+        DrawTexture(texture, posX, posY, WHITE);
+
+        // Vẽ thông tin hiện tại
+        if (enteringQuantity)
+        {
+            DrawTextEx(myFont, "Enter quantity:", {50, 50}, boxHeight * 0.5f, 2, BLACK);
+        }
+        else
+        {
+            DrawTextEx(myFont, (InforNewItems[0] + " " + to_string(currentAnimalIndex + 1) + "/" + to_string(quantity)).c_str(), {50, 50}, boxHeight * 0.5f, 2, BLACK);
+            DrawTextEx(myFont, fields[currentFieldIndex].c_str(), {50, 100}, boxHeight * 0.5f, 2, BLACK);
+        }
+
+        // Vẽ ô nhập liệu
+        DrawInputBox(myFont, currentInput, 50, 150, boxWidth + 50, boxHeight, 100);
+
+        // Hiển thị nút "Next" (bo góc)
+        int nextButtonX = 350, nextButtonY = 150 + boxHeight + 20;
+        int buttonWidth = 150, buttonHeight = 50;
+        DrawRectangleRounded({(float)nextButtonX - 50, (float)nextButtonY, (float)buttonWidth, (float)buttonHeight}, 0.2f, 10, DARKGREEN);
+        DrawTextEx(myFont, "Next", {(float)nextButtonX + 30, (float)nextButtonY + 10}, boxHeight * 0.5f, 2, WHITE);
+
+        // Hiển thị nút back "<" (bo góc)
+        int backToMenuButtonX = 10, backToMenuButtonY = 10;
+        DrawRectangleRounded({(float)backToMenuButtonX, (float)backToMenuButtonY, 30, 30}, 0.2f, 10, DARKBLUE);
+        DrawTextEx(myFont, "<", {(float)backToMenuButtonX + 5, (float)backToMenuButtonY + 5}, boxHeight * 0.5f, 20, WHITE);
+
+        // Xử lý sự kiện nhấn chuột
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+        {
+            Vector2 mousePosition = GetMousePosition();
+
+            // Nhấn nút "Next"
+            if (CheckCollisionPointRec(mousePosition, {(float)nextButtonX, (float)nextButtonY, (float)buttonWidth, (float)buttonHeight}))
+            {
+                if (enteringQuantity)
+                {
+                    try
+                    {
+                        quantity = stoi(currentInput); // Nhập số lượng
+                        collectedData.resize(quantity, vector<string>(fields.size(), ""));
+                        enteringQuantity = false; // Chuyển sang nhập thông tin chi tiết
+                        currentInput = "";
+                    }
+                    catch (...)
+                    {
+                        currentInput = ""; // Reset nếu nhập không hợp lệ
+                    }
+                }
+                else
+                {
+                    collectedData[currentAnimalIndex][currentFieldIndex] = currentInput;
+                    if (currentFieldIndex < static_cast<int>(fields.size()) - 1)
+                    {
+                        currentFieldIndex++;
+                        currentInput = "";
+                    }
+                    else
+                    {
+                        currentFieldIndex = 0;
+                        currentInput = "";
+                        if (++currentAnimalIndex >= quantity)
+                        {
+                            // Thêm dữ liệu vào AnimalDetails
+                            for (const auto &data : collectedData)
+                            {
+                                AnimalDetail *newAnimal = new AnimalDetail(InforNewItems[0], data[0], data[1]);
+                                AnimalDetails.push_back(newAnimal);
+                            }
+                            SetWindowSize(widthWindow, heightWindow);
+                            return;
+                        }
+                    }
+                }
+            }
+            // Nhấn nút back "<"
+            else if (CheckCollisionPointRec(mousePosition, {(float)backToMenuButtonX, (float)backToMenuButtonY, 30, 30}))
+            {
+                SetWindowSize(widthWindow, heightWindow);
+                return;
+            }
+        }
+
+        // Xử lý nhập liệu từ bàn phím
+        int key = GetCharPressed();
+        while (key > 0)
+        {
+            if ((key >= 32) && (key <= 125)) // Chỉ nhận ký tự ASCII
+            {
+                currentInput += (char)key;
+            }
+            key = GetCharPressed();
+        }
+
+        if (IsKeyPressed(KEY_BACKSPACE) && !currentInput.empty())
+        {
+            currentInput.pop_back();
+        }
+
+        EndDrawing();
+    }
+}
+
+// Hàm nhập thông tin khách hàng
+bool Screen::inputInforCustomer(const Font &myFont, Texture &texture, vector<string> &InforNewCustomer) {
+    vector<string> customer = {
+        "Name", "Phone Number", "Address"
+    };
+
+    if(!InforNewCustomer.size()) InforNewCustomer.resize(customer.size(), ""); 
+    int boxWidth = 400, boxHeight = 60;
+    string currentInput = InforNewCustomer[0];
+    int currentFieldIndex = 0;
+
+    const int newWindowWidth = 600;
+    const int newWindowHeight = 900;
+
+    // Tải hình ảnh
+    Image image = LoadImage("image/background1.png");
+    if (image.width == 0 || image.height == 0)
+    {
+        cout << "Failed to load image!" << endl;
+        // return false;
+    }
+
+    ImageResize(&image, newWindowWidth, newWindowHeight);
+    texture = LoadTextureFromImage(image);
+    UnloadImage(image);
+
+    // Thay đổi kích thước màn hình
+    SetWindowSize(newWindowWidth, newWindowHeight);
+
+    while (true) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+
+        
+        
+        // Hiển thị ảnh texture
+        int posX = (newWindowWidth - texture.width) / 2;
+        int posY = (newWindowHeight - texture.height) / 2;
+        DrawTexture(texture, posX, posY, WHITE);
+
+        // Hiển thị thông tin trường hiện tại
+        DrawTextEx(myFont, customer[currentFieldIndex].c_str(), {50, 100}, boxHeight * 0.5f, 2, BLACK);
+
+        // Vẽ và xử lý ô nhập liệu
+        DrawInputBox(myFont, currentInput, 50, 150, boxWidth + 50, boxHeight, 100);
+
+        // Hiển thị nút "Next" (bo góc)
+        int nextButtonX = 350, nextButtonY = 150 + boxHeight + 20;
+        int buttonWidth = 150, buttonHeight = 50;
+        DrawRectangleRounded({ (float)nextButtonX - 50, (float)nextButtonY, (float)buttonWidth, (float)buttonHeight }, 0.2f, 10, DARKGREEN);
+        DrawTextEx(myFont, "Next", { (float)nextButtonX + 30, (float)nextButtonY + 10 }, boxHeight * 0.5f, 2, WHITE);
+
+        // Hiển thị nút "Back" (bo góc)
+        int backButtonX = 100, backButtonY = nextButtonY;
+        DrawRectangleRounded({ (float)backButtonX, (float)backButtonY, (float)buttonWidth, (float)buttonHeight }, 0.2f, 10, DARKBLUE);
+        DrawTextEx(myFont, "Back", { (float)backButtonX + 30, (float)backButtonY + 10 }, boxHeight * 0.5f, 2, WHITE);
+
+        // Hiển thị nút "OK" (bo góc)
+        int okButtonX = 200, okButtonY = nextButtonY + 100;
+        DrawRectangleRounded({ (float)okButtonX, (float)okButtonY, (float)buttonWidth, (float)buttonHeight }, 0.2f, 10, DARKGRAY);
+        DrawTextEx(myFont, "OK", { (float)okButtonX + 40, (float)okButtonY + 10 }, boxHeight * 0.5f, 2, WHITE);
+        
+        // Hiển thị nút back "<" (bo góc)
+        int backToMenuButtonX = 10, backToMenuButtonY = 10;
+        DrawRectangleRounded({ (float)backToMenuButtonX, (float)backToMenuButtonY, 30, 30 }, 0.2f, 10, DARKBLUE);
+        DrawTextEx(myFont, "<", { (float)backToMenuButtonX + 5, (float)backToMenuButtonY + 5 }, boxHeight * 0.5f, 20, WHITE);
+
+        // Xử lý sự kiện nhấn chuột
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+            Vector2 mousePosition = GetMousePosition();
+
+            // Nhấn nút "Next"
+            if (CheckCollisionPointRec(mousePosition, { (float)nextButtonX, (float)nextButtonY, (float)buttonWidth, (float)buttonHeight })) {
+                InforNewCustomer[currentFieldIndex] = currentInput;
+                if (currentFieldIndex < static_cast<int>(customer.size()) - 1) {
+                    currentInput = InforNewCustomer[++currentFieldIndex];
+                }
+            }
+            // Nhấn nút "Back"
+            else if (CheckCollisionPointRec(mousePosition, { (float)backButtonX, (float)backButtonY, (float)buttonWidth, (float)buttonHeight })) {
+                InforNewCustomer[currentFieldIndex] = currentInput;
+                if (currentFieldIndex > 0) {
+                    currentInput = InforNewCustomer[--currentFieldIndex];
+                }
+            }
+            // Nhấn nút "OK"
+            else if (CheckCollisionPointRec(mousePosition, { (float)okButtonX, (float)okButtonY, (float)buttonWidth, (float)buttonHeight })) {
+                InforNewCustomer[currentFieldIndex] = currentInput;
+                int check = 0;
+                for (size_t i = 0; i < customer.size(); ++i) {
+                    if (InforNewCustomer[i].empty()) {
+                        ShowPopup(myFont, "Information cannot be left blank!", 500, 100);
+                        break;
+                    }
+                    check++;
+                }
+                if (check == static_cast<int>(customer.size())) {
                     if (ShowPopup(myFont, "Do you want to save information?", 500, 100)) {
                         SetWindowSize(widthWindow, heightWindow);
                         return true;
-                    }
-                } else {
-                    int check = 0;
-                    for (size_t i = 0; i < fields.size(); ++i) {
-                        if (InforNewItem[i].empty()) {
-                            ShowPopup(myFont, "Information cannot be left blank!", 500, 100);
-                            break;
-                        }
-                        check++;
-                    }
-                    if (check == static_cast<int>(fields.size())) {
-                        if (ShowPopup(myFont, "Do you want to save information?", 500, 100)) {
-                            SetWindowSize(widthWindow, heightWindow);
-                            return true;
-                        }
                     }
                 }
             }
@@ -462,6 +700,220 @@ bool Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
     SetWindowSize(widthWindow, heightWindow);
     return true;
 }
+
+
+void Screen::inputIdPet(const Font &myFont, Texture &texture, vector<Item> &Items, vector<unsigned int> &petId, vector<AnimalDetail *> &animalDetails) {
+    int boxWidth = 400, boxHeight = 60;
+    string currentInput = "";  // Dùng để lưu ID nhập vào
+    int currentFieldIndex = 0;  // Chỉ số mục hiện tại
+    int totalItemsToBuy = 0;  // Tổng số lượng pet cần nhập ID
+    // vector<string> petNames;   // Lưu tên của pet tương ứng với từng ID nhập
+
+    // Tính tổng số lượng cần nhập ID
+    for (Item &item : Items) {
+        totalItemsToBuy += item.getQuantity();
+    }
+    cout << totalItemsToBuy << endl;
+
+    const int newWindowWidth = 600;
+    const int newWindowHeight = 900;
+
+    // Tải hình ảnh
+    Image image = LoadImage("image/background1.png");
+    if (image.width == 0 || image.height == 0) {
+        cout << "Failed to load image!" << endl;
+        return;
+    }
+
+    ImageResize(&image, newWindowWidth, newWindowHeight);
+    texture = LoadTextureFromImage(image);
+    UnloadImage(image);
+
+    // Thay đổi kích thước màn hình
+    SetWindowSize(newWindowWidth, newWindowHeight);
+
+    while (true) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+
+        // Hiển thị ảnh texture
+        int posX = (newWindowWidth - texture.width) / 2;
+        int posY = (newWindowHeight - texture.height) / 2;
+        DrawTexture(texture, posX, posY, WHITE);
+
+
+
+        // Hiển thị tên pet và ID
+        int itemIndex;
+        string petName;
+        if (currentFieldIndex < totalItemsToBuy) {
+            itemIndex = 0;
+            int remainingQuantity = currentFieldIndex;
+            while (remainingQuantity >= Items[itemIndex].getQuantity()) {
+                remainingQuantity -= Items[itemIndex].getQuantity();
+                itemIndex++;
+            }
+
+            petName = Items[itemIndex].getName(); // Lấy tên pet
+            DrawTextEx(myFont, ("Enter ID for " + petName).c_str(), {50, 100}, boxHeight * 0.5f, 2, BLACK);
+        }
+
+        // Vẽ và xử lý ô nhập liệu
+        DrawInputBox(myFont, currentInput, 50, 150, boxWidth + 50, boxHeight, 100);
+
+        // Hiển thị nút "Next" (bo góc)
+        int nextButtonX = 350, nextButtonY = 150 + boxHeight + 20;
+        int buttonWidth = 150, buttonHeight = 50;
+        DrawRectangleRounded({(float)nextButtonX - 50, (float)nextButtonY, (float)buttonWidth, (float)buttonHeight}, 0.2f, 10, DARKGREEN);
+        DrawTextEx(myFont, "Next", {(float)nextButtonX + 30, (float)nextButtonY + 10}, boxHeight * 0.5f, 2, WHITE);
+
+        // Hiển thị nút "Back" (bo góc)
+        int backButtonX = 100, backButtonY = nextButtonY;
+        DrawRectangleRounded({(float)backButtonX, (float)backButtonY, (float)buttonWidth, (float)buttonHeight}, 0.2f, 10, DARKBLUE);
+        DrawTextEx(myFont, "Back", {(float)backButtonX + 30, (float)backButtonY + 10}, boxHeight * 0.5f, 2, WHITE);
+
+        // Hiển thị nút "OK" (bo góc)
+        int okButtonX = 200, okButtonY = nextButtonY + 100;
+        DrawRectangleRounded({(float)okButtonX, (float)okButtonY, (float)buttonWidth, (float)buttonHeight}, 0.2f, 10, DARKGRAY);
+        DrawTextEx(myFont, "OK", {(float)okButtonX + 40, (float)okButtonY + 10}, boxHeight * 0.5f, 2, WHITE);
+
+        // Xử lý sự kiện nhấn chuột
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+            Vector2 mousePosition = GetMousePosition();
+
+            // Nhấn nút "Next"
+            if (CheckCollisionPointRec(mousePosition, {(float)nextButtonX, (float)nextButtonY, (float)buttonWidth, (float)buttonHeight})) {
+                if (!currentInput.empty()) {
+                    unsigned int currentId = std::stoul(currentInput);
+
+                    // Kiểm tra xem ID có đúng không và trạng thái có bật hay không
+                    bool isValidId = false;
+                    for (auto &animalDetail : animalDetails) {
+                        // Kiểm tra nếu tên pet khớp với tên trong danh sách Items
+                        if (animalDetail->getName() == petName) {
+                            // Sau khi tên khớp, kiểm tra ID và trạng thái
+                            if (animalDetail->getId() == currentId && animalDetail->getStatus() != 0) {
+                                // Kiểm tra xem ID đã được nhập trước đó chưa
+                                bool idAlreadyEntered = false;
+                                for (unsigned int enteredId : petId) {
+                                    if (enteredId == currentId) {
+                                        idAlreadyEntered = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!idAlreadyEntered) {
+                                    isValidId = true;
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if (isValidId) {
+                        // ID hợp lệ, tiếp tục xử lý
+                    } else {
+                        ShowPopup(myFont, "ID does not match the pet name or status is not active!", 500, 100);
+                    }
+
+
+                    // Nếu ID không hợp lệ, thông báo lỗi
+                    if (!isValidId) {
+                        ShowPopup(myFont, "Invalid ID, status, or pet name mismatch!", 500, 100);
+                    }
+
+
+                    if (isValidId) {
+                        petId.push_back(currentId);
+                        if (petId.size() < totalItemsToBuy) {
+                            currentFieldIndex++;
+                            currentInput = "";  // Reset ô nhập liệu
+                        }
+                        cout << currentFieldIndex << endl;
+                    } else {
+                        ShowPopup(myFont, "Invalid ID or status!", 500, 100);
+                    }
+                }
+            }
+
+            // Nhấn nút "Back"
+            else if (CheckCollisionPointRec(mousePosition, {(float)backButtonX, (float)backButtonY, (float)buttonWidth, (float)buttonHeight})) {
+                if (currentFieldIndex > 0) {
+                    currentFieldIndex--;
+                    currentInput = "";
+                    petId.pop_back();
+                }
+            }
+
+            // Nhấn nút "OK"
+            else if (CheckCollisionPointRec(mousePosition, {(float)okButtonX, (float)okButtonY, (float)buttonWidth, (float)buttonHeight})) {
+                if (!currentInput.empty()) {
+                    unsigned int currentId = std::stoul(currentInput);
+
+                    // Kiểm tra xem ID có đúng không và trạng thái có bật hay không
+                    bool isValidId = false;
+                    for (auto &animalDetail : animalDetails) {
+                        // Kiểm tra nếu tên pet khớp với tên trong danh sách Items
+                        if (animalDetail->getName() == petName) {
+                            // Sau khi tên khớp, kiểm tra ID và trạng thái
+                            if (animalDetail->getId() == currentId && animalDetail->getStatus() != 0) {
+                                // Kiểm tra xem ID đã được nhập trước đó chưa
+                                bool idAlreadyEntered = false;
+                                for (unsigned int enteredId : petId) {
+                                    if (enteredId == currentId) {
+                                        idAlreadyEntered = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!idAlreadyEntered) {
+                                    isValidId = true;
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!isValidId) {
+                        if (currentId != 0) {
+                            ShowPopup(myFont, "ID does not match the pet name or status is not active!", 500, 100);
+                        }
+                    }
+
+
+                    if (isValidId) {
+                        petId.push_back(currentId);
+                    }
+                }
+                if (petId.size() == totalItemsToBuy) {
+                    // Cập nhật trạng thái của từng ID tương ứng
+                    for (unsigned int id : petId) {
+                        for (auto &animalDetail : animalDetails) {
+                            if (animalDetail->getId() == id) {
+                                animalDetail->setStatus();
+                            }
+                        }
+                    }
+                    SetWindowSize(widthWindow, heightWindow);
+                    return;
+                } else {
+                    ShowPopup(myFont, "Not enough IDs entered!", 500, 100);
+                }
+            }
+        }
+
+        EndDrawing();
+    }
+
+    SetWindowSize(widthWindow, heightWindow);
+}
+
+
+
+
+
+
+
 
 void Screen::displayHistory(const Font &myFont, Texture &texture, vector<Customer *> Customers)
 {

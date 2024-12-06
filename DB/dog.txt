@@ -1,8 +1,8 @@
-Afghan Hound,image/Dogs/Afghan-Hound.png,Afghanistan,12,Long,5,20000000,1,Companion,Grade school,Medium
-Akita,image/Dogs/Akita.png,Japan,10,Short,2,15000000,3,Guard,Junior High,High
-Alabai,image/Dogs/Alabai.png,Central Asia,12,Short,3,18000000,3,Guard,Junior High,Medium
+Afghan Hound,image/Dogs/Afghan-Hound.png,Afghanistan,12,Long,0,20000000,1,Companion,Grade school,Medium
+Akita,image/Dogs/Akita.png,Japan,10,Short,1,15000000,3,Guard,Junior High,High
+Alabai,image/Dogs/Alabai.png,Central Asia,12,Short,2,18000000,3,Guard,Junior High,Medium
 Alaska,image/Dogs/Alaska.png,USA,12,Medium,3,16000000,2,Companion,Grade school,High
-American Bully,image/Dogs/American-Bully.png,USA,10,Short,2,14000000,2,Pet,Kindergarten,Medium
+American Bully,image/Dogs/American-Bully.png,USA,10,Short,0,14000000,2,Pet,Kindergarten,Medium
 Australian Shepherd,image/Dogs/Australian-Shepherd.png,USA,13,Medium,2,16000000,2,Pet,Grade school,High
 Bac Ha,image/Dogs/Bac-Ha.png,Vietnam,11,Medium,3,8000000,2,Guard,Junior High,Medium
 Bac Kinh,image/Dogs/Bac-Kinh.png,China,15,Long,4,7000000,3,Pet,Grade school,Low

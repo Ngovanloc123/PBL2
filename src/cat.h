@@ -20,7 +20,8 @@ private:
     // Mức độ rụng lông: little, medium, much
     const char *sheddingLevel;    
     // Vẻ bề ngoài: noble, lovely, unique
-    const char *appearance;
+    const char *appearance;    
+
 public:
     Cat(){};
     Cat(vector<string> inforNewCat);

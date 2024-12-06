@@ -1,6 +1,6 @@
-Abyssinian,image/Cats/Abyssinian.png,Egypt,15,Short,5,15000000,3,One color,Widespread,Medium,Noble
-Bengal,image/Cats/Bengal.png,USA,12,Short,4,18000000,3,Multicolor,Widespread,Medium,Lovely
-Khao Manee,image/Cats/Khao-Manee.png,Thailand,10,Short,2,12000000,2,One color,Rare,Little,Unique
+Abyssinian,image/Cats/Abyssinian.png,Egypt,15,Short,2,15000000,3,One color,Widespread,Medium,Noble
+Bengal,image/Cats/Bengal.png,USA,12,Short,2,18000000,3,Multicolor,Widespread,Medium,Lovely
+Khao Manee,image/Cats/Khao-Manee.png,Thailand,10,Short,1,12000000,2,One color,Rare,Little,Unique
 Maine Coon,image/Cats/Maine-coon.png,USA,14,Long,6,22000000,5,Multicolor,Widespread,Much,Noble
 British Longhair,image/Cats/Meo-Anh-Long-Dai.png,UK,12,Long,3,17000000,4,One color,Medium,Medium,Lovely
 British Shorthair,image/Cats/Meo-Anh-Long-Ngan.png,UK,15,Short,5,15000000,3,One color,Widespread,Little,Noble

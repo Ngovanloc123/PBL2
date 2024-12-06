@@ -49,4 +49,35 @@
 2024,11,28,2,American Bully
 2024,11,15,1,Abyssinian
 2024,11,12,1,Khao Manee
-2024,11,20,1,Russian Blue
+2024,11,20,1,Russian Blue2024,12,20,1,Afghan Hound
+2024,12,40,2,Afghan Hound
+2024,12,40,2,Afghan Hound
+2024,12,15,1,Akita
+2024,12,36,2,Bengal
+2024,12,20,1,Afghan Hound
+2024,12,36,2,Alabai
+2024,12,51,3,British Longhair
+2024,12,30,2,Abyssinian
+2024,12,17,1,British Longhair
+2024,12,40,2,Afghan Hound
+2024,12,40,2,Afghan Hound
+2024,12,14,1,American Bully
+2024,12,15,1,Abyssinian
+2024,12,14,1,American Bully
+2024,12,12,1,Khao Manee
+2024,12,20,1,Afghan Hound
+2024,12,15,1,Akita
+2024,12,18,1,Alabai
+2024,12,32,2,Alaska
+2024,12,30,2,Abyssinian
+2024,12,36,2,Bengal
+2024,12,30,2,Abyssinian
+2024,12,66,3,Maine Coon
+2024,12,14,2,Bac Kinh
+2024,12,26,2,Becgie Duc
+2024,12,24,2,Bichon
+2024,12,36,2,Border Collie
+2024,12,24,2,Bull Terrier
+2024,12,40,2,Caucasian Shepherd
+2024,12,40,2,Persian
+2024,12,50,2,Sphynx
