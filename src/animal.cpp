@@ -59,11 +59,6 @@ void Animal::purchaseOptions(const Font &myFont, unsigned int &purQuant)
             }
         }
     }
-    // else 
-    // {
-    //     sprintf(fullText, "ITPet will update you as soon as possible");
-    //     DrawTextEx(myFont, fullText, (Vector2){informationFrame.x + 20, 540}, 30, 2, BLACK);
-    // }
 }
 
 Animal::Animal() {}

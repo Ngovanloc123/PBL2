@@ -1,0 +1,12 @@
+SHOP IT PET
+Invoice for: 125
+----------
+User id: 37
+Date: 24-12-2024
+Time: 8:17:36
+Total amount: 48000000
+Name: Abyssinian - Quantity: 2 - Price: 30000000
+Name: Bengal - Quantity: 1 - Price: 18000000
+Goodbye and See You Again!
+Address: 54 Nguyen Luong Bang - Hoa Khanh Bac - Lien Chieu - Da Nang
+--------------------------------------------------------------------

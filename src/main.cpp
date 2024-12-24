@@ -150,7 +150,11 @@ int main() {
             Rectangle addQuantityButton = {356 + 50, 420, 300, 60};
             if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), addQuantityButton)) {
                 vector<string> InforDog = NodeDog->getData().getAllAttributes();
-                screen.loadAnimalDetails(myFont, texture, animalDetails, InforDog, "Add Quantity");
+                // Lấy số lượng và nhập thông tin
+                int quantity = screen.loadAnimalDetails(myFont, texture, animalDetails, InforDog, "Add Quantity");
+                // Cập nhật lại số lượng
+                NodeDog->getData().setQuantity(quantity + NodeDog->getData().getQuantity());
+                FileManager::saveToFileAnimalDetail("DB/animalDetail.txt", animalDetails);
             }
 
             screen.Heading(myFont);
@@ -189,7 +193,10 @@ int main() {
             Rectangle addQuantityButton = {356 + 50, 420, 300, 60};
             if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), addQuantityButton)) {
                 vector<string> InforCat = NodeCat->getData().getAllAttributes();
-                screen.loadAnimalDetails(myFont, texture, animalDetails, InforCat, "Add Quantity");
+                int quantity = screen.loadAnimalDetails(myFont, texture, animalDetails, InforCat, "Add Quantity");
+                // Cập nhật lại số lượng
+                NodeCat->getData().setQuantity(quantity + NodeCat->getData().getQuantity());
+                FileManager::saveToFileAnimalDetail("DB/animalDetail.txt", animalDetails);
             }
             screen.Heading(myFont);
         }
@@ -292,9 +299,11 @@ int main() {
     UnloadTexture(texture);
     CloseWindow();
 
-    // Update lại thông tin Pet
+    // Update lại thông tin
     FileManager::saveToFileDog("DB/dog.txt", dogList);
     FileManager::saveToFileCat("DB/cat.txt", catList);
+    FileManager::saveToFileAnimalDetail("DB/animalDetail.txt", animalDetails);
+    FileManager::saveToFile("DB/customer.txt", Customers);
     
     return 0;
 }

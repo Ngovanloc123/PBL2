@@ -107,12 +107,6 @@ Node<T> *LinkedList<T>::getHead()
     return header;
 }
 
-// template <typename T>
-// Node<T> *LinkedList<T>::createNode(const Font &myFont, Texture &texture)
-// {
-    
-// }
-
 template <typename T>
 void LinkedList<T>::insert(T value)
 {

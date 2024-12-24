@@ -1,6 +1,5 @@
 #include "cat.h"
 #include "color.h"
-// #include <iostream>
 
 using namespace std;
 

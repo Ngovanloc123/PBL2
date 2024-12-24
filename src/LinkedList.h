@@ -6,8 +6,6 @@
 #include <vector>
 #include "order.h"
 
-// #include "screen.h"
-
 using namespace std;
 
 template <typename T>
@@ -55,6 +53,5 @@ public:
     Node<T>* GetNodeFromAnimal(const Vector2 &index, vector<char*> attributes);
     Node<T>* GetNodeFromCart(const Vector2 &index, int quantity = 0);
     void deleteNodeInCart(const Vector2 &index, int quantity = 0);
-    // void listManagement(const Font &myFont, Texture &texture);
 };
 

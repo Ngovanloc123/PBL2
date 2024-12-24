@@ -100,13 +100,6 @@ void Order::generalInvoice(Order& order){
     file << "Invoice for: " << order.getOrderId() << endl;
     file << "----------" << endl;
     file << "User id: " << order.getCustomerId() << endl;
-    // vector<Customer*> customers = FileManager::loadFromFile("DB/customer.txt");
-    // for(auto& customer : customers){
-    //     if(customer->getId() == order.getCustomerId()){
-    //         file << "Name: " << customer->getName() << "-" << customer->getPhoneNumber() << "-" << customer->getAddress() << endl;
-    //         break;
-    //     }
-    // }
     file << "Date: " <<order.getOrderDay() << "-" << order.getOrderMonth() << "-" << order.getOrderYear() << endl;
     file << "Time: " << hour << ":" << minute << ":" << second << endl;
     file << "Total amount: " << order.calculateTotalAmount() << endl;

@@ -463,7 +463,7 @@ public:
     // Hàm hiển thị thông báo trong 2 giây
     bool ShowPopup(const Font &myFont, const char* message, int width, int height);
     bool inputInforNewItem(const Font &myFont, Texture &texture, vector<string> &InforNewItem, string type = "");
-    void loadAnimalDetails(const Font &myFont, Texture &texture, vector<AnimalDetail *> &AnimalDetails, vector<string> InforNewItems, string type = "");
+    int loadAnimalDetails(const Font &myFont, Texture &texture, vector<AnimalDetail *> &AnimalDetails, vector<string> InforNewItems, string type = "");
     bool inputInforCustomer(const Font &myFont, Texture &texture, vector<string> &InforNewCustomer);
     void inputIdPet(const Font &myFont, Texture &texture, vector<Item> &Items, vector<unsigned int> &petId, vector<AnimalDetail *> &animalDetails);
     void displayHistory(const Font &myFont, Texture &texture, vector<Customer*> Customers);

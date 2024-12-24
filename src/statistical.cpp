@@ -1,5 +1,4 @@
 #include "statistical.h"
-#include "statistical.h"
 
 
 
@@ -274,7 +273,6 @@ void Statistical::barChart()
             if (bar.getMonth() == month){
                 //Neu thang da co trong nam, cong gia tri price vao
                 bar.setPrice(bar.getPrice() + price);
-                // bar.setQuantity(bar.getQuantity() + quantity);
                 found = true;
                 break;
             }
@@ -328,9 +326,6 @@ void Statistical::barChart()
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        // if(yearlyData.count(currentYear) == 0){
-        //     DrawText("No data for this year", 10, 10, 20, RED);
-        // }
         // Hiển thị biểu đồ doanh thu cho năm hiện tại
         if (yearlyData.count(currentYear) > 0) {
             auto& bars = yearlyData[currentYear];

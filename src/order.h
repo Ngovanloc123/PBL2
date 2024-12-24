@@ -5,8 +5,6 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-// #include "customer.h"
-// #include "FileManage.h"
 
 using namespace std;
 
