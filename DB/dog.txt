@@ -1,4 +1,4 @@
-Afghan Hound,image/Dogs/Afghan-Hound.png,Afghanistan,12,Long,4,20000000,1,Companion,Grade school,Medium
+Afghan Hound,image/Dogs/Afghan-Hound.png,Afghanistan,12,Long,3,20000000,1,Companion,Grade school,Medium
 Akita,image/Dogs/Akita.png,Japan,10,Short,2,15000000,3,Guard,Junior High,High
 Alabai,image/Dogs/Alabai.png,Central Asia,12,Short,3,18000000,3,Guard,Junior High,Medium
 Alaska,image/Dogs/Alaska.png,USA,12,Medium,2,16000000,2,Companion,Grade school,High

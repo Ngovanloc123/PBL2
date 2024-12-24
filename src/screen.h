@@ -66,8 +66,7 @@ private:
         }
     }
     void DrawInputBox(const Font &font, string &inputText, int boxX, int boxY, int boxWidth, int boxHeight, int maxChars);
-    // Kiểm tra cac nút liên quan đến đăng nhập
-    // bool checkLoginButton(const Font &myFont);
+    
     
     Image loadImageCart();
 public:
@@ -462,9 +461,14 @@ public:
     void Heading(const Font &myFont);
     // Hàm hiển thị thông báo trong 2 giây
     bool ShowPopup(const Font &myFont, const char* message, int width, int height);
+    // 
     bool inputInforNewItem(const Font &myFont, Texture &texture, vector<string> &InforNewItem, string type = "");
+    // Nhập thông tin animal chi tiết
     int loadAnimalDetails(const Font &myFont, Texture &texture, vector<AnimalDetail *> &AnimalDetails, vector<string> InforNewItems, string type = "");
+    // Nhập thông tin customer
     bool inputInforCustomer(const Font &myFont, Texture &texture, vector<string> &InforNewCustomer);
+    // Nhập thông tin id pet
     void inputIdPet(const Font &myFont, Texture &texture, vector<Item> &Items, vector<unsigned int> &petId, vector<AnimalDetail *> &animalDetails);
+    // Hiển thị thông tin customer
     void displayHistory(const Font &myFont, Texture &texture, vector<Customer*> Customers);
 };

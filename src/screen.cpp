@@ -743,6 +743,11 @@ void Screen::inputIdPet(const Font &myFont, Texture &texture, vector<Item> &Item
         DrawRectangleRounded({(float)okButtonX, (float)okButtonY, (float)buttonWidth, (float)buttonHeight}, 0.2f, 10, DARKGRAY);
         DrawTextEx(myFont, "OK", {(float)okButtonX + 40, (float)okButtonY + 10}, boxHeight * 0.5f, 2, WHITE);
 
+        // Hiển thị nút back "<"
+        int backToMenuButtonX = 10, backToMenuButtonY = 10;
+        DrawRectangleRounded({ (float)backToMenuButtonX, (float)backToMenuButtonY, 30, 30 }, 0.2f, 10, DARKBLUE);
+        DrawTextEx(myFont, "<", { (float)backToMenuButtonX + 5, (float)backToMenuButtonY + 5 }, boxHeight * 0.5f, 20, WHITE);
+
         // Xử lý sự kiện nhấn chuột
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
             Vector2 mousePosition = GetMousePosition();
@@ -865,6 +870,13 @@ void Screen::inputIdPet(const Font &myFont, Texture &texture, vector<Item> &Item
                 } else {
                     ShowPopup(myFont, "Not enough IDs entered!", 500, 100);
                 }
+            }
+
+            // Nhấn nút back "<"
+            else if (CheckCollisionPointRec(mousePosition, {(float)backToMenuButtonX, (float)backToMenuButtonY, 30, 30}))
+            {
+                SetWindowSize(widthWindow, heightWindow);
+                return;
             }
         }
 

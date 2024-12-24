@@ -60,3 +60,4 @@
 2024,12,40,2,Afghan Hound
 2024,12,15,1,Akita
 2024,12,20,1,Afghan Hound
+2024,12,20,1,Afghan Hound
