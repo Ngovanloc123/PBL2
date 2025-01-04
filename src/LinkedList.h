@@ -20,7 +20,7 @@ private:
     friend class LinkedList<T>;
 
 public:
-    Node(T value) : data(value), next(nullptr) {}
+    Node(T value) : data(value), next(NULL) {}
     Node<T>* getNext() { return next; }
     T& getData() { return data;}
 };

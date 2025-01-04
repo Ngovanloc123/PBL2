@@ -187,15 +187,15 @@ bool LinkedList<T>::insertCart(T value)
 template <typename T>
 void LinkedList<T>::erase(Node<T>* node)
 {
-    if (node == NULL) {  // Kiểm tra nếu node là NULL
-        cerr << "Error: Node to be deleted is null." << endl;
-        return;
-    }
+    // if (node == NULL) {  // Kiểm tra nếu node là NULL
+    //     cout << "Error: Node to be deleted is null." << endl;
+    //     return;
+    // }
 
-    if (header == NULL) {  // Nếu danh sách đang rỗng
-        cerr << "Error: Cannot delete from an empty list." << endl;
-        return;
-    }
+    // if (header == NULL) {  // Nếu danh sách đang rỗng
+    //     cerr << "Error: Cannot delete from an empty list." << endl;
+    //     return;
+    // }
 
     Node<T>* current = header;
     Node<T>* previous = NULL;
@@ -215,7 +215,7 @@ void LinkedList<T>::erase(Node<T>* node)
         current = current->next;
     }
 
-    cerr << "Error: Node not found in the list." << endl;  // Nếu không tìm thấy node
+    // cerr << "Error: Node not found in the list." << endl;  // Nếu không tìm thấy node
 }
 
 

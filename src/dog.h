@@ -16,11 +16,11 @@
 class Dog : public Animal {
 private:
     // Mục đích nuôi: Pet, Companion, Guard
-    const char *purposeOfRaising;   
+    const char *purposeOfRaising;
     // Mức độ huấn luyện: Kindergarten, Grade school, Junior High
-    const char *levelOfTraining;    
+    const char *levelOfTraining;
     // Nhu cầu hoạt động:  High, Medium, Low
-    const char *needForExercise;    
+    const char *needForExercise;
 public:
     Dog() {};
     Dog(vector<string> inforNewDog);

@@ -1,6 +1,6 @@
 1000,Afghan Hound,20,male,0
-1001,Afghan Hound,12,female,1
-1002,Afghan Hound,20,male,1
+1001,Afghan Hound,12,female,0
+1002,Afghan Hound,20,male,0
 1003,Afghan Hound,15,male,1
 1004,Afghan Hound,20,female,1
 1005,Akita,30,male,1
@@ -90,7 +90,7 @@
 1089,Abyssinian,20,male,1
 1090,Abyssinian,20,female,1
 1091,Abyssinian,20,male,1
-1092,Abyssinian,20,female,1
+1092,Abyssinian,20,female,0
 1093,Abyssinian,20,male,1
 1094,Bengal,20,female,1
 1095,Bengal,20,male,1
@@ -165,3 +165,5 @@
 1164,Russian Blue,7,female,1
 1165,Turkish Angora,15,male,1
 1166,Turkish Angora,15,female,1
+1167,Unknown,10,male,1
+1168,Unknown,10,male,1

@@ -10,25 +10,4 @@
 10,David,4218769057,54 Elm St,10
 11,Kien,8593707284,68 Main St,11
 16,Kien,0387717425,QN,1
-17,NVL,010,dfd,9
-18,fasdf,524,ghjhf,1
-19,ngo,101,jkh,2
-20,ffgsdf,dsfg,sdfg,4
-21,xzcgvzx,zxcv,zxcv,1
-22,dsfgsdf,gdsfg,dsfg,1
-23,szdf,adf,adf,6
-24,sadrdfgsd,dsfgsdf,sdfgg,1
-25,j yhj,hgjf,fghj,1
-26,dsfs,sdfg,fg,5
-27,dfs,dsf,adf,1
-28,dfsg,gsdfg,sdfg,1
-29,452,452,452,1
-30,4525,425,452,1
-31,sd,sdf,sdf,1
-32,dfcvsf,sdv,sdv,1
-33,erffadf,tftg,adsf,1
-34,sadf,adsf,a,1
-35,erwe,sadfadf,sdf,1
-36,loc,0303,VN,1
-37,hhh,1010,vn,3
-38,1,1,1,2
+17,kien,0101,vn,1

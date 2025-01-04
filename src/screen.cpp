@@ -113,6 +113,39 @@ void Screen::DrawHome(const Font &myFont) {
     DrawTextEx(myFont, "ITPET", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "ITPET", 80, 2).x / 2), 210}, 80, 2, darkGreen);
 }
 
+void Screen::DrawIntro(const Font &myFont)
+{
+
+    // Nội dung văn bản
+    string title = "We are a shop that sells cute puppies and kittens.";
+    string line1 = "Our pets are healthy, happy, and ready to be your new best friends.";
+    string line2 = "Visit us to find the perfect pet and everything you need to take care of them!";
+    string address = "Address: 54 Nguyen Luong Bang - Hoa Khanh Bac - Lien Chieu - Da Nang";
+    string contact1 = "Name: Ho Duc Kien    Phone Number: 0387717425";
+    string contact2 = "Name: Ngo Van Loc    Phone Number: 0359757054";
+    string email = "Email: duTLPet@gmail.com";
+    int fontSize = 30; 
+    // Tính toán vị trí x để căn giữa văn bản
+    int centerX = 1200 / 2;
+    // Vẽ và căn giữa tiêu đề và thông tin cửa hàng
+    Vector2 titleSize = MeasureTextEx(myFont, title.c_str(), fontSize, 2);
+    DrawTextEx(myFont, title.c_str(), (Vector2){ centerX - titleSize.x / 2, 150 }, fontSize, 2, BLACK);
+
+    Vector2 line1Size = MeasureTextEx(myFont, line1.c_str(), fontSize, 2);
+    DrawTextEx(myFont, line1.c_str(), (Vector2){ centerX - line1Size.x / 2, 200 }, fontSize, 2, BLACK);
+
+    Vector2 line2Size = MeasureTextEx(myFont, line2.c_str(), fontSize, 2);
+    DrawTextEx(myFont, line2.c_str(), (Vector2){ centerX - line2Size.x / 2, 250 }, fontSize, 2, BLACK);
+
+    DrawTextEx(myFont, address.c_str(), (Vector2){ 50, 500 }, fontSize, 2, BLACK);
+
+    DrawTextEx(myFont, contact1.c_str(), (Vector2){ 50, 550 }, fontSize, 2, BLACK);
+
+    DrawTextEx(myFont, contact2.c_str(), (Vector2){ 50, 600 }, fontSize, 2, BLACK);
+
+    DrawTextEx(myFont, email.c_str(), (Vector2){ 50, 650 }, fontSize, 2, BLACK);
+}
+
 void Screen::navigationMenu(const Font &myFont, Texture &textureCart, long long Subtotal) {
     // Nút Home
     Rectangle buttonHome = {80, 20, 80, 40};
@@ -236,7 +269,7 @@ bool Screen::ShowPopup(const Font &myFont, const char *message, int width, int h
     };
 
     // Vòng lặp hiển thị thông báo
-    while (true) {
+    while (!WindowShouldClose()) {
         // Kiểm tra nếu người dùng nhấn chuột vào nút
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             Vector2 mousePos = GetMousePosition();
@@ -265,9 +298,7 @@ bool Screen::ShowPopup(const Font &myFont, const char *message, int width, int h
         // Hiển thị chữ "OK" trên nút
         const char *buttonText = "OK";
         Vector2 buttonTextSize = MeasureTextEx(myFont, buttonText, 20, 2);
-        DrawTextEx(myFont, buttonText, 
-                   {buttonRect.x + (buttonRect.width - buttonTextSize.x) / 2, buttonRect.y + (buttonRect.height - buttonTextSize.y) / 2}, 
-                   20, 2, BLACK);
+        DrawTextEx(myFont, buttonText, {buttonRect.x + (buttonRect.width - buttonTextSize.x) / 2, buttonRect.y + (buttonRect.height - buttonTextSize.y) / 2}, 20, 2, BLACK);
 
         EndDrawing();
     }
@@ -285,6 +316,7 @@ bool Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
         "Selling Price", "Size", "Coat Color", "Popularity", "Shedding Level", "Appearance" 
     };
 
+    // Trường dữ liệu cần nhập
     vector<string> fields;
     if(currentScreen == detailDog) fields = dogFields;
     else fields = catFields;
@@ -302,7 +334,6 @@ bool Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
     if (image.width == 0 || image.height == 0)
     {
         cout << "Failed to load image!" << endl;
-        // return false;
     }
 
     ImageResize(&image, newWindowWidth, newWindowHeight);
@@ -312,12 +343,10 @@ bool Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
     // Thay đổi kích thước màn hình
     SetWindowSize(newWindowWidth, newWindowHeight);
 
-    while (true) {
+    while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        
-        
         // Hiển thị ảnh texture
         int posX = (newWindowWidth - texture.width) / 2;
         int posY = (newWindowHeight - texture.height) / 2;
@@ -326,7 +355,7 @@ bool Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
         // Hiển thị thông tin trường hiện tại
         DrawTextEx(myFont, fields[currentFieldIndex].c_str(), {50, 100}, boxHeight * 0.5f, 2, BLACK);
 
-        // Vẽ và xử lý ô nhập liệu
+        // Vẽ và xử lý ô nhập liệu, trả về thông tin nhập thông qua biến currentInput
         DrawInputBox(myFont, currentInput, 50, 150, boxWidth + 50, boxHeight, 100);
 
         // Hiển thị nút "Next"
@@ -357,6 +386,7 @@ bool Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
             // Nhấn nút "Next"
             if (CheckCollisionPointRec(mousePosition, { (float)nextButtonX, (float)nextButtonY, (float)buttonWidth, (float)buttonHeight })) {
                 InforNewItem[currentFieldIndex] = currentInput;
+                // Tránh thay đổi số lượng khi nhập thông tin
                 if(type == "update" && currentFieldIndex == 4) currentFieldIndex += 2;
                 if (currentFieldIndex < static_cast<int>(fields.size()) - 1) {
                     currentInput = InforNewItem[++currentFieldIndex];
@@ -365,6 +395,7 @@ bool Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
             // Nhấn nút "Back"
             else if (CheckCollisionPointRec(mousePosition, { (float)backButtonX, (float)backButtonY, (float)buttonWidth, (float)buttonHeight })) {
                 InforNewItem[currentFieldIndex] = currentInput;
+                // Tránh thay đổi số lượng khi nhập thông tin
                 if(type == "update" && currentFieldIndex == 6) currentFieldIndex -= 2;
                 if (currentFieldIndex > 0) {
                     currentInput = InforNewItem[--currentFieldIndex];
@@ -378,7 +409,9 @@ bool Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
                 for (size_t i = 0; i < fields.size(); ++i) {
                     if (i == 1 && InforNewItem[i].empty()) {
                         InforNewItem[i] = "image/Dogs/Unknown.png";
-                    } else if (InforNewItem[i].empty() || !all_of(InforNewItem[i].begin(), InforNewItem[i].end(), [](char c) { return isdigit(c); })) {
+                    } 
+                    // Kiểm tra thông tin nhập vào có phải là số không || có rỗng không
+                    else if (InforNewItem[i].empty() || !all_of(InforNewItem[i].begin(), InforNewItem[i].end(), [](char c) { return isdigit(c); })) {
                         if (i == 3 || i == 5 || i == 6 || i == 7) {
                             InforNewItem[i] = "0";
                         } else if (InforNewItem[i].empty()) {
@@ -405,7 +438,7 @@ bool Screen::inputInforNewItem(const Font &myFont, Texture &texture, vector<stri
 }
 
 
-int Screen::loadAnimalDetails(const Font &myFont, Texture &texture, vector<AnimalDetail *> &AnimalDetails, vector<string> InforNewItems, string type)
+int Screen::loadAnimalDetails(const Font &myFont, Texture &texture, vector<AnimalDetail *> &AnimalDetails, vector<string> InforNewItem, string type)
 {
     vector<string> fields = {"Weight", "Sex"};
     int boxWidth = 400, boxHeight = 60;
@@ -430,7 +463,21 @@ int Screen::loadAnimalDetails(const Font &myFont, Texture &texture, vector<Anima
 
     int quantity = 0; // Số lượng ban đầu là 0
     vector<vector<string>> collectedData;
-    bool enteringQuantity = (type == "Add Quantity"); // Biến trạng thái để xác định đang nhập số lượng
+    bool enteringQuantity; // Biến trạng thái để xác định đang nhập số lượng
+    if(type ==  "Add Quantity") {
+        enteringQuantity = true;
+    }
+    else {
+        // Gán số lượng đã được lưu trong InforNewItem
+        quantity = stoi(InforNewItem[5]);
+        collectedData.resize(quantity, vector<string>(fields.size(), ""));
+        enteringQuantity = false;
+
+        if(quantity == 0) {
+            SetWindowSize(widthWindow, heightWindow);
+            return quantity;
+        }
+    }
 
 
     // Biến đếm thông pet hiện tại đang được nhập thông tin
@@ -440,7 +487,7 @@ int Screen::loadAnimalDetails(const Font &myFont, Texture &texture, vector<Anima
     // Biến lưu thông tin sau khi nhập
     string currentInput = "";
 
-    while (true)
+    while (!WindowShouldClose())
     {
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -457,7 +504,7 @@ int Screen::loadAnimalDetails(const Font &myFont, Texture &texture, vector<Anima
         }
         else
         {
-            DrawTextEx(myFont, (InforNewItems[0] + " " + to_string(currentAnimalIndex + 1) + "/" + to_string(quantity)).c_str(), {50, 50}, boxHeight * 0.5f, 2, BLACK);
+            DrawTextEx(myFont, (InforNewItem[0] + " " + to_string(currentAnimalIndex + 1) + "/" + to_string(quantity)).c_str(), {50, 50}, boxHeight * 0.5f, 2, BLACK);
             DrawTextEx(myFont, fields[currentFieldIndex].c_str(), {50, 100}, boxHeight * 0.5f, 2, BLACK);
         }
 
@@ -485,18 +532,24 @@ int Screen::loadAnimalDetails(const Font &myFont, Texture &texture, vector<Anima
             {
                 if (enteringQuantity)
                 {
-                    // try
-                    // {
+                    // Lấy số lượng cần nhập
+                    if (currentInput.empty() || !all_of(currentInput.begin(), currentInput.end(), [](char c) { return isdigit(c); })) {
+                        quantity = 0;
+                    }
+                    else {
                         quantity = stoi(currentInput); // Số lượng muốn thêm vào
-                        collectedData.resize(quantity, vector<string>(fields.size(), ""));
-                        enteringQuantity = false; // Chuyển sang nhập thông tin chi tiết
-                        currentInput = "";
-                    // }
-                    // catch (...)
-                    // {
-                    //     currentInput = ""; // Reset nếu nhập không hợp lệ
-                    // }
+                    }
+
+                    if(quantity == 0) {
+                        SetWindowSize(widthWindow, heightWindow);
+                        return quantity;
+                    }
+
+                    collectedData.resize(quantity, vector<string>(fields.size(), ""));
+                    enteringQuantity = false; // Chuyển sang nhập thông tin chi tiết
+                    currentInput = "";
                 }
+                
                 else
                 {
                     collectedData[currentAnimalIndex][currentFieldIndex] = currentInput;
@@ -514,7 +567,7 @@ int Screen::loadAnimalDetails(const Font &myFont, Texture &texture, vector<Anima
                             // Thêm dữ liệu vào AnimalDetails
                             for (const auto &data : collectedData)
                             {
-                                AnimalDetail *newAnimal = new AnimalDetail(InforNewItems[0], data[0], data[1]);
+                                AnimalDetail *newAnimal = new AnimalDetail(InforNewItem[0], data[0], data[1]);
                                 AnimalDetails.push_back(newAnimal);
                             }
                             SetWindowSize(widthWindow, heightWindow);
@@ -582,7 +635,7 @@ bool Screen::inputInforCustomer(const Font &myFont, Texture &texture, vector<str
     // Thay đổi kích thước màn hình
     SetWindowSize(newWindowWidth, newWindowHeight);
 
-    while (true) {
+    while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
@@ -698,7 +751,7 @@ void Screen::inputIdPet(const Font &myFont, Texture &texture, vector<Item> &Item
     // Thay đổi kích thước màn hình
     SetWindowSize(newWindowWidth, newWindowHeight);
 
-    while (true) {
+    while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 

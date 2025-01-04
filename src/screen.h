@@ -5,10 +5,8 @@
 #include "customer.h"
 #include "dog.h"
 #include "color.h"
-// #include "order.h"
 #include "statistical.h"
 #include "animalDetal.h"
-// #include "FileManage.h"
 
 
 
@@ -85,63 +83,54 @@ public:
     void backGround();
 
     void DrawHome(const Font &myFont);
-    // void DrawIntro(const Font &myFont);
-    // void DrawContact(const Font &myFont);
+    void DrawIntro(const Font &myFont);
 
     void navigationMenu(const Font &myFont, Texture &textureCart, long long Subtotal);
 
 
     template <typename T>
-    void HeadingAnimal(const Font &myFont, LinkedList<T> &list, vector<char*> &attributes) {
+    void drawFilter(const Font &myFont, LinkedList<T> &list, vector<char*> &attributes) {
         // Nút thêm Pet
         Rectangle addPetButton = {450, 70, 60, 50};
         DrawRectangleRounded(addPetButton, 0.6, 10, GREEN);
         DrawTextEx(myFont, "+", (Vector2){addPetButton.x + addPetButton.width / 2 - MeasureTextEx(myFont, "+", 30, 2).x / 2, addPetButton.y + 10}, 30, 2, WHITE);
 
-        // Xử lý nút addPet
         // Vẽ nền trắng bao quanh nội dung
-        Rectangle background = {860, 80, 300, 620}; // Xác định vùng nền
-        DrawRectangleRounded(background, 0.1f, 10, WHITE); // Vẽ nền với góc bo
+        Rectangle background = {860, 80, 300, 620};         // Xác định vùng nền
+        DrawRectangleRounded(background, 0.1f, 10, WHITE);  // Vẽ nền với góc bo
 
         if(currentScreen == imagesDog) {
-            // DrawTextEx(myFont, "Dog", (Vector2){(float)(widthWindow / 2 - MeasureTextEx(myFont, "Dog", 60, 2).x / 2), 50}, 60, 2, darkGreen);
 
             // Căn chỉnh nội dung văn bản
             float textStartX = background.x + background.width / 2; // Căn giữa theo trục X
-            float textStartY = background.y + 20;                 // Dịch xuống từ mép trên
-            float lineSpacing = 40;                              // Khoảng cách giữa các dòng
+            float textStartY = background.y + 20;                   // Dịch xuống từ mép trên
+            float lineSpacing = 40;                                 // Khoảng cách giữa các dòng
 
             // Vẽ nội dung văn bản, căn giữa theo trục X
             DrawTextEx(myFont, "Purpose Of Raising", (Vector2){textStartX - MeasureTextEx(myFont, "Purpose Of Raising", 30, 2).x / 2, textStartY}, 35, 2, ORANGE);
             // Kiểm tra và vẽ "Pet"
             if (strcmp(attributes[0], "Pet") == 0) 
-                DrawTextEx(myFont, "Pet", 
-                        (Vector2){textStartX - MeasureTextEx(myFont, "Pet", 30, 2).x / 2, textStartY + lineSpacing}, 
-                        30, 2, RED); // Nếu là "Pet", vẽ bằng màu đỏ
+                // Nếu là "Pet", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Pet", (Vector2){textStartX - MeasureTextEx(myFont, "Pet", 30, 2).x / 2, textStartY + lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "Pet", 
-                        (Vector2){textStartX - MeasureTextEx(myFont, "Pet", 30, 2).x / 2, textStartY + lineSpacing}, 
-                        30, 2, darkGreen); // Nếu không phải "Pet", vẽ bằng màu xanh lá
+                // Nếu không phải "Pet", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Pet", (Vector2){textStartX - MeasureTextEx(myFont, "Pet", 30, 2).x / 2, textStartY + lineSpacing}, 30, 2, darkGreen);
 
             // Kiểm tra và vẽ "Companion"
             if (strcmp(attributes[0], "Companion") == 0) 
-                DrawTextEx(myFont, "Companion", 
-                        (Vector2){textStartX - MeasureTextEx(myFont, "Companion", 30, 2).x / 2, textStartY + 2 * lineSpacing}, 
-                        30, 2, RED); // Nếu là "Companion", vẽ bằng màu đỏ
+                 // Nếu là "Companion", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Companion", (Vector2){textStartX - MeasureTextEx(myFont, "Companion", 30, 2).x / 2, textStartY + 2 * lineSpacing}, 30, 2, RED);
             else 
-                DrawTextEx(myFont, "Companion", 
-                        (Vector2){textStartX - MeasureTextEx(myFont, "Companion", 30, 2).x / 2, textStartY + 2 * lineSpacing}, 
-                        30, 2, darkGreen); // Nếu không phải "Companion", vẽ bằng màu xanh lá
+                 // Nếu không phải "Companion", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Companion", (Vector2){textStartX - MeasureTextEx(myFont, "Companion", 30, 2).x / 2, textStartY + 2 * lineSpacing}, 30, 2, darkGreen);
 
             // Kiểm tra và vẽ "Guard"
             if (strcmp(attributes[0], "Guard") == 0) 
-                DrawTextEx(myFont, "Guard", 
-                        (Vector2){textStartX - MeasureTextEx(myFont, "Guard", 30, 2).x / 2, textStartY + 3 * lineSpacing}, 
-                        30, 2, RED); // Nếu là "Guard", vẽ bằng màu đỏ
+                 // Nếu là "Guard", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Guard", (Vector2){textStartX - MeasureTextEx(myFont, "Guard", 30, 2).x / 2, textStartY + 3 * lineSpacing}, 30, 2, RED);
             else 
-                DrawTextEx(myFont, "Guard", 
-                        (Vector2){textStartX - MeasureTextEx(myFont, "Guard", 30, 2).x / 2, textStartY + 3 * lineSpacing}, 
-                        30, 2, darkGreen); // Nếu không phải "Guard", vẽ bằng màu xanh lá
+                 // Nếu không phải "Guard", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Guard", (Vector2){textStartX - MeasureTextEx(myFont, "Guard", 30, 2).x / 2, textStartY + 3 * lineSpacing}, 30, 2, darkGreen);
             
             // Kiểm tra nếu nhấn vào các thuộc tính và lưu vào vector
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), {textStartX - MeasureTextEx(myFont, "Purpose Of Raising", 30, 2).x / 2, textStartY, MeasureTextEx(myFont, "Purpose Of Raising", 30, 2).x, 30})) {
@@ -159,31 +148,25 @@ public:
 
             DrawTextEx(myFont, "Level Of Training", (Vector2){textStartX - MeasureTextEx(myFont, "Level Of Training", 30, 2).x / 2, textStartY + 4 * lineSpacing}, 35, 2, ORANGE);
             if (strcmp(attributes[1], "Kindergarten") == 0) 
-                DrawTextEx(myFont, "Kindergarten", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Kindergarten", 30, 2).x / 2, textStartY + 5 * lineSpacing}, 
-                            30, 2, RED); // Nếu là "Kindergarten", vẽ bằng màu đỏ
+                // Nếu là "Kindergarten", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Kindergarten", (Vector2){textStartX - MeasureTextEx(myFont, "Kindergarten", 30, 2).x / 2, textStartY + 5 * lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "Kindergarten", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Kindergarten", 30, 2).x / 2, textStartY + 5 * lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "Kindergarten", vẽ bằng màu xanh lá
+                // Nếu không phải "Kindergarten", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Kindergarten", (Vector2){textStartX - MeasureTextEx(myFont, "Kindergarten", 30, 2).x / 2, textStartY + 5 * lineSpacing}, 30, 2, darkGreen); 
 
             if (strcmp(attributes[1], "Grade school") == 0) 
-                DrawTextEx(myFont, "Grade school", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Grade school", 30, 2).x / 2, textStartY + 6 * lineSpacing}, 
-                            30, 2, RED); // Nếu là "Grade school", vẽ bằng màu đỏ
+                // Nếu là "Grade school", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Grade school", (Vector2){textStartX - MeasureTextEx(myFont, "Grade school", 30, 2).x / 2, textStartY + 6 * lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "Grade school", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Grade school", 30, 2).x / 2, textStartY + 6 * lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "Grade school", vẽ bằng màu xanh lá
+                // Nếu không phải "Grade school", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Grade school", (Vector2){textStartX - MeasureTextEx(myFont, "Grade school", 30, 2).x / 2, textStartY + 6 * lineSpacing}, 30, 2, darkGreen); 
 
             if (strcmp(attributes[1], "Junior High") == 0) 
-                DrawTextEx(myFont, "Junior High", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Junior High", 30, 2).x / 2, textStartY + 7 * lineSpacing}, 
-                            30, 2, RED); // Nếu là "Junior High", vẽ bằng màu đỏ
+                // Nếu là "Junior High", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Junior High", (Vector2){textStartX - MeasureTextEx(myFont, "Junior High", 30, 2).x / 2, textStartY + 7 * lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "Junior High", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Junior High", 30, 2).x / 2, textStartY + 7 * lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "Junior High", vẽ bằng màu xanh lá
+                // Nếu không phải "Junior High", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Junior High", (Vector2){textStartX - MeasureTextEx(myFont, "Junior High", 30, 2).x / 2, textStartY + 7 * lineSpacing}, 30, 2, darkGreen); 
 
             // Kiểm tra nếu nhấn vào các thuộc tính "Level Of Training" và lưu vào vector
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), {textStartX - MeasureTextEx(myFont, "Level Of Training", 30, 2).x / 2, textStartY + 4 * lineSpacing, MeasureTextEx(myFont, "Level Of Training", 30, 2).x, 30})) {
@@ -201,31 +184,25 @@ public:
 
             DrawTextEx(myFont, "Need For Exercise", (Vector2){textStartX - MeasureTextEx(myFont, "Need For Exercise", 30, 2).x / 2, textStartY + 8 * lineSpacing}, 35, 2, ORANGE);
             if (strcmp(attributes[2], "High") == 0) 
-                DrawTextEx(myFont, "High", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "High", 30, 2).x / 2, textStartY + 9 * lineSpacing}, 
-                            30, 2, RED); // Nếu là "High", vẽ bằng màu đỏ
+                // Nếu là "High", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "High", (Vector2){textStartX - MeasureTextEx(myFont, "High", 30, 2).x / 2, textStartY + 9 * lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "High", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "High", 30, 2).x / 2, textStartY + 9 * lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "High", vẽ bằng màu xanh lá
+                // Nếu không phải "High", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "High", (Vector2){textStartX - MeasureTextEx(myFont, "High", 30, 2).x / 2, textStartY + 9 * lineSpacing}, 30, 2, darkGreen); 
 
             if (strcmp(attributes[2], "Medium") == 0) 
-                DrawTextEx(myFont, "Medium", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Medium", 30, 2).x / 2, textStartY + 10 * lineSpacing}, 
-                            30, 2, RED); // Nếu là "Medium", vẽ bằng màu đỏ
+                // Nếu là "Medium", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Medium", (Vector2){textStartX - MeasureTextEx(myFont, "Medium", 30, 2).x / 2, textStartY + 10 * lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "Medium", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Medium", 30, 2).x / 2, textStartY + 10 * lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "Medium", vẽ bằng màu xanh lá
+                // Nếu không phải "Medium", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Medium", (Vector2){textStartX - MeasureTextEx(myFont, "Medium", 30, 2).x / 2, textStartY + 10 * lineSpacing}, 30, 2, darkGreen); 
 
             if (strcmp(attributes[2], "Low") == 0) 
-                DrawTextEx(myFont, "Low", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Low", 30, 2).x / 2, textStartY + 11 * lineSpacing}, 
-                            30, 2, RED); // Nếu là "Low", vẽ bằng màu đỏ
+                // Nếu là "Low", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Low", (Vector2){textStartX - MeasureTextEx(myFont, "Low", 30, 2).x / 2, textStartY + 11 * lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "Low", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Low", 30, 2).x / 2, textStartY + 11 * lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "Low", vẽ bằng màu xanh lá
+                // Nếu không phải "Low", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Low", (Vector2){textStartX - MeasureTextEx(myFont, "Low", 30, 2).x / 2, textStartY + 11 * lineSpacing}, 30, 2, darkGreen); 
 
             // Kiểm tra nếu nhấn vào các thuộc tính "Need For Exercise" và lưu vào vector
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), {textStartX - MeasureTextEx(myFont, "Need For Exercise", 30, 2).x / 2, textStartY + 8 * lineSpacing, MeasureTextEx(myFont, "Need For Exercise", 30, 2).x, 30})) {
@@ -252,22 +229,18 @@ public:
             // Vẽ nội dung văn bản cho các thuộc tính của mèo
             DrawTextEx(myFont, "Coat Color", (Vector2){textStartX - MeasureTextEx(myFont, "Coat Color", 30, 2).x / 2, textStartY}, 35, 2, ORANGE);
            if (strcmp(attributes[0], "One color") == 0) 
-                DrawTextEx(myFont, "One color", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "One color", 30, 2).x / 2, textStartY + lineSpacing}, 
-                            30, 2, RED); // Nếu là "One color", vẽ bằng màu đỏ
+                // Nếu là "One color", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "One color", (Vector2){textStartX - MeasureTextEx(myFont, "One color", 30, 2).x / 2, textStartY + lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "One color", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "One color", 30, 2).x / 2, textStartY + lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "One color", vẽ bằng màu xanh lá
+                // Nếu không phải "One color", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "One color", (Vector2){textStartX - MeasureTextEx(myFont, "One color", 30, 2).x / 2, textStartY + lineSpacing}, 30, 2, darkGreen); 
 
             if (strcmp(attributes[0], "Multicolor") == 0) 
-                DrawTextEx(myFont, "Multicolor", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Multicolor", 30, 2).x / 2, textStartY + 2 * lineSpacing}, 
-                            30, 2, RED); // Nếu là "Multicolor", vẽ bằng màu đỏ
+                // Nếu là "Multicolor", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Multicolor", (Vector2){textStartX - MeasureTextEx(myFont, "Multicolor", 30, 2).x / 2, textStartY + 2 * lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "Multicolor", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Multicolor", 30, 2).x / 2, textStartY + 2 * lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "Multicolor", vẽ bằng màu xanh lá
+                // Nếu không phải "Multicolor", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Multicolor", (Vector2){textStartX - MeasureTextEx(myFont, "Multicolor", 30, 2).x / 2, textStartY + 2 * lineSpacing}, 30, 2, darkGreen); 
 
             // Kiểm tra nếu nhấn vào các thuộc tính và lưu vào vector
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), {textStartX - MeasureTextEx(myFont, "Coat Color", 30, 2).x / 2, textStartY, MeasureTextEx(myFont, "Coat Color", 30, 2).x, 30})) {
@@ -282,31 +255,25 @@ public:
 
             DrawTextEx(myFont, "Popularity", (Vector2){textStartX - MeasureTextEx(myFont, "Popularity", 30, 2).x / 2, textStartY + 3 * lineSpacing}, 35, 2, ORANGE);
             if (strcmp(attributes[1], "Widespread") == 0) 
-                DrawTextEx(myFont, "Widespread", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Widespread", 30, 2).x / 2, textStartY + 4 * lineSpacing}, 
-                            30, 2, RED); // Nếu là "Widespread", vẽ bằng màu đỏ
+                // Nếu là "Widespread", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Widespread", (Vector2){textStartX - MeasureTextEx(myFont, "Widespread", 30, 2).x / 2, textStartY + 4 * lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "Widespread", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Widespread", 30, 2).x / 2, textStartY + 4 * lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "Widespread", vẽ bằng màu xanh lá
+                // Nếu không phải "Widespread", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Widespread", (Vector2){textStartX - MeasureTextEx(myFont, "Widespread", 30, 2).x / 2, textStartY + 4 * lineSpacing}, 30, 2, darkGreen); 
 
             if (strcmp(attributes[1], "Medium") == 0) 
-                DrawTextEx(myFont, "Medium", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Medium", 30, 2).x / 2, textStartY + 5 * lineSpacing}, 
-                            30, 2, RED); // Nếu là "Medium", vẽ bằng màu đỏ
+                // Nếu là "Medium", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Medium", (Vector2){textStartX - MeasureTextEx(myFont, "Medium", 30, 2).x / 2, textStartY + 5 * lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "Medium", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Medium", 30, 2).x / 2, textStartY + 5 * lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "Medium", vẽ bằng màu xanh lá
+                // Nếu không phải "Medium", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Medium", (Vector2){textStartX - MeasureTextEx(myFont, "Medium", 30, 2).x / 2, textStartY + 5 * lineSpacing}, 30, 2, darkGreen); 
 
             if (strcmp(attributes[1], "Rare") == 0) 
-                DrawTextEx(myFont, "Rare", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Rare", 30, 2).x / 2, textStartY + 6 * lineSpacing}, 
-                            30, 2, RED); // Nếu là "Rare", vẽ bằng màu đỏ
+                // Nếu là "Rare", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Rare", (Vector2){textStartX - MeasureTextEx(myFont, "Rare", 30, 2).x / 2, textStartY + 6 * lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "Rare", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Rare", 30, 2).x / 2, textStartY + 6 * lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "Rare", vẽ bằng màu xanh lá
+                // Nếu không phải "Rare", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Rare", (Vector2){textStartX - MeasureTextEx(myFont, "Rare", 30, 2).x / 2, textStartY + 6 * lineSpacing}, 30, 2, darkGreen); 
 
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), {textStartX - MeasureTextEx(myFont, "Popularity", 30, 2).x / 2, textStartY + 3 * lineSpacing, MeasureTextEx(myFont, "Popularity", 30, 2).x, 30})) {
                 attributes[1] = strdup("");
@@ -324,31 +291,25 @@ public:
 
             DrawTextEx(myFont, "Shedding Level", (Vector2){textStartX - MeasureTextEx(myFont, "Shedding Level", 30, 2).x / 2, textStartY + 7 * lineSpacing}, 35, 2, ORANGE);
             if (strcmp(attributes[2], "Little") == 0) 
-                DrawTextEx(myFont, "Little", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Little", 30, 2).x / 2, textStartY + 8 * lineSpacing}, 
-                            30, 2, RED); // Nếu là "Little", vẽ bằng màu đỏ
+                // Nếu là "Little", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Little", (Vector2){textStartX - MeasureTextEx(myFont, "Little", 30, 2).x / 2, textStartY + 8 * lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "Little", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Little", 30, 2).x / 2, textStartY + 8 * lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "Little", vẽ bằng màu xanh lá
+                // Nếu không phải "Little", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Little", (Vector2){textStartX - MeasureTextEx(myFont, "Little", 30, 2).x / 2, textStartY + 8 * lineSpacing}, 30, 2, darkGreen); 
 
             if (strcmp(attributes[2], "Medium") == 0) 
-                DrawTextEx(myFont, "Medium", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Medium", 30, 2).x / 2, textStartY + 9 * lineSpacing}, 
-                            30, 2, RED); // Nếu là "Medium", vẽ bằng màu đỏ
+                // Nếu là "Medium", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Medium", (Vector2){textStartX - MeasureTextEx(myFont, "Medium", 30, 2).x / 2, textStartY + 9 * lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "Medium", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Medium", 30, 2).x / 2, textStartY + 9 * lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "Medium", vẽ bằng màu xanh lá
+                // Nếu không phải "Medium", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Medium", (Vector2){textStartX - MeasureTextEx(myFont, "Medium", 30, 2).x / 2, textStartY + 9 * lineSpacing}, 30, 2, darkGreen); 
 
             if (strcmp(attributes[2], "Much") == 0) 
-                DrawTextEx(myFont, "Much", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Much", 30, 2).x / 2, textStartY + 10 * lineSpacing}, 
-                            30, 2, RED); // Nếu là "Much", vẽ bằng màu đỏ
+                // Nếu là "Much", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Much", (Vector2){textStartX - MeasureTextEx(myFont, "Much", 30, 2).x / 2, textStartY + 10 * lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "Much", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Much", 30, 2).x / 2, textStartY + 10 * lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "Much", vẽ bằng màu xanh lá
+                // Nếu không phải "Much", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Much", (Vector2){textStartX - MeasureTextEx(myFont, "Much", 30, 2).x / 2, textStartY + 10 * lineSpacing}, 30, 2, darkGreen); 
 
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), {textStartX - MeasureTextEx(myFont, "Shedding Level", 30, 2).x / 2, textStartY + 7 * lineSpacing, MeasureTextEx(myFont, "Shedding Level", 30, 2).x, 30})) {
                 attributes[2] = strdup("");
@@ -366,31 +327,25 @@ public:
 
             DrawTextEx(myFont, "Appearance", (Vector2){textStartX - MeasureTextEx(myFont, "Appearance", 30, 2).x / 2, textStartY + 11 * lineSpacing}, 35, 2, ORANGE);
             if (strcmp(attributes[3], "Noble") == 0) 
-                DrawTextEx(myFont, "Noble", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Noble", 30, 2).x / 2, textStartY + 12 * lineSpacing}, 
-                            30, 2, RED); // Nếu là "Noble", vẽ bằng màu đỏ
+                // Nếu là "Noble", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Noble", (Vector2){textStartX - MeasureTextEx(myFont, "Noble", 30, 2).x / 2, textStartY + 12 * lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "Noble", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Noble", 30, 2).x / 2, textStartY + 12 * lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "Noble", vẽ bằng màu xanh lá
+                // Nếu không phải "Noble", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Noble", (Vector2){textStartX - MeasureTextEx(myFont, "Noble", 30, 2).x / 2, textStartY + 12 * lineSpacing}, 30, 2, darkGreen); 
 
             if (strcmp(attributes[3], "Lovely") == 0) 
-                DrawTextEx(myFont, "Lovely", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Lovely", 30, 2).x / 2, textStartY + 13 * lineSpacing}, 
-                            30, 2, RED); // Nếu là "Lovely", vẽ bằng màu đỏ
+                // Nếu là "Lovely", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Lovely", (Vector2){textStartX - MeasureTextEx(myFont, "Lovely", 30, 2).x / 2, textStartY + 13 * lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "Lovely", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Lovely", 30, 2).x / 2, textStartY + 13 * lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "Lovely", vẽ bằng màu xanh lá
+                // Nếu không phải "Lovely", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Lovely", (Vector2){textStartX - MeasureTextEx(myFont, "Lovely", 30, 2).x / 2, textStartY + 13 * lineSpacing}, 30, 2, darkGreen); 
 
             if (strcmp(attributes[3], "Unique") == 0) 
-                DrawTextEx(myFont, "Unique", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Unique", 30, 2).x / 2, textStartY + 14 * lineSpacing}, 
-                            30, 2, RED); // Nếu là "Unique", vẽ bằng màu đỏ
+                // Nếu là "Unique", vẽ bằng màu đỏ
+                DrawTextEx(myFont, "Unique", (Vector2){textStartX - MeasureTextEx(myFont, "Unique", 30, 2).x / 2, textStartY + 14 * lineSpacing}, 30, 2, RED); 
             else 
-                DrawTextEx(myFont, "Unique", 
-                            (Vector2){textStartX - MeasureTextEx(myFont, "Unique", 30, 2).x / 2, textStartY + 14 * lineSpacing}, 
-                            30, 2, darkGreen); // Nếu không phải "Unique", vẽ bằng màu xanh lá
+                // Nếu không phải "Unique", vẽ bằng màu xanh lá
+                DrawTextEx(myFont, "Unique", (Vector2){textStartX - MeasureTextEx(myFont, "Unique", 30, 2).x / 2, textStartY + 14 * lineSpacing}, 30, 2, darkGreen); 
 
             // Kiểm tra và lưu lựa chọn cho "Appearance"
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), {textStartX - MeasureTextEx(myFont, "Appearance", 30, 2).x / 2, textStartY + 11 * lineSpacing, MeasureTextEx(myFont, "Appearance", 30, 2).x, 30})) {
@@ -426,10 +381,6 @@ public:
             if (currentScreen == imagesDog || currentScreen == imagesCat) {
                 NodeAnimal = list.GetNodeFromAnimal(index, attributes);
             } 
-            // else if (currentScreen == CART) {
-            //     Node<pair<T, int>>* selectedCartNode = list.GetNodeFromCart(index);
-            //     NodeAnimal = new Node<T>{selectedCartNode->getData().first}; // Tạo node T từ pair
-            // } 
             else {
                 NodeAnimal = NULL;
             }

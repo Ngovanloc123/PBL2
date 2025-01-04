@@ -1,0 +1,12 @@
+SHOP IT PET
+Invoice for: 129
+----------
+User id: 17
+Date: 4-1-2025
+Time: 1:20:8
+Total amount: 55000000
+Name: Afghan Hound - Quantity: 2 - Price: 40000000
+Name: Abyssinian - Quantity: 1 - Price: 15000000
+Goodbye and See You Again!
+Address: 54 Nguyen Luong Bang - Hoa Khanh Bac - Lien Chieu - Da Nang
+--------------------------------------------------------------------

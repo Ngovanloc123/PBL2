@@ -26,14 +26,20 @@ class Animal {
         // Các tùy chọn khi mua hàng
         void purchaseOptions(const Font &myFont, unsigned int &purQuant);
     public:
+        //----------------------------------------------------------------
+        // Constructor và destructor
         Animal();
         Animal(const char *name, const char *imageAnimal, const char *origin, unsigned int averageAge, const char *furType, unsigned int quantity, unsigned int sellingPrice, unsigned int size);
         Animal(const Animal& Animal);
         virtual ~Animal();
+
+        
         virtual string GetType() const { return "Animal"; }
         // In ra thông tin chi tiết
         virtual void displayInformation(const Font &myFont, Texture &texture, unsigned int &purQuant) = 0;
 
+        //----------------------------------------------------------------
+        // Hàm lấy thông tin
         const char *getName() const;
         const char *getImageAnimal() const;
         const char *getOrigin() const;
@@ -42,14 +48,16 @@ class Animal {
         unsigned int getQuantity() const;
         unsigned int getPrice() const;
         unsigned int getSize() const;
-        void setQuantity(unsigned int quantity);
         unsigned int getSellingPrice() const;
         vector<string> getAllAttributes();
+
+        //----------------------------------------------------------------
+        // Hàm cập nhật thông tin
+        void setQuantity(unsigned int quantity);
         
         bool isBuyNow();
         // In ra hình ảnh và thông tin cần thiết trong giỏ hàng
         void DisplayItemFromCart(const Font &myFont, Texture &texture, int gridX = 0, int gridY = 0, unsigned int purQuant = 1);
         // In ra hình ảnh tại thông tin chi tiết
         void DisplayImageInInfor(const Font &myFont, Texture &texture, int gridX = 0, int gridY = 0);
-        
 };

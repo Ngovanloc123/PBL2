@@ -14,7 +14,7 @@
 #include "customer.h"
 #include "FileManage.h"
 #include "animalDetal.h"
-
+ 
 
 using namespace std;
 
@@ -25,9 +25,9 @@ int main() {
     cout << "Open My shop..." << endl;
 
     //----------------------------------------------------------------
+
     LinkedList<Dog> dogList;
     Dog::initializeDogList(dogList);
-
 
     LinkedList<Cat> catList;
     Cat::initializeCatList(catList);
@@ -35,7 +35,8 @@ int main() {
     Cart<Dog> cartDog;
     Cart<Cat> cartCat;
 
-    // Thông in người mua hàng
+
+    // Thông tin người mua hàng
     Customer::initializeNextIdFromFile("DB/customer.txt");
     vector<Customer*> Customers = FileManager::loadCustomerFromFile("DB/customer.txt");
 
@@ -43,16 +44,21 @@ int main() {
     AnimalDetail::initializeNextIdFromFile("DB/animalDetail.txt");
     vector<AnimalDetail*> animalDetails = FileManager::loadAnimalDetailFromFile("DB/animalDetail.txt");
     //----------------------------------------------------------------
+
     //Thông tin đơn hàng
     Order::initializeOrderIdFromFile("DB/order.txt");
     Texture texture;
     Node<Dog>* NodeDog;
     Node<Cat>* NodeCat;
     unsigned int purQuant = 1;
-    // Trạng thái pet
+    // Trạng thái tìm kiếm
     vector<char*> attributesDog(5, "");
     vector<char*> attributesCat(5, "");
+
+    // Tổng tiền
     long long Subtotal = 0;
+    
+    // Lưu id khách hàng
     unsigned int customer_id = 0;
 
     while(!WindowShouldClose()) {
@@ -75,7 +81,7 @@ int main() {
             // Hình ảnh chó
             dogList.displayImages(myFont, texture, attributesDog);
             // Các nút tại image Dog
-            screen.HeadingAnimal(myFont, dogList, attributesDog);
+            screen.drawFilter(myFont, dogList, attributesDog);
         //----------------------------------------------------------------
             // Thêm chó
             Rectangle addPetButton = {450, 70, 60, 50};
@@ -84,7 +90,12 @@ int main() {
                 if(screen.inputInforNewItem(myFont, texture, InforNewDog)) {
                     Dog newDog(InforNewDog);
                     dogList.insert(newDog);
+                    // Lưu thông tin của dog mới thêm vào
+                    FileManager::saveToFileDog("DB/dog.txt", dogList);
+                    // Nhập thông tin chi tiết của từng pet
                     screen.loadAnimalDetails(myFont, texture, animalDetails, InforNewDog);
+                    // Lưu thông tin chi tiết của từng pet
+                    FileManager::saveToFileAnimalDetail("DB/animalDetail.txt", animalDetails);
                 }
             }
             
@@ -98,7 +109,7 @@ int main() {
             // Hình ảnh mèo
             catList.displayImages(myFont, texture, attributesCat);
             // Các nút tại image Cat
-            screen.HeadingAnimal(myFont, catList, attributesCat);
+            screen.drawFilter(myFont, catList, attributesCat);
         //----------------------------------------------------------------
             // Thêm mèo
             Rectangle addPetButton = {450, 70, 60, 50};
@@ -108,7 +119,11 @@ int main() {
                 {
                     Cat newCat(InforNewCat);
                     catList.insert(newCat);
+                    // Lưu thông tin của cat mới thêm vào
+                    FileManager::saveToFileCat("DB/cat.txt", catList);
                     screen.loadAnimalDetails(myFont, texture, animalDetails, InforNewCat);
+                    // Lưu thông tin chi tiết của từng pet
+                    FileManager::saveToFileAnimalDetail("DB/animalDetail.txt", animalDetails);
                 }
             }
         //----------------------------------------------------------------
@@ -130,6 +145,8 @@ int main() {
                 if(screen.ShowPopup(myFont, "Are you sure delete?", 600, 100)) {
                     screen.currentScreen = imagesDog;
                     dogList.erase(NodeDog);
+                    // Lưu lại danh sách dog sau khi xóa
+                    FileManager::saveToFileDog("DB/dog.txt", dogList);
                 }
             }
             // Thay đổi thông tin chó
@@ -172,6 +189,8 @@ int main() {
                 if(screen.ShowPopup(myFont, "Are you sure delete?", 600, 100)) {
                     screen.currentScreen = imagesCat;
                     catList.erase(NodeCat);
+                    // Lưu lại danh sách cat sau khi xóa
+                    FileManager::saveToFileCat("DB/cat.txt", catList);
                 }
             }
             // Thay đổi thông tin mèo
@@ -205,6 +224,7 @@ int main() {
         if(screen.currentScreen == INTRO) {
             // Show thông tin
             screen.Heading(myFont);
+            screen.DrawIntro(myFont);
         }
 
         // Thông tin CART
